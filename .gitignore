@@ -1,3 +1,19 @@
+.gradle
+build/
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+out/
+
+### VS Code ###
+.vscode/
+bin
+.project
+.settings
+
 # Compiled class file
 *.class
 
@@ -11,7 +27,6 @@
 .mtj.tmp/
 
 # Package Files #
-*.jar
 *.war
 *.nar
 *.ear
