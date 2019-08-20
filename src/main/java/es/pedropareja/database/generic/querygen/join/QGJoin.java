@@ -8,5 +8,5 @@ import es.pedropareja.database.generic.querygen.orderby.QGLinkOrderBy;
 import es.pedropareja.database.generic.querygen.where.QGLinkWhere;
 
 public interface QGJoin
-        extends QGQuery, QGLinkOn, QGLinkWhere, QGLinkOrderBy, QGLinkLimit, QGLinkOptional<QGJoin>
+        extends QGQuery, QGLinkOn, QGLinkWhere, QGLinkOrderBy, QGLinkLimit, QGLinkOptional<QGJoin>, QGLinkJoin
 {}
