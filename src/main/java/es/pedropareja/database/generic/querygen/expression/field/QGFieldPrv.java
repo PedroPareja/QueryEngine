@@ -20,8 +20,7 @@ public class QGFieldPrv<T extends Enum<?> & DBFieldInfo> extends QGExpressionBas
     @Override
     protected void genOutput(StringBuilder stringBuilder)
     {
-        if(getInit() != this)
-            stringBuilder.append(" ");
+        printSpaceIfNotFirst(stringBuilder);
 
         QGQueryBase.printField(stringBuilder, field, isFullNamespaces());
     }

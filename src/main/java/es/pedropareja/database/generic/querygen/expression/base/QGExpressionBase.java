@@ -65,4 +65,10 @@ public abstract class QGExpressionBase implements QGExpressionPrv
         init.getOutputSequence(stringBuilder);
         return stringBuilder.toString();
     }
+
+    protected void printSpaceIfNotFirst(StringBuilder stringBuilder)
+    {
+        if(init != this)
+            stringBuilder.append(" ");
+    }
 }
