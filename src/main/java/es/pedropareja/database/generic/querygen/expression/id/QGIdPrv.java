@@ -13,6 +13,12 @@ public class QGIdPrv extends QGExpressionBase implements QGId, QGLinkOperatorsPr
         this.id = id;
     }
 
+    public QGIdPrv(String id)
+    {
+        super();
+        this.id = id;
+    }
+
     @Override
     protected void genOutput(StringBuilder stringBuilder)
     {

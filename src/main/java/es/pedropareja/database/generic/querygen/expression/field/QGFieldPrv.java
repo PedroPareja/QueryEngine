@@ -17,6 +17,12 @@ public class QGFieldPrv<T extends Enum<?> & DBFieldInfo> extends QGExpressionBas
         this.field = field;
     }
 
+    public QGFieldPrv(T field)
+    {
+        super();
+        this.field = field;
+    }
+
     @Override
     protected void genOutput(StringBuilder stringBuilder)
     {

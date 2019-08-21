@@ -19,14 +19,32 @@ public class QGAggregatePrv<T extends Enum<?> & DBFieldInfo>
         this.id = id;
     }
 
+    private QGAggregatePrv(Type type, T field, String id)
+    {
+        super();
+        this.type = type;
+        this.field = field;
+        this.id = id;
+    }
+
     public QGAggregatePrv(QGExpressionBase init, Type type, T field)
     {
         this(init, type, field, null);
     }
 
+    public QGAggregatePrv(Type type, T field)
+    {
+        this(type, field, null);
+    }
+
     public QGAggregatePrv(QGExpressionBase init, Type type, String id)
     {
         this(init, type, null, id);
+    }
+
+    public QGAggregatePrv(Type type, String id)
+    {
+        this(type, null, id);
     }
 
     @Override
