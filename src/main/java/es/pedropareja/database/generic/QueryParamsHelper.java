@@ -6,8 +6,9 @@ import java.util.Collection;
 
 public class QueryParamsHelper
 {
-    private static final ParamSetter<Long> longSetter =  (s,i,v)-> s.setLong(i, v);
-    private static final ParamSetter<String> stringSetter =  (s,i,v)-> s.setString(i, v);
+    private static final ParamSetter<Long> longSetter =  (s,i,v) -> s.setLong(i, v);
+    private static final ParamSetter<Integer> intSetter = (s,i,v) -> s.setInt(i, v);
+    private static final ParamSetter<String> stringSetter =  (s,i,v) -> s.setString(i, v);
 
     private final PreparedStatement statement;
     private int paramIndex = 1;
@@ -61,6 +62,26 @@ public class QueryParamsHelper
     public void setAllLong(Collection<Long> collection, boolean condition) throws SQLException
     {
         setAllParam(longSetter, collection, condition);
+    }
+
+    public void setInt(Integer value) throws SQLException
+    {
+        setParam(intSetter, value);
+    }
+
+    public void setInt(Integer value, boolean condition) throws SQLException
+    {
+        setParam(intSetter, value, condition);
+    }
+
+    public void setAllInt(Collection<Integer> collection) throws SQLException
+    {
+        setAllParam(intSetter, collection);
+    }
+
+    public void setAllInt(Collection<Integer> collection, boolean condition) throws SQLException
+    {
+        setAllParam(intSetter, collection, condition);
     }
 
     public void setString(String value) throws SQLException
