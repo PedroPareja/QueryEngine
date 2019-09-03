@@ -14,12 +14,12 @@ public class QGDeletePrv<T extends Enum<?> & DBFieldInfo> extends QGQueryInit im
     }
 
     @Override
-    public void genOutput(StringBuilder stringBuilder)
+    public <U> void genOutput(StringBuilder stringBuilder, U context)
     {
         stringBuilder.append("DELETE FROM ");
-        printTablePath(stringBuilder, tableType);
+        printTablePath(stringBuilder, tableType, context);
 
-        genOutputNext(stringBuilder);
+        genOutputNext(stringBuilder, context);
     }
 
     @Override

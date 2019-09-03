@@ -12,5 +12,5 @@ public @interface DBTableInfo
 {
     String database() default "";
     String schema() default "";
-    String table();
+    String table() default "";
 }

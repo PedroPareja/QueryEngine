@@ -20,7 +20,7 @@ public class QGInsertPrv<T extends Enum<?> & DBFieldInfo> extends QGQueryInit im
     }
 
     @Override
-    public void genOutput(StringBuilder stringBuilder)
+    public <U> void genOutput(StringBuilder stringBuilder, U context)
     {
         stringBuilder.append("INSERT (");
 
@@ -29,7 +29,7 @@ public class QGInsertPrv<T extends Enum<?> & DBFieldInfo> extends QGQueryInit im
 
         stringBuilder.append(")");
 
-        genOutputNext(stringBuilder);
+        genOutputNext(stringBuilder, context);
     }
 
     @Override

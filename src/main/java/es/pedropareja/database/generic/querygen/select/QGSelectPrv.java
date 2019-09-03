@@ -25,7 +25,7 @@ public class QGSelectPrv<T extends Enum<?> & DBFieldInfo> extends QGQueryInit im
     }
 
     @Override
-    public void genOutput(StringBuilder stringBuilder)
+    public <U> void genOutput(StringBuilder stringBuilder, U context)
     {
         stringBuilder.append("SELECT").append(distinct ? " DISTINCT " : " ");
 
@@ -36,11 +36,11 @@ public class QGSelectPrv<T extends Enum<?> & DBFieldInfo> extends QGQueryInit im
             for (int i = 0; i < fieldList.length; i++)
             {
                 stringBuilder.append(i != 0 ? ", " : "");
-                printField(stringBuilder, fieldList[i], fullNamespaces);
+                printField(stringBuilder, fieldList[i], fullNamespaces, context);
             }
         }
 
-        genOutputNext(stringBuilder);
+        genOutputNext(stringBuilder, context);
     }
 
     @Override

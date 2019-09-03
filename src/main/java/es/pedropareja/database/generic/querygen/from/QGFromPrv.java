@@ -17,13 +17,13 @@ public class QGFromPrv<T extends Enum<?> & DBFieldInfo> extends QGQueryMiddleEnd
     }
 
     @Override
-    public void genOutput(StringBuilder stringBuilder)
+    public <U> void genOutput(StringBuilder stringBuilder, U context)
     {
         stringBuilder.append(" FROM ");
 
-        printTablePath(stringBuilder, tableType);
+        printTablePath(stringBuilder, tableType, context);
 
-        genOutputNext(stringBuilder);
+        genOutputNext(stringBuilder, context);
     }
 
     @Override

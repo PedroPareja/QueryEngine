@@ -42,7 +42,7 @@ public class QGWherePrv extends QGQueryMiddleEnd implements QGWhere, QGLinkCondi
 
 
     @Override
-    public void genOutput(StringBuilder stringBuilder)
+    public <T> void genOutput(StringBuilder stringBuilder, T context)
     {
         if(!conditionList.isEmpty())
         {
@@ -50,13 +50,13 @@ public class QGWherePrv extends QGQueryMiddleEnd implements QGWhere, QGLinkCondi
 
             for (int i = 0; i < conditionList.size(); i++)
             {
-                conditionList.get(i).genOutput(stringBuilder, getInit().isFullNamespaces());
+                conditionList.get(i).genOutput(stringBuilder, getInit().isFullNamespaces(), context);
                 if (i < conditionList.size() - 1)
                     stringBuilder.append(" AND");
             }
         }
 
-        genOutputNext(stringBuilder);
+        genOutputNext(stringBuilder, context);
     }
 
     @Override

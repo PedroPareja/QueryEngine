@@ -37,7 +37,7 @@ public class QGOnPrv extends QGQueryMiddleEnd implements QGOn, QGLinkConditionsP
     }
 
     @Override
-    public void genOutput(StringBuilder stringBuilder)
+    public <T> void genOutput(StringBuilder stringBuilder, T context)
     {
         if(!conditionList.isEmpty())
             stringBuilder.append(" ON");
@@ -47,10 +47,10 @@ public class QGOnPrv extends QGQueryMiddleEnd implements QGOn, QGLinkConditionsP
             if(i != 0)
                 stringBuilder.append(" AND");
 
-            conditionList.get(i).genOutput(stringBuilder, true);
+            conditionList.get(i).genOutput(stringBuilder, true, context);
         }
 
-        genOutputNext(stringBuilder);
+        genOutputNext(stringBuilder, context);
     }
 
     @Override

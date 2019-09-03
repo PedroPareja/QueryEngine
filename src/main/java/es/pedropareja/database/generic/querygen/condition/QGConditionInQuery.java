@@ -17,12 +17,12 @@ public class QGConditionInQuery<T extends Enum<?> & DBFieldInfo> implements QGCo
     }
 
     @Override
-    public void genOutput(StringBuilder stringBuilder, boolean fullNamespaces)
+    public <T> void genOutput(StringBuilder stringBuilder, boolean fullNamespaces, T context)
     {
         stringBuilder.append(" ");
-        QGQueryBase.printField(stringBuilder, field, true);
+        QGQueryBase.printField(stringBuilder, field, true, context);
         stringBuilder.append(" IN(");
-        query.getInit().genOutput(stringBuilder);
+        query.getInit().genOutput(stringBuilder, context);
         stringBuilder.append(")");
     }
 

@@ -17,16 +17,16 @@ public class QGConditionEquals<T extends Enum<?> & DBFieldInfo> implements QGCon
     public QGConditionEquals(T field) { this(field, null); }
 
     @Override
-    public void genOutput(StringBuilder stringBuilder, boolean fullNamespaces)
+    public <T> void genOutput(StringBuilder stringBuilder, boolean fullNamespaces, T context)
     {
         stringBuilder.append(" ");
 
-        QGQueryBase.printField(stringBuilder, field1, fullNamespaces);
+        QGQueryBase.printField(stringBuilder, field1, fullNamespaces, context);
 
         stringBuilder.append(" = ");
 
         if(field2 != null)
-            QGQueryBase.printField(stringBuilder, field2, fullNamespaces);
+            QGQueryBase.printField(stringBuilder, field2, fullNamespaces, context);
         else
             stringBuilder.append("?");
     }

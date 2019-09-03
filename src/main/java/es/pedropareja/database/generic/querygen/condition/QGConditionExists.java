@@ -13,10 +13,10 @@ public class QGConditionExists implements QGConditionBase
     }
 
     @Override
-    public void genOutput(StringBuilder stringBuilder, boolean fullNamespaces)
+    public <T> void genOutput(StringBuilder stringBuilder, boolean fullNamespaces, T context)
     {
         stringBuilder.append(" EXISTS(");
-        query.getInit().genOutput(stringBuilder);
+        query.getInit().genOutput(stringBuilder, context);
         stringBuilder.append(")");
     }
 

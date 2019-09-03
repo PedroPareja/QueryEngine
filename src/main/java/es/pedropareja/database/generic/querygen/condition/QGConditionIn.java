@@ -15,12 +15,12 @@ public class QGConditionIn<T extends Enum<?> & DBFieldInfo> implements QGConditi
     }
 
     @Override
-    public void genOutput(StringBuilder stringBuilder, boolean fullNamespaces)
+    public <T> void genOutput(StringBuilder stringBuilder, boolean fullNamespaces, T context)
     {
         if(numberOfParameters > 0)
         {
             stringBuilder.append(" ");
-            QGQueryBase.printField(stringBuilder, field, fullNamespaces);
+            QGQueryBase.printField(stringBuilder, field, fullNamespaces, context);
             stringBuilder.append(" IN(");
 
             for (int i = 0; i < numberOfParameters; i++)

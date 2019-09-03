@@ -23,11 +23,11 @@ public class QGOffsetPrv extends QGQueryMiddleEnd implements QGOffset
     }
 
     @Override
-    public void genOutput(StringBuilder stringBuilder)
+    public <T> void genOutput(StringBuilder stringBuilder, T context)
     {
         stringBuilder.append(" OFFSET ").append(offset != null ? offset : "?");
 
-        genOutputNext(stringBuilder);
+        genOutputNext(stringBuilder, context);
     }
 
     @Override

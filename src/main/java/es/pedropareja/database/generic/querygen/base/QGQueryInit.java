@@ -20,16 +20,21 @@ public abstract class QGQueryInit extends QGQueryBase
         return this;
     }
 
-    protected String genQuery()
+    protected <T> String genQuery(T context)
     {
         StringBuilder stringBuilder = new StringBuilder();
-        genOutput(stringBuilder);
+        genOutput(stringBuilder, context);
         return stringBuilder.toString();
     }
 
     @Override
     public String toString()
     {
-        return genQuery();
+        return genQuery(null);
+    }
+
+    public <T> String toString(T context)
+    {
+        return genQuery(context);
     }
 }

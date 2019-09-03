@@ -13,11 +13,11 @@ public class QGConditionEqualsAny<T extends Enum<?> & DBFieldInfo> implements QG
     }
 
     @Override
-    public void genOutput(StringBuilder stringBuilder, boolean fullNamespaces)
+    public <T> void genOutput(StringBuilder stringBuilder, boolean fullNamespaces, T context)
     {
         stringBuilder.append(" ");
 
-        QGQueryBase.printField(stringBuilder, field, fullNamespaces);
+        QGQueryBase.printField(stringBuilder, field, fullNamespaces, context);
 
         stringBuilder.append(" = ANY(?)");
     }

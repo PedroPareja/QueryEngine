@@ -17,18 +17,18 @@ public class QGSetPrv<T extends Enum<?> & DBFieldInfo> extends QGQueryMiddleEnd 
     }
 
     @Override
-    public void genOutput(StringBuilder stringBuilder)
+    public <U> void genOutput(StringBuilder stringBuilder, U context)
     {
         stringBuilder.append(" SET ");
 
         for(int i=0; i < fieldList.length; i++)
         {
             stringBuilder.append(i != 0 ? ", " : "");
-            printField(stringBuilder, fieldList[i], getInit().isFullNamespaces());
+            printField(stringBuilder, fieldList[i], getInit().isFullNamespaces(), context);
             stringBuilder.append(" = ?");
         }
 
-        genOutputNext(stringBuilder);
+        genOutputNext(stringBuilder, context);
     }
 
     @Override

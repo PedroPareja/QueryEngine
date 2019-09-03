@@ -22,45 +22,43 @@ public abstract class QGQueryBase implements QGLinkBase, QGQuery
         return queryMiddleEnd;
     }
 
-    public abstract void genOutput(StringBuilder stringBuilder);
+    public abstract <T> void genOutput(StringBuilder stringBuilder, T context);
 
-    public void genOutputChecked(StringBuilder stringBuilder)
+    public <T> void genOutputChecked(StringBuilder stringBuilder, T context)
     {
         if(optionalAppearanceValue)
-            genOutput(stringBuilder);
+            genOutput(stringBuilder, context);
     }
 
-    protected void genOutputNext(StringBuilder stringBuilder)
+    protected <T> void genOutputNext(StringBuilder stringBuilder, T context)
     {
         if(next != null)
-            next.genOutputChecked(stringBuilder);
+            next.genOutputChecked(stringBuilder, context);
     }
 
-    public static void printField(StringBuilder stringBuilder, DBFieldInfo field, boolean fullNamespaces)
+    @SuppressWarnings("unchecked")
+    public static <T extends Enum<?> & DBFieldInfo, U> void printField(StringBuilder stringBuilder, T field, boolean fullNamespaces, U context)
     {
         if(fullNamespaces)
         {
-            printTablePath(stringBuilder, field.getClass());
+            printTablePath(stringBuilder, (Class<T>)field.getClass(), context);
             stringBuilder.append(".");
         }
 
         stringBuilder.append(field.getName());
     }
 
-    public static void printTablePath(StringBuilder stringBuilder, Class<?> tableType)
+    public static <T extends Enum<?> & DBFieldInfo, U> void printTablePath(StringBuilder stringBuilder, Class<T> tableType, U context)
     {
-        DBTableInfo tableInfo = tableType.getAnnotation(DBTableInfo.class);
+        QGTableInfo tableInfo = QGTableInfo.getTableInfo(tableType, context);
 
-        if(tableInfo == null)
-            throw new QueryGenException("DBTableInfo annotation not present in " + tableType.getName());
+        if(!tableInfo.getDatabase().isEmpty())
+            stringBuilder.append(tableInfo.getDatabase()).append(".");
 
-        if(!tableInfo.database().isEmpty())
-            stringBuilder.append(tableInfo.database()).append(".");
+        if(!tableInfo.getSchema().isEmpty())
+            stringBuilder.append(tableInfo.getSchema()).append(".");
 
-        if(!tableInfo.schema().isEmpty())
-            stringBuilder.append(tableInfo.schema()).append(".");
-
-        stringBuilder.append(tableInfo.table());
+        stringBuilder.append(tableInfo.getTable());
     }
 
     @Override

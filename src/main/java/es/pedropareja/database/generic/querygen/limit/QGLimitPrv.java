@@ -24,11 +24,11 @@ public class QGLimitPrv extends QGQueryMiddleEnd implements QGLimit, QGLinkOptio
     }
 
     @Override
-    public void genOutput(StringBuilder stringBuilder)
+    public <T> void genOutput(StringBuilder stringBuilder, T context)
     {
         stringBuilder.append(" LIMIT ").append(rowLimit != null ? rowLimit : "?");
 
-        genOutputNext(stringBuilder);
+        genOutputNext(stringBuilder, context);
     }
 
     @Override

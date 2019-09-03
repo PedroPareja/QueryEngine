@@ -27,15 +27,15 @@ public class QGOrderByPrv<T extends Enum<?> & DBFieldInfo> extends QGQueryMiddle
     }
 
     @Override
-    public void genOutput(StringBuilder stringBuilder)
+    public <U> void genOutput(StringBuilder stringBuilder, U context)
     {
         stringBuilder.append(" ORDER BY ");
 
-        printField(stringBuilder, field, getInit().isFullNamespaces());
+        printField(stringBuilder, field, getInit().isFullNamespaces(), context);
 
         stringBuilder.append(" ").append(order.name());
 
-        genOutputNext(stringBuilder);
+        genOutputNext(stringBuilder, context);
     }
 
     @Override

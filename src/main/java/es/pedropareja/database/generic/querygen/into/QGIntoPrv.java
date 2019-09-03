@@ -17,10 +17,10 @@ public class QGIntoPrv<T extends Enum<?> & DBFieldInfo> extends QGQueryMiddleEnd
     }
 
     @Override
-    public void genOutput(StringBuilder stringBuilder)
+    public <U> void genOutput(StringBuilder stringBuilder, U context)
     {
         stringBuilder.append(" INTO ");
-        printTablePath(stringBuilder, tableType);
+        printTablePath(stringBuilder, tableType, context);
         stringBuilder.append(" VALUES (");
 
         int numParams = ((QGInsertPrv<?>)getInit()).getFieldList().length;

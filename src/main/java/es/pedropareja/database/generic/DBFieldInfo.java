@@ -1,6 +1,8 @@
 package es.pedropareja.database.generic;
 
-public interface DBFieldInfo
+import es.pedropareja.database.generic.querygen.expression.base.QGExpression;
+
+public interface DBFieldInfo extends QGExpression
 {
     String getName();
 
