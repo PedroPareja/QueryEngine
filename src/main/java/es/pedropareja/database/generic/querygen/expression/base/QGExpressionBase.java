@@ -48,21 +48,26 @@ public abstract class QGExpressionBase implements QGExpressionPrv
         return next;
     }
 
-    protected abstract void genOutput(StringBuilder stringBuilder);
+    protected abstract <T> void genOutput(StringBuilder stringBuilder, T context);
 
-    protected void getOutputSequence(StringBuilder stringBuilder)
+    protected <T> void getOutputSequence(StringBuilder stringBuilder, T context)
     {
-        genOutput(stringBuilder);
+        genOutput(stringBuilder, context);
 
         if(next != null)
-            next.getOutputSequence(stringBuilder);
+            next.getOutputSequence(stringBuilder, context);
     }
 
     @Override
     public String toString()
     {
+        return toString(null);
+    }
+
+    public <T> String toString(T context)
+    {
         StringBuilder stringBuilder = new StringBuilder();
-        init.getOutputSequence(stringBuilder);
+        init.getOutputSequence(stringBuilder, context);
         return stringBuilder.toString();
     }
 

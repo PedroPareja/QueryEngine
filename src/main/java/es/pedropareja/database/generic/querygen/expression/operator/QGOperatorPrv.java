@@ -16,7 +16,7 @@ public class QGOperatorPrv extends QGExpressionBase
     }
 
     @Override
-    protected void genOutput(StringBuilder stringBuilder)
+    protected <T> void genOutput(StringBuilder stringBuilder, T context)
     {
         stringBuilder.append(" ").append(type.getSymbol());
     }

@@ -13,7 +13,7 @@ public class QGAsPrv extends QGExpressionBase implements QGAs
     }
 
     @Override
-    protected void genOutput(StringBuilder stringBuilder)
+    protected <T> void genOutput(StringBuilder stringBuilder, T context)
     {
         stringBuilder.append(" AS ").append(id);
     }

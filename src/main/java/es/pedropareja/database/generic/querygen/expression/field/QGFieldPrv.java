@@ -24,10 +24,10 @@ public class QGFieldPrv<T extends Enum<?> & DBFieldInfo> extends QGExpressionBas
     }
 
     @Override
-    protected void genOutput(StringBuilder stringBuilder)
+    protected <U> void genOutput(StringBuilder stringBuilder, U context)
     {
         printSpaceIfNotFirst(stringBuilder);
 
-        QGQueryBase.printField(stringBuilder, field, isFullNamespaces());
+        QGQueryBase.printField(stringBuilder, field, isFullNamespaces(), context);
     }
 }

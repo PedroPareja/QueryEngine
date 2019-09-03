@@ -20,7 +20,7 @@ public class QGIdPrv extends QGExpressionBase implements QGId, QGLinkOperatorsPr
     }
 
     @Override
-    protected void genOutput(StringBuilder stringBuilder)
+    protected <T> void genOutput(StringBuilder stringBuilder, T context)
     {
         if(getInit() != this)
             stringBuilder.append(" ");

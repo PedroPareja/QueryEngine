@@ -48,13 +48,13 @@ public class QGAggregatePrv<T extends Enum<?> & DBFieldInfo>
     }
 
     @Override
-    protected void genOutput(StringBuilder stringBuilder)
+    protected <U> void genOutput(StringBuilder stringBuilder, U context)
     {
         printSpaceIfNotFirst(stringBuilder);
         stringBuilder.append(type.name()).append("(");
 
         if(field != null)
-            QGQueryBase.printField(stringBuilder, field, isFullNamespaces());
+            QGQueryBase.printField(stringBuilder, field, isFullNamespaces(), context);
         else if(id != null)
             stringBuilder.append(id);
 
