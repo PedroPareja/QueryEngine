@@ -26,6 +26,7 @@ public abstract class QGQueryMiddleEnd extends QGQueryBase
         return init.genQuery(null);
     }
 
+    @Override
     public <T> String toString(T context)
     {
         return init.genQuery(context);

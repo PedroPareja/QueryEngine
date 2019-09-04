@@ -33,6 +33,7 @@ public abstract class QGQueryInit extends QGQueryBase
         return genQuery(null);
     }
 
+    @Override
     public <T> String toString(T context)
     {
         return genQuery(context);
