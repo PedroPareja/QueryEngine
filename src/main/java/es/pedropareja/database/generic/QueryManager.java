@@ -50,6 +50,23 @@ public class QueryManager
         }
     }
 
+    public static void query(StatementGenerator statementGenerator, ConnectionManager connectionManager, ResultSetVoidProcessor rsProcessor) throws SQLException
+    {
+        if(connectionManager == null)
+            throw new SQLException("Connection Manager was not provided (null found)");
+
+        try
+                (
+                        Connection connection = connectionManager.getConnection();
+                        PreparedStatement statement = statementGenerator.createStatement(connection);
+                        ResultSet resultSet = statement.executeQuery()
+                )
+        {
+            while (resultSet.next())
+                rsProcessor.processNext(resultSet);
+        }
+    }
+
     private static <T> T processNext(ResultSet resultSet, ResultSetProcessor<T> rsProcessor) throws SQLException
     {
         if(!resultSet.next())
@@ -74,5 +91,10 @@ public class QueryManager
     public interface ResultSetProcessor<T>
     {
         T processNext(ResultSet resultSet) throws SQLException;
+    }
+
+    public interface ResultSetVoidProcessor
+    {
+        void processNext(ResultSet resultSet) throws SQLException;
     }
 }
