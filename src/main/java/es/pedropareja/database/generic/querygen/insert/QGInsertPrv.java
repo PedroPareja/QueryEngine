@@ -3,6 +3,7 @@ package es.pedropareja.database.generic.querygen.insert;
 import es.pedropareja.database.generic.DBFieldInfo;
 import es.pedropareja.database.generic.querygen.base.QGQueryBase;
 import es.pedropareja.database.generic.querygen.base.QGQueryInit;
+import es.pedropareja.database.generic.querygen.into.QGIntoPrv;
 
 public class QGInsertPrv<T extends Enum<?> & DBFieldInfo> extends QGQueryInit implements QGInsert
 {
@@ -22,10 +23,13 @@ public class QGInsertPrv<T extends Enum<?> & DBFieldInfo> extends QGQueryInit im
     @Override
     public <U> void genOutput(StringBuilder stringBuilder, U context)
     {
-        stringBuilder.append("INSERT (");
+        stringBuilder.append("INSERT INTO ");
+        printTablePath(stringBuilder, ((QGIntoPrv)next).getTableType(), context);
+
+        stringBuilder.append(" (");
 
         for(int i=0; i < fieldList.length; i++)
-            stringBuilder.append(i!= 0 ? ", " : "").append(fieldList[i].getName());
+            stringBuilder.append(i!= 0 ? ", " : "").append("\"").append(fieldList[i].getName()).append("\"");
 
         stringBuilder.append(")");
 

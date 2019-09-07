@@ -45,7 +45,7 @@ public abstract class QGQueryBase implements QGLinkBase, QGQuery
             stringBuilder.append(".");
         }
 
-        stringBuilder.append(field.getName());
+        stringBuilder.append("\"").append(field.getName()).append("\"");
     }
 
     public static <T extends Enum<?> & DBFieldInfo, U> void printTablePath(StringBuilder stringBuilder, Class<T> tableType, U context)
@@ -53,12 +53,12 @@ public abstract class QGQueryBase implements QGLinkBase, QGQuery
         QGTableInfo tableInfo = QGTableInfo.getTableInfo(tableType, context);
 
         if(!tableInfo.getDatabase().isEmpty())
-            stringBuilder.append(tableInfo.getDatabase()).append(".");
+            stringBuilder.append("\"").append(tableInfo.getDatabase()).append("\"").append(".");
 
         if(!tableInfo.getSchema().isEmpty())
-            stringBuilder.append(tableInfo.getSchema()).append(".");
+            stringBuilder.append("\"").append(tableInfo.getSchema()).append("\"").append(".");
 
-        stringBuilder.append(tableInfo.getTable());
+        stringBuilder.append("\"").append(tableInfo.getTable()).append("\"");
     }
 
     @Override
