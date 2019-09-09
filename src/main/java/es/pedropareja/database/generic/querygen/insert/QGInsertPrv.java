@@ -29,7 +29,10 @@ public class QGInsertPrv<T extends Enum<?> & DBFieldInfo> extends QGQueryInit im
         stringBuilder.append(" (");
 
         for(int i=0; i < fieldList.length; i++)
-            stringBuilder.append(i!= 0 ? ", " : "").append("\"").append(fieldList[i].getName()).append("\"");
+        {
+            stringBuilder.append(i != 0 ? ", " : "");
+            printField(stringBuilder, fieldList[i], false, context);
+        }
 
         stringBuilder.append(")");
 

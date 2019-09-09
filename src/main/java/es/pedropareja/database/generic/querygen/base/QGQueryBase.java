@@ -3,6 +3,7 @@ package es.pedropareja.database.generic.querygen.base;
 import es.pedropareja.database.generic.DBFieldInfo;
 import es.pedropareja.database.generic.DBTableInfo;
 import es.pedropareja.database.generic.exceptions.QueryGenException;
+import es.pedropareja.database.generic.querygen.QueryGenConfig;
 import es.pedropareja.database.generic.querygen.condition.QGConditionBase;
 import es.pedropareja.database.generic.querygen.condition.QGLinkConditions;
 
@@ -45,7 +46,7 @@ public abstract class QGQueryBase implements QGLinkBase, QGQuery
             stringBuilder.append(".");
         }
 
-        stringBuilder.append("\"").append(field.getName()).append("\"");
+        printOptionalQuoted(stringBuilder, field.getName());
     }
 
     public static <T extends Enum<?> & DBFieldInfo, U> void printTablePath(StringBuilder stringBuilder, Class<T> tableType, U context)
@@ -53,12 +54,23 @@ public abstract class QGQueryBase implements QGLinkBase, QGQuery
         QGTableInfo tableInfo = QGTableInfo.getTableInfo(tableType, context);
 
         if(!tableInfo.getDatabase().isEmpty())
-            stringBuilder.append("\"").append(tableInfo.getDatabase()).append("\"").append(".");
+            printOptionalQuoted(stringBuilder, tableInfo.getDatabase());
 
         if(!tableInfo.getSchema().isEmpty())
-            stringBuilder.append("\"").append(tableInfo.getSchema()).append("\"").append(".");
+            printOptionalQuoted(stringBuilder, tableInfo.getSchema());
 
-        stringBuilder.append("\"").append(tableInfo.getTable()).append("\"");
+        printOptionalQuoted(stringBuilder, tableInfo.getTable());
+    }
+
+    public static void printOptionalQuoted(StringBuilder stringBuilder, String value)
+    {
+        if(QueryGenConfig.QUOTED_FIELDS)
+            stringBuilder.append("\"");
+
+        stringBuilder.append(value);
+
+        if(QueryGenConfig.QUOTED_FIELDS)
+            stringBuilder.append("\"");
     }
 
     @Override
