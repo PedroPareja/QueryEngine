@@ -4,6 +4,7 @@ import es.pedropareja.database.generic.DBFieldInfo;
 import es.pedropareja.database.generic.DBFilterProcessor;
 import es.pedropareja.database.generic.querygen.base.QGQuery;
 import es.pedropareja.database.generic.querygen.base.QGQueryMiddleEnd;
+import es.pedropareja.database.generic.querygen.condition.QGConditionComparation.ComparationType;
 import es.pedropareja.database.generic.querygen.optional.QGLinkOptionalPrv;
 
 import java.util.Collection;
@@ -17,31 +18,30 @@ public interface QGLinkConditionsPrv<T extends QGQuery & QGLinkConditions<T>, U 
 
     U getPrv();
 
+    default <U extends Enum<?> & DBFieldInfo> T addCondition(QGConditionBase condition)
+    {
+        if(getPrv().getNextOptionalAppearanceValueAndReset())
+            getConditionList().add(condition);
+
+        return getThis();
+    }
+
     @Override
     default <U extends Enum<?> & DBFieldInfo> T equals(U field)
     {
-        if(getPrv().getNextOptionalAppearanceValueAndReset())
-            getConditionList().add(new QGConditionEquals<>(field));
-
-        return getThis();
+        return addCondition(new QGConditionComparation<>(ComparationType.EQUALS, field));
     }
 
     @Override
     default <U extends Enum<?> & DBFieldInfo> T equals(U field1, U field2)
     {
-        if(getPrv().getNextOptionalAppearanceValueAndReset())
-            getConditionList().add(new QGConditionEquals<>(field1, field2));
-
-        return getThis();
+        return addCondition(new QGConditionComparation<>(ComparationType.EQUALS, field1, field2));
     }
 
     @Override
     default <U extends Enum<?> & DBFieldInfo> T equalsAny(U field)
     {
-        if(getPrv().getNextOptionalAppearanceValueAndReset())
-            getConditionList().add(new QGConditionEqualsAny<>(field));
-
-        return getThis();
+        return addCondition(new QGConditionEqualsAny<>(field));
     }
 
     @Override
@@ -71,19 +71,13 @@ public interface QGLinkConditionsPrv<T extends QGQuery & QGLinkConditions<T>, U 
     @Override
     default <U extends Enum<?> & DBFieldInfo> T in(U field, int numberOfParameters)
     {
-        if(getPrv().getNextOptionalAppearanceValueAndReset())
-            getConditionList().add(new QGConditionIn<>(field, numberOfParameters));
-
-        return getThis();
+        return addCondition(new QGConditionIn<>(field, numberOfParameters));
     }
 
     @Override
     default <U extends Enum<?> & DBFieldInfo> T in(U field, Collection<?> collection)
     {
-        if(getPrv().getNextOptionalAppearanceValueAndReset())
-            getConditionList().add(new QGConditionIn<>(field, collection.size()));
-
-        return getThis();
+        return addCondition(new QGConditionIn<>(field, collection.size()));
     }
 
     @Override
@@ -98,9 +92,54 @@ public interface QGLinkConditionsPrv<T extends QGQuery & QGLinkConditions<T>, U 
     @Override
     default <U extends Enum<?> & DBFieldInfo> T like(U field)
     {
-        if(getPrv().getNextOptionalAppearanceValueAndReset())
-            getConditionList().add(new QGConditionLike<>(field));
+        return addCondition(new QGConditionComparation<>(ComparationType.LIKE, field));
+    }
 
-        return getThis();
+    @Override
+    default <U extends Enum<?> & DBFieldInfo> T greater(U field)
+    {
+        return addCondition(new QGConditionComparation<>(ComparationType.GREATER, field));
+    }
+
+    @Override
+    default <U extends Enum<?> & DBFieldInfo> T greater(U field1, U field2)
+    {
+        return addCondition(new QGConditionComparation<>(ComparationType.GREATER, field1, field2));
+    }
+
+    @Override
+    default <U extends Enum<?> & DBFieldInfo> T greaterOrEqual(U field)
+    {
+        return addCondition(new QGConditionComparation<>(ComparationType.GREATER_EQUAL, field));
+    }
+
+    @Override
+    default <U extends Enum<?> & DBFieldInfo> T greaterOrEqual(U field1, U field2)
+    {
+        return addCondition(new QGConditionComparation<>(ComparationType.GREATER_EQUAL, field1, field2));
+    }
+
+    @Override
+    default <U extends Enum<?> & DBFieldInfo> T less(U field)
+    {
+        return addCondition(new QGConditionComparation<>(ComparationType.LESS, field));
+    }
+
+    @Override
+    default <U extends Enum<?> & DBFieldInfo> T less(U field1, U field2)
+    {
+        return addCondition(new QGConditionComparation<>(ComparationType.LESS, field1, field2));
+    }
+
+    @Override
+    default <U extends Enum<?> & DBFieldInfo> T lessOrEqual(U field)
+    {
+        return addCondition(new QGConditionComparation<>(ComparationType.LESS_EQUAL, field));
+    }
+
+    @Override
+    default <U extends Enum<?> & DBFieldInfo> T lessOrEqual(U field1, U field2)
+    {
+        return addCondition(new QGConditionComparation<>(ComparationType.LESS_EQUAL, field1, field2));
     }
 }
