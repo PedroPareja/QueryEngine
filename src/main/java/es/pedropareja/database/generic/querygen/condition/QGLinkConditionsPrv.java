@@ -83,8 +83,9 @@ public interface QGLinkConditionsPrv<T extends QGQuery & QGLinkConditions<T>, U 
     @Override
     default <U, F extends Enum<?> & DBFilterProcessor<U>> T applyFilter(Class<F> filterProcessorType, U filter)
     {
-        for(F filterRule: filterProcessorType.getEnumConstants())
-            filterRule.getQueryCondition().doAction(getThis(), filter);
+        if(filter != null)
+            for(F filterRule: filterProcessorType.getEnumConstants())
+                filterRule.getQueryCondition().doAction(getThis(), filter);
 
         return getThis();
     }
