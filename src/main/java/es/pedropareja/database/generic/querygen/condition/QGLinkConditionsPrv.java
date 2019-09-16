@@ -94,4 +94,13 @@ public interface QGLinkConditionsPrv<T extends QGQuery & QGLinkConditions<T>, U 
 
         return getThis();
     }
+
+    @Override
+    default <U extends Enum<?> & DBFieldInfo> T like(U field)
+    {
+        if(getPrv().getNextOptionalAppearanceValueAndReset())
+            getConditionList().add(new QGConditionLike<>(field));
+
+        return getThis();
+    }
 }
