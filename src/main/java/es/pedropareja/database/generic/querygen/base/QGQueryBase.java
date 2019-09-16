@@ -54,10 +54,16 @@ public abstract class QGQueryBase implements QGLinkBase, QGQuery
         QGTableInfo tableInfo = QGTableInfo.getTableInfo(tableType, context);
 
         if(!tableInfo.getDatabase().isEmpty())
+        {
             printOptionalQuoted(stringBuilder, tableInfo.getDatabase());
+            stringBuilder.append(".");
+        }
 
         if(!tableInfo.getSchema().isEmpty())
+        {
             printOptionalQuoted(stringBuilder, tableInfo.getSchema());
+            stringBuilder.append(".");
+        }
 
         printOptionalQuoted(stringBuilder, tableInfo.getTable());
     }
