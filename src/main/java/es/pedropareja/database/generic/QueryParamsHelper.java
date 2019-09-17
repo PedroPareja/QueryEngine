@@ -1,5 +1,6 @@
 package es.pedropareja.database.generic;
 
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Collection;
@@ -9,6 +10,7 @@ public class QueryParamsHelper
     private static final ParamSetter<Long> longSetter =  (s,i,v) -> s.setLong(i, v);
     private static final ParamSetter<Integer> intSetter = (s,i,v) -> s.setInt(i, v);
     private static final ParamSetter<String> stringSetter =  (s,i,v) -> s.setString(i, v);
+    private static final ParamSetter<BigDecimal> bigDecimalSetter = (s,i,v) -> s.setBigDecimal(i, v);
 
     private final PreparedStatement statement;
     private int paramIndex = 1;
@@ -42,7 +44,7 @@ public class QueryParamsHelper
         if(condition)
             setAllParam(paramSetter, collection);
     }
-
+    
 
     public void setLong(Long value) throws SQLException
     {
@@ -102,6 +104,26 @@ public class QueryParamsHelper
     public void setAllString(Collection<String> collection, boolean condition) throws SQLException
     {
         setAllParam(stringSetter, collection, condition);
+    }
+
+    public void setBigDecimal(BigDecimal value) throws SQLException
+    {
+        setParam(bigDecimalSetter, value);
+    }
+
+    public void setBigDecimal(BigDecimal value, boolean condition) throws SQLException
+    {
+        setParam(bigDecimalSetter, value, condition);
+    }
+
+    public void setAllBigDecimal(Collection<BigDecimal> collection) throws SQLException
+    {
+        setAllParam(bigDecimalSetter, collection);
+    }
+
+    public void setAllBigDecimal(Collection<BigDecimal> collection, boolean condition) throws SQLException
+    {
+        setAllParam(bigDecimalSetter, collection, condition);
     }
 
     public <U, F extends Enum<?> & DBFilterProcessor<U>> void applyFilter(Class<F> filterProcessorType, U filter)
