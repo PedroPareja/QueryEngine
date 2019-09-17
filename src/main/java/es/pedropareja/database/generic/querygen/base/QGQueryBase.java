@@ -38,7 +38,7 @@ public abstract class QGQueryBase implements QGLinkBase, QGQuery
     }
 
     @SuppressWarnings("unchecked")
-    public static <T extends Enum<?> & DBFieldInfo, U> void printField(StringBuilder stringBuilder, T field, boolean fullNamespaces, U context)
+    public static <T extends DBFieldInfo, U> void printField(StringBuilder stringBuilder, T field, boolean fullNamespaces, U context)
     {
         if(fullNamespaces)
         {
@@ -49,7 +49,7 @@ public abstract class QGQueryBase implements QGLinkBase, QGQuery
         printOptionalQuoted(stringBuilder, field.getName());
     }
 
-    public static <T extends Enum<?> & DBFieldInfo, U> void printTablePath(StringBuilder stringBuilder, Class<T> tableType, U context)
+    public static <T extends DBFieldInfo, U> void printTablePath(StringBuilder stringBuilder, Class<T> tableType, U context)
     {
         QGTableInfo tableInfo = QGTableInfo.getTableInfo(tableType, context);
 
@@ -148,7 +148,7 @@ public abstract class QGQueryBase implements QGLinkBase, QGQuery
         this.nextOptionalAppearanceValue = nextOptionalAppearanceValue;
     }
 
-    protected static <T extends Enum<?> & DBFieldInfo> boolean fieldArrayEquals(T[] fieldArray1, T[] fieldArray2)
+    protected static <T extends DBFieldInfo> boolean fieldArrayEquals(T[] fieldArray1, T[] fieldArray2)
     {
         if(fieldArray1 == fieldArray2)
             return true;

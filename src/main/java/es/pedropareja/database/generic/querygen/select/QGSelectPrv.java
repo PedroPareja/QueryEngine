@@ -4,13 +4,13 @@ import es.pedropareja.database.generic.DBFieldInfo;
 import es.pedropareja.database.generic.querygen.base.QGQueryBase;
 import es.pedropareja.database.generic.querygen.base.QGQueryInit;
 
-public class QGSelectPrv<T extends Enum<?> & DBFieldInfo> extends QGQueryInit implements QGSelect
+public class QGSelectPrv extends QGQueryInit implements QGSelect
 {
-    private final T[] fieldList;
+    private final DBFieldInfo[] fieldList;
     private boolean distinct = false;
 
     @SafeVarargs
-    public QGSelectPrv(T ... fieldList)
+    public QGSelectPrv(DBFieldInfo ... fieldList)
     {
         this.fieldList = fieldList;
     }
@@ -49,7 +49,7 @@ public class QGSelectPrv<T extends Enum<?> & DBFieldInfo> extends QGQueryInit im
         if(!(q instanceof QGSelectPrv))
             return false;
 
-        QGSelectPrv<?> qSelect = (QGSelectPrv<?>) q;
+        QGSelectPrv qSelect = (QGSelectPrv) q;
 
         return fieldArrayEquals(fieldList, qSelect.fieldList) && distinct == qSelect.distinct;
     }

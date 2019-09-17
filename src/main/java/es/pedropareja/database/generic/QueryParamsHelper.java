@@ -44,7 +44,7 @@ public class QueryParamsHelper
         if(condition)
             setAllParam(paramSetter, collection);
     }
-    
+
 
     public void setLong(Long value) throws SQLException
     {

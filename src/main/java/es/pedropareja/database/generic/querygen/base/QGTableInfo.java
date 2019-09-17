@@ -11,7 +11,7 @@ public class QGTableInfo
     private String schema;
     private String table;
 
-    public static <T extends Enum<?> & DBFieldInfo, U> QGTableInfo getTableInfo(Class<T> tableType, U context) throws QueryGenException
+    public static <T extends DBFieldInfo, U> QGTableInfo getTableInfo(Class<T> tableType, U context) throws QueryGenException
     {
         if(tableType.getEnumConstants().length == 0)
             throw new QueryGenException("Table definition must contain at least one field ('" + tableType.getName() + "')");
@@ -19,7 +19,7 @@ public class QGTableInfo
         return getTableInfo(tableType.getEnumConstants()[0], context);
     }
 
-    public static <T extends Enum<?> & DBFieldInfo, U> QGTableInfo getTableInfo(T field, U context)
+    public static <T extends DBFieldInfo, U> QGTableInfo getTableInfo(T field, U context)
     {
         QGTableInfo result = new QGTableInfo();
 

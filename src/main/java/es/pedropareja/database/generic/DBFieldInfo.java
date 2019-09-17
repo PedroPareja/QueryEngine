@@ -6,7 +6,7 @@ public interface DBFieldInfo extends QGExpression
 {
     String getName();
 
-    default <T extends Enum<?> & DBFieldInfo> boolean equalsField(T other)
+    default <T extends DBFieldInfo> boolean equalsField(T other)
     {
         if(other == null)
             return false;
