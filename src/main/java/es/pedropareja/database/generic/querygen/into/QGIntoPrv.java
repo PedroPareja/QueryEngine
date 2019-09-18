@@ -21,7 +21,7 @@ public class QGIntoPrv<T extends Enum<?> & DBFieldInfo> extends QGQueryMiddleEnd
     {
         stringBuilder.append(" VALUES (");
 
-        int numParams = ((QGInsertPrv<?>)getInit()).getFieldList().length;
+        int numParams = ((QGInsertPrv)getInit()).getFieldList().length;
         for(int i=0; i < numParams; i++)
             stringBuilder.append(i != 0 ? ", " : "").append("?");
 
