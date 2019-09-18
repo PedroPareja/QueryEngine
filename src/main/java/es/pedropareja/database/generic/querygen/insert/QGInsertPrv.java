@@ -5,17 +5,17 @@ import es.pedropareja.database.generic.querygen.base.QGQueryBase;
 import es.pedropareja.database.generic.querygen.base.QGQueryInit;
 import es.pedropareja.database.generic.querygen.into.QGIntoPrv;
 
-public class QGInsertPrv<T extends Enum<?> & DBFieldInfo> extends QGQueryInit implements QGInsert
+public class QGInsertPrv extends QGQueryInit implements QGInsert
 {
-    private final T[] fieldList;
+    private final DBFieldInfo[] fieldList;
 
     @SafeVarargs
-    public QGInsertPrv(T ... fieldList)
+    public QGInsertPrv(DBFieldInfo ... fieldList)
     {
         this.fieldList = fieldList;
     }
 
-    public T[] getFieldList()
+    public DBFieldInfo[] getFieldList()
     {
         return fieldList;
     }
@@ -45,6 +45,6 @@ public class QGInsertPrv<T extends Enum<?> & DBFieldInfo> extends QGQueryInit im
         if(!(q instanceof QGInsertPrv))
             return false;
 
-        return fieldArrayEquals(fieldList, ((QGInsertPrv<?>)q).fieldList);
+        return fieldArrayEquals(fieldList, ((QGInsertPrv)q).fieldList);
     }
 }

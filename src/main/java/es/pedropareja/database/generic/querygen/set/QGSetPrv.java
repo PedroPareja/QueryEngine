@@ -5,12 +5,12 @@ import es.pedropareja.database.generic.querygen.base.QGQueryBase;
 import es.pedropareja.database.generic.querygen.base.QGQueryInit;
 import es.pedropareja.database.generic.querygen.base.QGQueryMiddleEnd;
 
-public class QGSetPrv<T extends Enum<?> & DBFieldInfo> extends QGQueryMiddleEnd implements QGSet
+public class QGSetPrv extends QGQueryMiddleEnd implements QGSet
 {
-    private final T[] fieldList;
+    private final DBFieldInfo[] fieldList;
 
     @SafeVarargs
-    public QGSetPrv(QGQueryInit init, T ... fieldList)
+    public QGSetPrv(QGQueryInit init, DBFieldInfo ... fieldList)
     {
         super(init);
         this.fieldList = fieldList;
@@ -37,6 +37,6 @@ public class QGSetPrv<T extends Enum<?> & DBFieldInfo> extends QGQueryMiddleEnd 
         if(!(q instanceof QGSetPrv))
             return false;
 
-        return fieldArrayEquals(fieldList, ((QGSetPrv<?>)q).fieldList);
+        return fieldArrayEquals(fieldList, ((QGSetPrv)q).fieldList);
     }
 }

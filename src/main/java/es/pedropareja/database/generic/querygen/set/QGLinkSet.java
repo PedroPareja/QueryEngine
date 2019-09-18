@@ -6,8 +6,8 @@ import es.pedropareja.database.generic.querygen.base.QGLinkBase;
 public interface QGLinkSet extends QGLinkBase
 {
     @SuppressWarnings("unchecked")
-    default <T extends Enum<?> & DBFieldInfo> QGSet set(T... fieldList)
+    default QGSet set(DBFieldInfo... fieldList)
     {
-        return assignNext(new QGSetPrv<>(getInit(), fieldList));
+        return assignNext(new QGSetPrv(getInit(), fieldList));
     }
 }

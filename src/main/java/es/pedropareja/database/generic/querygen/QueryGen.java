@@ -13,13 +13,13 @@ import es.pedropareja.database.generic.querygen.update.QGUpdatePrv;
 
 public class QueryGen
 {
-    public static QGSelect select() { return new QGSelectPrv<>(); }
+    public static QGSelect select() { return new QGSelectPrv(); }
 
     @SafeVarargs
-    public static <T extends Enum<?> & DBFieldInfo> QGSelect select(T ... fields) { return new QGSelectPrv<>(fields); }
+    public static QGSelect select(DBFieldInfo ... fields) { return new QGSelectPrv(fields); }
 
     @SafeVarargs
-    public static <T extends Enum<?> & DBFieldInfo> QGInsert insert(T ... fields) { return new QGInsertPrv<>(fields); }
+    public static QGInsert insert(DBFieldInfo ... fields) { return new QGInsertPrv(fields); }
 
     public static <T extends Enum<?> & DBFieldInfo> QGUpdate update(Class<T> tableType) { return new QGUpdatePrv<>(tableType); }
 
