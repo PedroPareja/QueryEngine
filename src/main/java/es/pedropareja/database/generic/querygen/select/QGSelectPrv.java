@@ -24,6 +24,11 @@ public class QGSelectPrv extends QGQueryInit implements QGSelect
         return this;
     }
 
+    public DBFieldInfo[] getFieldList()
+    {
+        return fieldList;
+    }
+
     @Override
     public <U> void genOutput(StringBuilder stringBuilder, U context)
     {
