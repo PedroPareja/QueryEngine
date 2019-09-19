@@ -65,6 +65,23 @@ public abstract class DBTableMapper
         return entry.getEquities();
     }
 
+    @Override
+    public boolean equals(Object obj)
+    {
+        if(!(obj instanceof DBTableMapper))
+            return false;
+
+        DBTableMapper tableMapper = (DBTableMapper) obj;
+
+        return searchMap.equals(tableMapper.searchMap);
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(searchMap);
+    }
+
     public static class TableMapperEntry
     {
         final DBFieldInfo[] nexusFieldsTable1;
@@ -87,6 +104,36 @@ public abstract class DBTableMapper
                 result.add(new Pair(nexusFieldsTable1[i], nexusFieldsTable2[i]));
 
             return result;
+        }
+
+        private static boolean compareArrays(DBFieldInfo[] array1, DBFieldInfo[] array2)
+        {
+            if(array1.length != array2.length)
+                return false;
+
+            for(int i=0; i < array1.length; i++)
+                if(!array1[i].equalsField(array2[i]))
+                    return false;
+
+            return true;
+        }
+
+        @Override
+        public boolean equals(Object obj)
+        {
+            if(!(obj instanceof TableMapperEntry))
+                return false;
+
+            TableMapperEntry tmEntry = (TableMapperEntry) obj;
+
+            return compareArrays(nexusFieldsTable1, tmEntry.nexusFieldsTable1)
+                    && compareArrays(nexusFieldsTable2, tmEntry.nexusFieldsTable2);
+        }
+
+        @Override
+        public int hashCode()
+        {
+            return Objects.hash(nexusFieldsTable1, nexusFieldsTable2);
         }
     }
 }
