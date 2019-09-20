@@ -1,5 +1,6 @@
 package es.pedropareja.database.generic;
 
+import com.sun.jmx.remote.internal.ArrayQueue;
 import es.pedropareja.database.generic.DBFilterProcessor.DBFilterParamSetter;
 import es.pedropareja.database.generic.exceptions.QueryGenException;
 
@@ -16,9 +17,9 @@ public abstract class DBTableMapper
 
     public DBTableMapper() {}
 
-    public <T extends Enum<?> & DBFieldInfo> DBTableMapper(T[][][] fieldsMapping)
+    public DBTableMapper(DBFieldInfo[][][] fieldsMapping)
     {
-        for(T[][] entry: fieldsMapping)
+        for(DBFieldInfo[][] entry: fieldsMapping)
         {
             if(entry.length != 2)
                 throw new QueryGenException("Entry array must contain 2 elements");
@@ -37,10 +38,13 @@ public abstract class DBTableMapper
         this.maxSearchDepth = maxSearchDepth;
     }
 
-    public <T extends Enum<?> & DBFieldInfo> void addEntry(T[] fieldsTable1, T[] fieldsTable2)
+    public void addEntry(DBFieldInfo[] fieldsTable1, DBFieldInfo[] fieldsTable2)
     {
         if(fieldsTable1 == null || fieldsTable2 == null || fieldsTable1.length == 0 || fieldsTable2.length == 0)
             throw new QueryGenException("Field arrays must contain at least one element");
+
+        if(!(fieldsTable1[0] instanceof Enum) || !(fieldsTable2[0] instanceof Enum))
+            throw new QueryGenException("Field arrays must contain DBFieldInfo ENUM values");
 
         final Class<Enum<? extends DBFieldInfo>> table1 = (Class<Enum<? extends DBFieldInfo>>) fieldsTable1[0].getClass();
         final Class<Enum<? extends DBFieldInfo>> table2 = (Class<Enum<? extends DBFieldInfo>>) fieldsTable2[0].getClass();
@@ -111,16 +115,22 @@ public abstract class DBTableMapper
 
     }
 
-    private <T extends Enum<?> & DBFieldInfo> Stack<Class<T>> solvePath(Class<T> fromTable, Class<T> targetTable)
+    private Stack<Class<Enum<? extends DBFieldInfo>>> solvePath(Class<Enum<? extends DBFieldInfo>> fromTable,
+            Class<Enum<? extends DBFieldInfo>> targetTable)
     {
+        Queue<Stack<Class<Enum<? extends DBFieldInfo>>>> searchQueue = new LinkedList<>();
+        Stack<Class<Enum<? extends DBFieldInfo>>> initialStack = new Stack<>();
+        initialStack.push(fromTable);
 
+        return solvePath(targetTable, searchQueue);
     }
 
-    private <T extends Enum<? extends DBFieldInfo>> Stack<Class<T>> solvePath(Class<T> targetTable, Queue<Stack<Class<T>>> searchQueue)
+    private Stack<Class<Enum<? extends DBFieldInfo>>> solvePath(Class<Enum<? extends DBFieldInfo>> targetTable,
+            Queue<Stack<Class<Enum<? extends DBFieldInfo>>>> searchQueue)
     {
         while(!searchQueue.isEmpty())
         {
-            Stack<Class<T>> solutionStack = searchQueue.poll();
+            Stack<Class<Enum<? extends DBFieldInfo>>> solutionStack = searchQueue.poll();
 
             if(solutionStack.peek() == targetTable)
                 return solutionStack;
@@ -129,12 +139,11 @@ public abstract class DBTableMapper
                 for(Class<Enum<? extends DBFieldInfo>> table: searchMap.keySet())
                     if(existsEquity(solutionStack.peek(), table))
                     {
-                        Stack<Class<T>> newStack = new Stack<>();
+                        Stack<Class<Enum<? extends DBFieldInfo>>> newStack = new Stack<>();
                         newStack.addAll(solutionStack);
-                        newStack.add((T)table);
-
+                        newStack.add(table);
+                        searchQueue.add(newStack);
                     }
-
         }
 
         return null;
