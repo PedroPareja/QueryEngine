@@ -4,6 +4,9 @@ import es.pedropareja.database.generic.DBFieldInfo;
 import es.pedropareja.database.generic.querygen.base.QGQuery;
 import es.pedropareja.database.generic.querygen.base.QGQueryBase;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class QGConditionInQuery<T extends Enum<?> & DBFieldInfo> implements QGConditionBase
 {
     private final T field;
@@ -35,5 +38,11 @@ public class QGConditionInQuery<T extends Enum<?> & DBFieldInfo> implements QGCo
         QGConditionInQuery<?> o = (QGConditionInQuery)obj;
 
         return field.equalsField(o.field) && query.equals(o.query);
+    }
+
+    @Override
+    public List<DBFieldInfo> getAutoFields()
+    {
+        return Arrays.asList(field);
     }
 }

@@ -3,6 +3,9 @@ package es.pedropareja.database.generic.querygen.condition;
 import es.pedropareja.database.generic.DBFieldInfo;
 import es.pedropareja.database.generic.querygen.base.QGQueryBase;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class QGConditionComparation <T extends Enum<?> & DBFieldInfo> implements QGConditionBase
 {
     private final ComparationType type;
@@ -47,6 +50,15 @@ public class QGConditionComparation <T extends Enum<?> & DBFieldInfo> implements
         return  type == o.type
                 && field1.equalsField(o.field1)
                 && (field2 != null ? field2.equalsField(o.field2) : o.field2 == null);
+    }
+
+    @Override
+    public List<DBFieldInfo> getAutoFields()
+    {
+        if(field2 != null)
+            return Arrays.asList(field1, field2);
+
+        return Arrays.asList(field1);
     }
 
     enum ComparationType

@@ -1,10 +1,14 @@
 package es.pedropareja.database.generic.querygen.select;
 
 import es.pedropareja.database.generic.DBFieldInfo;
+import es.pedropareja.database.generic.querygen.auto.QGAutoFields;
 import es.pedropareja.database.generic.querygen.base.QGQueryBase;
 import es.pedropareja.database.generic.querygen.base.QGQueryInit;
 
-public class QGSelectPrv extends QGQueryInit implements QGSelect
+import java.util.Arrays;
+import java.util.List;
+
+public class QGSelectPrv extends QGQueryInit implements QGSelect, QGAutoFields
 {
     private final DBFieldInfo[] fieldList;
     private boolean distinct = false;
@@ -24,9 +28,10 @@ public class QGSelectPrv extends QGQueryInit implements QGSelect
         return this;
     }
 
-    public DBFieldInfo[] getFieldList()
+    @Override
+    public List<DBFieldInfo> getAutoFields()
     {
-        return fieldList;
+        return Arrays.asList(fieldList);
     }
 
     @Override

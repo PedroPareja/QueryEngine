@@ -1,6 +1,10 @@
 package es.pedropareja.database.generic.querygen.condition;
 
+import es.pedropareja.database.generic.DBFieldInfo;
 import es.pedropareja.database.generic.querygen.base.QGQuery;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class QGConditionExists implements QGConditionBase
 {
@@ -27,5 +31,11 @@ public class QGConditionExists implements QGConditionBase
             return false;
 
         return query.equals(((QGConditionExists)obj).query);
+    }
+
+    @Override
+    public List<DBFieldInfo> getAutoFields()
+    {
+        return new ArrayList<>();
     }
 }

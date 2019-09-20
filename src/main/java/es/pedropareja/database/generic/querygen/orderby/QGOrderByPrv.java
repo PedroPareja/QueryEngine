@@ -2,12 +2,17 @@ package es.pedropareja.database.generic.querygen.orderby;
 
 import es.pedropareja.database.generic.DBFieldInfo;
 import es.pedropareja.database.generic.querygen.Order;
+import es.pedropareja.database.generic.querygen.auto.QGAutoFields;
 import es.pedropareja.database.generic.querygen.base.QGQueryBase;
 import es.pedropareja.database.generic.querygen.base.QGQueryInit;
 import es.pedropareja.database.generic.querygen.base.QGQueryMiddleEnd;
 import es.pedropareja.database.generic.querygen.optional.QGLinkOptionalPrv;
 
-public class QGOrderByPrv<T extends Enum<?> & DBFieldInfo> extends QGQueryMiddleEnd implements QGOrderBy, QGLinkOptionalPrv<QGOrderBy, QGOrderByPrv<T>>
+import java.util.Arrays;
+import java.util.List;
+
+public class QGOrderByPrv<T extends Enum<?> & DBFieldInfo> extends QGQueryMiddleEnd
+        implements QGOrderBy, QGLinkOptionalPrv<QGOrderBy, QGOrderByPrv<T>>, QGAutoFields
 {
     private static final Order DEFAULT_ORDER = Order.ASC;
 
@@ -59,5 +64,11 @@ public class QGOrderByPrv<T extends Enum<?> & DBFieldInfo> extends QGQueryMiddle
     public QGOrderByPrv<T> getPrv()
     {
         return this;
+    }
+
+    @Override
+    public List<DBFieldInfo> getAutoFields()
+    {
+        return Arrays.asList(field);
     }
 }

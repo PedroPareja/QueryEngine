@@ -1,5 +1,12 @@
 package es.pedropareja.database.generic.querygen.base;
 
+import es.pedropareja.database.generic.DBFieldInfo;
+import es.pedropareja.database.generic.querygen.auto.QGAutoFields;
+
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
+
 public abstract class QGQueryInit extends QGQueryBase
 {
     protected boolean fullNamespaces = false;
@@ -37,5 +44,22 @@ public abstract class QGQueryInit extends QGQueryBase
     public <T> String toString(T context)
     {
         return genQuery(context);
+    }
+
+    public <T extends Enum<?> & DBFieldInfo> Set<Class<T>> getAutoTables()
+    {
+        Set<Class<T>> result = new TreeSet<>();
+        QGQueryBase queryElement = this;
+
+        while(queryElement != null)
+        {
+            if(queryElement instanceof QGAutoFields)
+                for(DBFieldInfo field: ((QGAutoFields)queryElement).getAutoFields())
+                    result.add((Class<T>)field.getClass());
+
+            queryElement = queryElement.next;
+        }
+
+        return result;
     }
 }
