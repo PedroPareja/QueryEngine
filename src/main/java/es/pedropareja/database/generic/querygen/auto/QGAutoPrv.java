@@ -2,12 +2,15 @@ package es.pedropareja.database.generic.querygen.auto;
 
 import es.pedropareja.database.generic.DBFieldInfo;
 import es.pedropareja.database.generic.DBTableMapper;
+import es.pedropareja.database.generic.DBTableMapper.FieldEquity;
 import es.pedropareja.database.generic.DBTableMapper.Solution;
+import es.pedropareja.database.generic.DBTableMapper.TableJoin;
 import es.pedropareja.database.generic.querygen.base.QGQueryBase;
 import es.pedropareja.database.generic.querygen.base.QGQueryInit;
 import es.pedropareja.database.generic.querygen.base.QGQueryMiddleEnd;
 import es.pedropareja.database.generic.querygen.from.QGLinkFrom;
 import es.pedropareja.database.generic.querygen.join.QGLinkJoin;
+import es.pedropareja.database.generic.querygen.on.QGOn;
 import es.pedropareja.database.generic.querygen.optional.QGLinkOptionalPrv;
 
 import java.util.Set;
@@ -41,8 +44,19 @@ public class QGAutoPrv<T extends Enum<?> & DBFieldInfo> extends QGQueryMiddleEnd
 
         Solution joinsSolution = tableMapper.solve(fromTable, autoTables);
 
-        
+        for(TableJoin tableJoin: joinsSolution.getTableJoins())
+        {
+            QGOn qgOn = linkJoin.join((Class<T>) tableJoin.getJoinTable()).on();
 
+            for(FieldEquity fieldEquity: tableJoin.getFieldEquities())
+                qgOn.equals((T)fieldEquity.getField1(), (T)fieldEquity.getField2());
+
+            linkJoin = qgOn;
+        }
+
+        ((QGQueryBase)linkJoin).getInit().genOutput(stringBuilder, context);
+
+        genOutputNext(stringBuilder, context);
     }
 
     @Override
@@ -71,7 +85,10 @@ public class QGAutoPrv<T extends Enum<?> & DBFieldInfo> extends QGQueryMiddleEnd
     private static class NullInit extends QGQueryInit implements QGLinkFrom
     {
         @Override
-        public <T> void genOutput(StringBuilder stringBuilder, T context) {}
+        public <T> void genOutput(StringBuilder stringBuilder, T context)
+        {
+            genOutputNext(stringBuilder, context);
+        }
 
         @Override
         public boolean equalsUntilHere(QGQueryBase q)
