@@ -151,6 +151,7 @@ public abstract class DBTableMapper
         Queue<Stack<Class<? extends DBFieldInfo>>> searchQueue = new LinkedList<>();
         Stack<Class<? extends DBFieldInfo>> initialStack = new Stack<>();
         initialStack.push(fromTable);
+        searchQueue.add(initialStack);
 
         return solvePath(targetTable, searchQueue);
     }
