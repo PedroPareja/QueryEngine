@@ -110,9 +110,41 @@ public abstract class DBTableMapper
         return Objects.hash(searchMap);
     }
 
-    public <T extends Enum<?> & DBFieldInfo> Solution solve(Class<T> fromTable, List<Class<T>> tables)
+    public Solution solve(Class<Enum<? extends DBFieldInfo>> fromTable, List<Class<Enum<? extends DBFieldInfo>>> tables)
     {
+        Set<Class<Enum<? extends DBFieldInfo>>> processedTables = new TreeSet<>((a,b)-> a.hashCode() - b.hashCode());
+        List<TableJoin> tableJoins = new ArrayList<>();
 
+        for(Class<Enum<? extends DBFieldInfo>> table: tables)
+        {
+            Stack<Class<Enum<? extends DBFieldInfo>>> path = solvePath(fromTable, table);
+            List<TableJoin> pathJoins = getJoins(path);
+
+            for(TableJoin tableJoin: pathJoins)
+                if(!processedTables.contains(tableJoin.joinTable))
+                {
+                    tableJoins.add(tableJoin);
+                    processedTables.add(tableJoin.joinTable);
+                }
+        }
+        
+        return new Solution(fromTable, tableJoins);
+    }
+
+    private TableJoin getTableJoin(Class<Enum<? extends DBFieldInfo>> fromTable, Class<Enum<? extends DBFieldInfo>> targetTable)
+    {
+        List<FieldEquity> equities = getEquities(fromTable, targetTable);
+        return new TableJoin(targetTable, equities);
+    }
+
+    private List<TableJoin> getJoins(Stack<Class<Enum<? extends DBFieldInfo>>> joinStack)
+    {
+        List<TableJoin> result = new ArrayList<>();
+
+        for(int i=1; i < joinStack.size(); i++)
+            result.add(getTableJoin(joinStack.get(i-1), joinStack.get(i)));
+
+        return result;
     }
 
     private Stack<Class<Enum<? extends DBFieldInfo>>> solvePath(Class<Enum<? extends DBFieldInfo>> fromTable,
@@ -146,7 +178,7 @@ public abstract class DBTableMapper
                     }
         }
 
-        return null;
+        throw new QueryGenException("Could not solve table path to '" + targetTable.getName() + "'");
     }
 
     public static class TableMapperEntry
@@ -224,14 +256,31 @@ public abstract class DBTableMapper
         {
             return field2;
         }
+
+        @Override
+        public boolean equals(Object obj)
+        {
+            if(!(obj instanceof FieldEquity))
+                return false;
+
+            FieldEquity instance = (FieldEquity) obj;
+
+            return field1.equalsField(instance.field1) && field2.equalsField(instance.field2);
+        }
+
+        @Override
+        public int hashCode()
+        {
+            return Objects.hash(field1, field2);
+        }
     }
 
     public static class TableJoin
     {
-        final Class<? extends Enum<? extends DBFieldInfo>> joinTable;
+        final Class<Enum<? extends DBFieldInfo>> joinTable;
         final List<FieldEquity> fieldEquities;
 
-        TableJoin(Class<? extends Enum<? extends DBFieldInfo>> joinTable, List<FieldEquity> fieldEquities)
+        TableJoin(Class<Enum<? extends DBFieldInfo>> joinTable, List<FieldEquity> fieldEquities)
         {
             this.joinTable = joinTable;
             this.fieldEquities = fieldEquities;
@@ -245,6 +294,23 @@ public abstract class DBTableMapper
         public List<FieldEquity> getFieldEquities()
         {
             return fieldEquities;
+        }
+
+        @Override
+        public boolean equals(Object obj)
+        {
+            if(!(obj instanceof TableJoin))
+                return false;
+
+            TableJoin instance = (TableJoin) obj;
+
+            return joinTable.equals(instance.joinTable) && fieldEquities.equals(instance.fieldEquities);
+        }
+
+        @Override
+        public int hashCode()
+        {
+            return Objects.hash(joinTable, fieldEquities);
         }
     }
 
