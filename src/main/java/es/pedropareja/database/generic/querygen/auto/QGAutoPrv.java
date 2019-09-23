@@ -26,6 +26,7 @@ public class QGAutoPrv<T extends Enum<?> & DBFieldInfo> extends QGQueryMiddleEnd
         super(init);
         this.tableMapper = tableMapper;
         this.mainTable = mainTable;
+        init.setFullNamespaces();
     }
 
     @Override
@@ -39,8 +40,7 @@ public class QGAutoPrv<T extends Enum<?> & DBFieldInfo> extends QGQueryMiddleEnd
 
         QGLinkJoin linkJoin = new NullInit().from(fromTable);
 
-        if(!autoTables.isEmpty())
-            linkJoin.getInit().setFullNamespaces();
+        linkJoin.getInit().setFullNamespaces();
 
         Solution joinsSolution = tableMapper.solve(fromTable, autoTables);
 

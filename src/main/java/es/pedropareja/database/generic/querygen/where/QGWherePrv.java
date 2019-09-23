@@ -2,6 +2,7 @@ package es.pedropareja.database.generic.querygen.where;
 
 import es.pedropareja.database.generic.DBFieldInfo;
 import es.pedropareja.database.generic.DBFilterProcessor;
+import es.pedropareja.database.generic.querygen.auto.QGAutoFields;
 import es.pedropareja.database.generic.querygen.base.QGQueryBase;
 import es.pedropareja.database.generic.querygen.base.QGQueryInit;
 import es.pedropareja.database.generic.querygen.base.QGQueryMiddleEnd;
@@ -13,7 +14,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class QGWherePrv extends QGQueryMiddleEnd implements QGWhere, QGLinkConditionsPrv<QGWhere, QGWherePrv>
+public class QGWherePrv extends QGQueryMiddleEnd
+        implements QGWhere, QGLinkConditionsPrv<QGWhere, QGWherePrv>, QGAutoFields
 {
     private List<QGConditionBase> conditionList = new ArrayList<>();
 
@@ -73,5 +75,16 @@ public class QGWherePrv extends QGQueryMiddleEnd implements QGWhere, QGLinkCondi
     {
         for(F filterRule: filterProcessorType.getEnumConstants())
             filterRule.getQueryCondition().doAction(conditionLink, filter);
+    }
+
+    @Override
+    public List<DBFieldInfo> getAutoFields()
+    {
+        List<DBFieldInfo> result = new ArrayList<>();
+
+        for(QGConditionBase condition: conditionList)
+            result.addAll(condition.getAutoFields());
+
+        return result;
     }
 }
