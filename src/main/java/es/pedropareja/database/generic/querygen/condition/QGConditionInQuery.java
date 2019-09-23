@@ -7,7 +7,7 @@ import es.pedropareja.database.generic.querygen.base.QGQueryBase;
 import java.util.Arrays;
 import java.util.List;
 
-public class QGConditionInQuery<T extends Enum<?> & DBFieldInfo> implements QGConditionBase
+public class QGConditionInQuery<T extends DBFieldInfo> implements QGConditionBase
 {
     private final T field;
     private final QGQuery query;
