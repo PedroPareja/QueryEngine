@@ -2,7 +2,7 @@ package es.pedropareja.database.generic.querygen.auto;
 
 import es.pedropareja.database.generic.DBFieldInfo;
 import es.pedropareja.database.generic.DBTableMapper;
-import es.pedropareja.database.generic.DBTableMapper.FieldEquity;
+import es.pedropareja.database.generic.DBTableMapper.Solution;
 import es.pedropareja.database.generic.querygen.base.QGQueryBase;
 import es.pedropareja.database.generic.querygen.base.QGQueryInit;
 import es.pedropareja.database.generic.querygen.base.QGQueryMiddleEnd;
@@ -10,9 +10,8 @@ import es.pedropareja.database.generic.querygen.from.QGLinkFrom;
 import es.pedropareja.database.generic.querygen.join.QGLinkJoin;
 import es.pedropareja.database.generic.querygen.optional.QGLinkOptionalPrv;
 
-
-import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 public class QGAutoPrv<T extends Enum<?> & DBFieldInfo> extends QGQueryMiddleEnd implements QGAuto, QGLinkOptionalPrv<QGAuto, QGAutoPrv<T>>
 {
@@ -26,15 +25,11 @@ public class QGAutoPrv<T extends Enum<?> & DBFieldInfo> extends QGQueryMiddleEnd
         this.mainTable = mainTable;
     }
 
-    public QGAutoPrv(DBTableMapper tableMapper, QGQueryInit init)
-    {
-        this(tableMapper, null, init);
-    }
-
     @Override
     public <U> void genOutput(StringBuilder stringBuilder, U context)
     {
-        Set<Class<T>> autoTables = getInit().getAutoTables();
+        Set<Class<? extends DBFieldInfo>> autoTables = new TreeSet<>((a,b) -> a.hashCode() - b.hashCode());
+        autoTables.addAll(getInit().getAutoTables());
 
         Class<T> fromTable = mainTable != null ? mainTable : (Class<T>) autoTables.toArray()[0];
         autoTables.remove(fromTable);
@@ -44,10 +39,9 @@ public class QGAutoPrv<T extends Enum<?> & DBFieldInfo> extends QGQueryMiddleEnd
         if(!autoTables.isEmpty())
             linkJoin.getInit().setFullNamespaces();
 
-        for(Class<T> table: autoTables)
-        {
-            List<FieldEquity> equities = tableMapper.getEquities(fromTable, table);
-        }
+        Solution joinsSolution = tableMapper.solve(fromTable, autoTables);
+
+        
 
     }
 

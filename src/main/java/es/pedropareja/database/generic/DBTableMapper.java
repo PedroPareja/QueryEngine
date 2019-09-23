@@ -1,7 +1,5 @@
 package es.pedropareja.database.generic;
 
-import com.sun.jmx.remote.internal.ArrayQueue;
-import es.pedropareja.database.generic.DBFilterProcessor.DBFilterParamSetter;
 import es.pedropareja.database.generic.exceptions.QueryGenException;
 
 import java.util.*;
@@ -10,8 +8,8 @@ public abstract class DBTableMapper
 {
     private static final int DEFAULT_SEARCH_DEPTH = 4;
 
-    private static final Comparator<Class<Enum<? extends DBFieldInfo>>> tableComparator = (a,b) -> a.hashCode() - b.hashCode();
-    private Map<Class<Enum<? extends DBFieldInfo>>, Map<Class<Enum<? extends DBFieldInfo>>, TableMapperEntry>> searchMap = new TreeMap<>(tableComparator);
+    private static final Comparator<Class<? extends DBFieldInfo>> tableComparator = (a,b) -> a.hashCode() - b.hashCode();
+    private Map<Class<? extends DBFieldInfo>, Map<Class<? extends DBFieldInfo>, TableMapperEntry>> searchMap = new TreeMap<>(tableComparator);
 
     private int maxSearchDepth = DEFAULT_SEARCH_DEPTH;
 
@@ -46,8 +44,8 @@ public abstract class DBTableMapper
         if(!(fieldsTable1[0] instanceof Enum) || !(fieldsTable2[0] instanceof Enum))
             throw new QueryGenException("Field arrays must contain DBFieldInfo ENUM values");
 
-        final Class<Enum<? extends DBFieldInfo>> table1 = (Class<Enum<? extends DBFieldInfo>>) fieldsTable1[0].getClass();
-        final Class<Enum<? extends DBFieldInfo>> table2 = (Class<Enum<? extends DBFieldInfo>>) fieldsTable2[0].getClass();
+        final Class<? extends DBFieldInfo> table1 = fieldsTable1[0].getClass();
+        final Class<? extends DBFieldInfo> table2 = fieldsTable2[0].getClass();
 
         TableMapperEntry entry = new TableMapperEntry(fieldsTable1, fieldsTable2);
 
@@ -55,9 +53,9 @@ public abstract class DBTableMapper
         getChildrenMap(table2).put(table1, entry);
     }
 
-    private Map<Class<Enum<? extends DBFieldInfo>>, TableMapperEntry> getChildrenMap(Class<Enum<? extends DBFieldInfo>> key)
+    private Map<Class<? extends DBFieldInfo>, TableMapperEntry> getChildrenMap(Class<? extends DBFieldInfo> key)
     {
-        Map<Class<Enum<? extends DBFieldInfo>>, TableMapperEntry> result = searchMap.get(key);
+        Map<Class<? extends DBFieldInfo>, TableMapperEntry> result = searchMap.get(key);
 
         if(result == null)
         {
@@ -68,9 +66,9 @@ public abstract class DBTableMapper
         return result;
     }
 
-    public List<FieldEquity> getEquities(Class<Enum<? extends DBFieldInfo>> table1, Class<Enum<? extends DBFieldInfo>> table2)
+    public List<FieldEquity> getEquities(Class<? extends DBFieldInfo> table1, Class<? extends DBFieldInfo> table2)
     {
-        Map<Class<Enum<? extends DBFieldInfo>>, TableMapperEntry> childrenMap = searchMap.get(table1);
+        Map<Class<? extends DBFieldInfo>, TableMapperEntry> childrenMap = searchMap.get(table1);
 
         if(childrenMap == null)
             return null;
@@ -83,9 +81,9 @@ public abstract class DBTableMapper
         return entry.getEquities();
     }
 
-    public boolean existsEquity(Class<Enum<? extends DBFieldInfo>> table1, Class<Enum<? extends DBFieldInfo>> table2)
+    public boolean existsEquity(Class<? extends DBFieldInfo> table1, Class<? extends DBFieldInfo> table2)
     {
-        Map<Class<Enum<? extends DBFieldInfo>>, TableMapperEntry> childrenMap = searchMap.get(table1);
+        Map<Class<? extends DBFieldInfo>, TableMapperEntry> childrenMap = searchMap.get(table1);
 
         if(childrenMap == null)
             return false;
@@ -110,14 +108,14 @@ public abstract class DBTableMapper
         return Objects.hash(searchMap);
     }
 
-    public Solution solve(Class<Enum<? extends DBFieldInfo>> fromTable, List<Class<Enum<? extends DBFieldInfo>>> tables)
+    public Solution solve(Class<? extends DBFieldInfo> fromTable, Collection<Class<? extends DBFieldInfo>> tables)
     {
-        Set<Class<Enum<? extends DBFieldInfo>>> processedTables = new TreeSet<>((a,b)-> a.hashCode() - b.hashCode());
+        Set<Class<? extends DBFieldInfo>> processedTables = new TreeSet<>((a,b)-> a.hashCode() - b.hashCode());
         List<TableJoin> tableJoins = new ArrayList<>();
 
-        for(Class<Enum<? extends DBFieldInfo>> table: tables)
+        for(Class<? extends DBFieldInfo> table: tables)
         {
-            Stack<Class<Enum<? extends DBFieldInfo>>> path = solvePath(fromTable, table);
+            Stack<Class<? extends DBFieldInfo>> path = solvePath(fromTable, table);
             List<TableJoin> pathJoins = getJoins(path);
 
             for(TableJoin tableJoin: pathJoins)
@@ -127,17 +125,17 @@ public abstract class DBTableMapper
                     processedTables.add(tableJoin.joinTable);
                 }
         }
-        
+
         return new Solution(fromTable, tableJoins);
     }
 
-    private TableJoin getTableJoin(Class<Enum<? extends DBFieldInfo>> fromTable, Class<Enum<? extends DBFieldInfo>> targetTable)
+    private TableJoin getTableJoin(Class<? extends DBFieldInfo> fromTable, Class<? extends DBFieldInfo> targetTable)
     {
         List<FieldEquity> equities = getEquities(fromTable, targetTable);
         return new TableJoin(targetTable, equities);
     }
 
-    private List<TableJoin> getJoins(Stack<Class<Enum<? extends DBFieldInfo>>> joinStack)
+    private List<TableJoin> getJoins(Stack<Class<? extends DBFieldInfo>> joinStack)
     {
         List<TableJoin> result = new ArrayList<>();
 
@@ -147,31 +145,31 @@ public abstract class DBTableMapper
         return result;
     }
 
-    private Stack<Class<Enum<? extends DBFieldInfo>>> solvePath(Class<Enum<? extends DBFieldInfo>> fromTable,
-            Class<Enum<? extends DBFieldInfo>> targetTable)
+    private Stack<Class<? extends DBFieldInfo>> solvePath(Class<? extends DBFieldInfo> fromTable,
+            Class<? extends DBFieldInfo> targetTable)
     {
-        Queue<Stack<Class<Enum<? extends DBFieldInfo>>>> searchQueue = new LinkedList<>();
-        Stack<Class<Enum<? extends DBFieldInfo>>> initialStack = new Stack<>();
+        Queue<Stack<Class<? extends DBFieldInfo>>> searchQueue = new LinkedList<>();
+        Stack<Class<? extends DBFieldInfo>> initialStack = new Stack<>();
         initialStack.push(fromTable);
 
         return solvePath(targetTable, searchQueue);
     }
 
-    private Stack<Class<Enum<? extends DBFieldInfo>>> solvePath(Class<Enum<? extends DBFieldInfo>> targetTable,
-            Queue<Stack<Class<Enum<? extends DBFieldInfo>>>> searchQueue)
+    private Stack<Class<? extends DBFieldInfo>> solvePath(Class<? extends DBFieldInfo> targetTable,
+            Queue<Stack<Class<? extends DBFieldInfo>>> searchQueue)
     {
         while(!searchQueue.isEmpty())
         {
-            Stack<Class<Enum<? extends DBFieldInfo>>> solutionStack = searchQueue.poll();
+            Stack<Class<? extends DBFieldInfo>> solutionStack = searchQueue.poll();
 
             if(solutionStack.peek() == targetTable)
                 return solutionStack;
 
             if(solutionStack.size() < maxSearchDepth)
-                for(Class<Enum<? extends DBFieldInfo>> table: searchMap.keySet())
+                for(Class<? extends DBFieldInfo> table: searchMap.keySet())
                     if(existsEquity(solutionStack.peek(), table))
                     {
-                        Stack<Class<Enum<? extends DBFieldInfo>>> newStack = new Stack<>();
+                        Stack<Class<? extends DBFieldInfo>> newStack = new Stack<>();
                         newStack.addAll(solutionStack);
                         newStack.add(table);
                         searchQueue.add(newStack);
@@ -277,16 +275,16 @@ public abstract class DBTableMapper
 
     public static class TableJoin
     {
-        final Class<Enum<? extends DBFieldInfo>> joinTable;
+        final Class<? extends DBFieldInfo> joinTable;
         final List<FieldEquity> fieldEquities;
 
-        TableJoin(Class<Enum<? extends DBFieldInfo>> joinTable, List<FieldEquity> fieldEquities)
+        TableJoin(Class<? extends DBFieldInfo> joinTable, List<FieldEquity> fieldEquities)
         {
             this.joinTable = joinTable;
             this.fieldEquities = fieldEquities;
         }
 
-        public Class<? extends Enum<? extends DBFieldInfo>> getJoinTable()
+        public Class<? extends DBFieldInfo> getJoinTable()
         {
             return joinTable;
         }
@@ -316,16 +314,16 @@ public abstract class DBTableMapper
 
     public static class Solution
     {
-        final Class<? extends Enum<? extends DBFieldInfo>> fromTable;
+        final Class<? extends DBFieldInfo> fromTable;
         final List<TableJoin> tableJoins;
 
-        Solution(Class<? extends Enum<? extends DBFieldInfo>> fromTable, List<TableJoin> tableJoins)
+        Solution(Class<? extends DBFieldInfo> fromTable, List<TableJoin> tableJoins)
         {
             this.fromTable = fromTable;
             this.tableJoins = tableJoins;
         }
 
-        public Class<? extends Enum<? extends DBFieldInfo>> getFromTable()
+        public Class<? extends DBFieldInfo> getFromTable()
         {
             return fromTable;
         }

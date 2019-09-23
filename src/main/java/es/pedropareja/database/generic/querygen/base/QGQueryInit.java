@@ -48,7 +48,7 @@ public abstract class QGQueryInit extends QGQueryBase
 
     public <T extends Enum<?> & DBFieldInfo> Set<Class<T>> getAutoTables()
     {
-        Set<Class<T>> result = new TreeSet<>();
+        Set<Class<T>> result = new TreeSet<>((a,b)-> a.hashCode() - b.hashCode());
         QGQueryBase queryElement = this;
 
         while(queryElement != null)
