@@ -23,7 +23,7 @@ public class QGTableInfo
     {
         QGTableInfo result = new QGTableInfo();
 
-        if(field instanceof DBDynamicTableInfo)
+        if(field instanceof DBDynamicTableInfo && context != null)
         {
             DBDynamicTableInfo<U> dynamicTableInfo = (DBDynamicTableInfo<U>) field;
             result.setDatabase(dynamicTableInfo.getDatabase(context));
