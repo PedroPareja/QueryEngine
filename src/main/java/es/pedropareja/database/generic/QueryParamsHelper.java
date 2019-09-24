@@ -129,8 +129,17 @@ public class QueryParamsHelper
     public <U, F extends Enum<?> & DBFilterProcessor<U>> void applyFilter(Class<F> filterProcessorType, U filter)
             throws SQLException
     {
-        for(F filterRule: filterProcessorType.getEnumConstants())
-            filterRule.getParamSetter().doAction(this, filter);
+        if(filter != null)
+            for(F filterRule: filterProcessorType.getEnumConstants())
+                filterRule.getParamSetter().doAction(this, filter);
+    }
+
+    public <U, F extends Enum<?> & DBFilterProcessor<U>> void applyFilters(Class<F> filterProcessorType, Collection<U> filters)
+            throws SQLException
+    {
+        if(filters != null)
+            for(U filter: filters)
+                applyFilter(filterProcessorType, filter);
     }
 
     @FunctionalInterface

@@ -27,4 +27,5 @@ public interface QGLinkConditions<T extends QGQuery & QGLinkConditions<T>> exten
     <U extends DBFieldInfo> T lessOrEqual(U field1, U field2);
 
     <U, F extends Enum<?> & DBFilterProcessor<U>> T applyFilter(Class<F> filterProcessorType, U filter);
+    <U, F extends Enum<?> & DBFilterProcessor<U>> T applyFilters(Class<F> filterProcessorType, Collection<U> filters);
 }

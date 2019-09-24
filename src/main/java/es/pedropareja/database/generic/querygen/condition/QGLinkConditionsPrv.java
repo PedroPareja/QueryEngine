@@ -91,6 +91,16 @@ public interface QGLinkConditionsPrv<T extends QGQuery & QGLinkConditions<T>, U 
     }
 
     @Override
+    default <U, F extends Enum<?> & DBFilterProcessor<U>> T applyFilters(Class<F> filterProcessorType, Collection<U> filters)
+    {
+        if(filters != null)
+            for(U filter: filters)
+                applyFilter(filterProcessorType, filter);
+
+        return getThis();
+    }
+
+    @Override
     default <U extends DBFieldInfo> T like(U field)
     {
         return addCondition(new QGConditionComparation<>(ComparationType.LIKE, field));
