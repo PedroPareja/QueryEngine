@@ -1,8 +1,6 @@
 package es.pedropareja.database.generic.querygen.base;
 
 import es.pedropareja.database.generic.DBFieldInfo;
-import es.pedropareja.database.generic.DBTableInfo;
-import es.pedropareja.database.generic.exceptions.QueryGenException;
 import es.pedropareja.database.generic.querygen.QueryGenConfig;
 import es.pedropareja.database.generic.querygen.condition.QGConditionBase;
 import es.pedropareja.database.generic.querygen.condition.QGLinkConditions;
@@ -29,6 +27,8 @@ public abstract class QGQueryBase implements QGLinkBase, QGQuery
     {
         if(optionalAppearanceValue)
             genOutput(stringBuilder, context);
+        else
+            genOutputNext(stringBuilder, context);
     }
 
     protected <T> void genOutputNext(StringBuilder stringBuilder, T context)
