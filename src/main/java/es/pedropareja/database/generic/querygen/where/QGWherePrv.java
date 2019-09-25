@@ -70,13 +70,6 @@ public class QGWherePrv extends QGQueryMiddleEnd
         return conditionListEquals(conditionList, ((QGWherePrv)q).conditionList);
     }
 
-    @SuppressWarnings("ResultOfMethodCallIgnored")
-    private static <T extends Enum<?> & DBFieldInfo, U, F extends Enum<?> & DBFilterProcessor<U>> void applyFilter(QGLinkConditions<?> conditionLink, Class<F> filterProcessorType, U filter) throws SQLException
-    {
-        for(F filterRule: filterProcessorType.getEnumConstants())
-            filterRule.getQueryCondition().doAction(conditionLink, filter);
-    }
-
     @Override
     public List<DBFieldInfo> getAutoFields()
     {

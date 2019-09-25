@@ -3,7 +3,6 @@ package es.pedropareja.database.generic.querygen.base;
 import es.pedropareja.database.generic.DBFieldInfo;
 import es.pedropareja.database.generic.querygen.auto.QGAutoFields;
 
-import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -53,7 +52,7 @@ public abstract class QGQueryInit extends QGQueryBase
 
         while(queryElement != null)
         {
-            if(queryElement instanceof QGAutoFields)
+            if(queryElement instanceof QGAutoFields && queryElement.optionalAppearanceValue == true)
                 for(DBFieldInfo field: ((QGAutoFields)queryElement).getAutoFields())
                     result.add((Class<T>)field.getClass());
 
