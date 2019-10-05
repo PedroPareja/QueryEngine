@@ -9,6 +9,7 @@ public class QueryParamsHelper
 {
     private static final ParamSetter<Long> longSetter =  (s,i,v) -> s.setLong(i, v);
     private static final ParamSetter<Integer> intSetter = (s,i,v) -> s.setInt(i, v);
+    private static final ParamSetter<Short> shortSetter = (s,i,v) -> s.setShort(i, v);
     private static final ParamSetter<String> stringSetter =  (s,i,v) -> s.setString(i, v);
     private static final ParamSetter<BigDecimal> bigDecimalSetter = (s,i,v) -> s.setBigDecimal(i, v);
     private static final ParamSetter<Boolean> booleanSetter = (s,i,v) -> s.setBoolean(i, v);
@@ -85,6 +86,26 @@ public class QueryParamsHelper
     public void setAllInt(Collection<Integer> collection, boolean condition) throws SQLException
     {
         setAllParam(intSetter, collection, condition);
+    }
+
+    public void setShort(Short value) throws SQLException
+    {
+        setParam(shortSetter, value);
+    }
+
+    public void setShort(Short value, boolean condition) throws SQLException
+    {
+        setParam(shortSetter, value, condition);
+    }
+
+    public void setAllShort(Collection<Short> collection) throws SQLException
+    {
+        setAllParam(shortSetter, collection);
+    }
+
+    public void setAllShort(Collection<Short> collection, boolean condition) throws SQLException
+    {
+        setAllParam(shortSetter, collection, condition);
     }
 
     public void setString(String value) throws SQLException
