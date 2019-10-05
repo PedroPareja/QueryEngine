@@ -12,7 +12,8 @@ public class QueryManager
 {
     private QueryManager() {}
 
-    private static <T> T executeQuery(StatementGenerator statementGenerator, ConnectionManager connectionManager, StatementExecutor<T> executor)
+    private static <T> T executeQuery(StatementGenerator statementGenerator, ConnectionManager connectionManager,
+            ResultSetExecutor<T> resultSetExecutor)
                 throws SQLException
     {
         if(connectionManager == null)
@@ -22,67 +23,48 @@ public class QueryManager
         (
             Connection connection = connectionManager.getConnection();
             PreparedStatement statement = statementGenerator.createStatement(connection);
+            ResultSet resultSet = statement.executeQuery()
         )
         {
-            return executor.execute(statement);
+            return resultSetExecutor.execute(resultSet);
         }
     }
 
+    public static <T> T singleElementQuery(StatementGenerator statementGenerator, ConnectionManager connectionManager,
+            ResultSetProcessor<T> rsProcessor)
+                throws SQLException
+    {
+        return executeQuery(statementGenerator, connectionManager, resultSet -> processNext(resultSet, rsProcessor));
+    }
 
-    public static <T> T singleElementQuery(StatementGenerator statementGenerator, ConnectionManager connectionManager, ResultSetProcessor<T> rsProcessor) throws SQLException
+    public static <T> List<T> multiElementsQuery(StatementGenerator statementGenerator, ConnectionManager connectionManager,
+            ResultSetProcessor<T> rsProcessor)
+                throws SQLException
     {
         return executeQuery(statementGenerator, connectionManager,
-                statement ->
+                resultSet ->
                 {
-                    try(ResultSet resultSet = statement.executeQuery())
-                    {
-                        return processNext(resultSet, rsProcessor);
-                    }
+                   List<T> result = new ArrayList<>();
+                   T element;
+
+                   while ((element = processNext(resultSet, rsProcessor)) != null)
+                       result.add(element);
+
+                   return result;
                 }
         );
     }
 
-    public static <T> List<T> multiElementsQuery(StatementGenerator statementGenerator, ConnectionManager connectionManager, ResultSetProcessor<T> rsProcessor) throws SQLException
+    public static Void query(StatementGenerator statementGenerator, ConnectionManager connectionManager,
+            ResultSetVoidProcessor rsProcessor)
+                throws SQLException
     {
         return executeQuery(statementGenerator, connectionManager,
-                statement ->
+                resultSet ->
                 {
-                   try(ResultSet resultSet = statement.executeQuery())
-                   {
-                       List<T> result = new ArrayList<>();
-                       T element;
+                    while (resultSet.next())
+                        rsProcessor.processNext(resultSet);
 
-                       while ((element = processNext(resultSet, rsProcessor)) != null)
-                           result.add(element);
-
-                       return result;
-                   }
-                }
-        );
-    }
-
-    public static Void query(StatementGenerator statementGenerator, ConnectionManager connectionManager, ResultSetVoidProcessor rsProcessor) throws SQLException
-    {
-        return executeQuery(statementGenerator, connectionManager,
-                statement ->
-                {
-                    try(ResultSet resultSet = statement.executeQuery())
-                    {
-                        while (resultSet.next())
-                            rsProcessor.processNext(resultSet);
-                    }
-
-                    return null;
-                }
-        );
-    }
-
-    public static Void query(StatementGenerator statementGenerator, ConnectionManager connectionManager) throws SQLException
-    {
-        return executeQuery(statementGenerator, connectionManager,
-                statement ->
-                {
-                    statement.execute();
                     return null;
                 }
         );
@@ -118,8 +100,8 @@ public class QueryManager
     public interface ResultSetVoidProcessor extends ResultSetProcessor<Void> {}
 
     @FunctionalInterface
-    private interface StatementExecutor<T>
+    private interface ResultSetExecutor <T>
     {
-        T execute(PreparedStatement statement) throws SQLException;
+        T execute(ResultSet resultSet) throws SQLException;
     }
 }
