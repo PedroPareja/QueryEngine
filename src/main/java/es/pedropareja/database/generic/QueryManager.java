@@ -12,7 +12,8 @@ public class QueryManager
 {
     private QueryManager() {}
 
-    public static <T> T singleElementQuery(StatementGenerator statementGenerator, ConnectionManager connectionManager, ResultSetProcessor<T> rsProcessor) throws SQLException
+    private static <T> T executeQuery(StatementGenerator statementGenerator, ConnectionManager connectionManager, StatementExecutor<T> executor)
+                throws SQLException
     {
         if(connectionManager == null)
             throw new SQLException("Connection Manager was not provided (null found)");
@@ -21,50 +22,70 @@ public class QueryManager
         (
             Connection connection = connectionManager.getConnection();
             PreparedStatement statement = statementGenerator.createStatement(connection);
-            ResultSet resultSet = statement.executeQuery()
         )
         {
-            return processNext(resultSet, rsProcessor);
+            return executor.execute(statement);
         }
+    }
 
+
+    public static <T> T singleElementQuery(StatementGenerator statementGenerator, ConnectionManager connectionManager, ResultSetProcessor<T> rsProcessor) throws SQLException
+    {
+        return executeQuery(statementGenerator, connectionManager,
+                statement ->
+                {
+                    try(ResultSet resultSet = statement.executeQuery())
+                    {
+                        return processNext(resultSet, rsProcessor);
+                    }
+                }
+        );
     }
 
     public static <T> List<T> multiElementsQuery(StatementGenerator statementGenerator, ConnectionManager connectionManager, ResultSetProcessor<T> rsProcessor) throws SQLException
     {
-        if(connectionManager == null)
-            throw new SQLException("Connection Manager was not provided (null found)");
+        return executeQuery(statementGenerator, connectionManager,
+                statement ->
+                {
+                   try(ResultSet resultSet = statement.executeQuery())
+                   {
+                       List<T> result = new ArrayList<>();
+                       T element;
+                       
+                       while ((element = processNext(resultSet, rsProcessor)) != null)
+                           result.add(element);
 
-        try
-        (
-            Connection connection = connectionManager.getConnection();
-            PreparedStatement statement = statementGenerator.createStatement(connection);
-            ResultSet resultSet = statement.executeQuery()
-        )
-        {
-            List<T> result = new ArrayList<>();
-            T element;
-            while ((element = processNext(resultSet, rsProcessor)) != null)
-                result.add(element);
-
-            return result;
-        }
+                       return result;
+                   }
+                }
+        );
     }
 
-    public static void query(StatementGenerator statementGenerator, ConnectionManager connectionManager, ResultSetVoidProcessor rsProcessor) throws SQLException
+    public static Void query(StatementGenerator statementGenerator, ConnectionManager connectionManager, ResultSetVoidProcessor rsProcessor) throws SQLException
     {
-        if(connectionManager == null)
-            throw new SQLException("Connection Manager was not provided (null found)");
+        return executeQuery(statementGenerator, connectionManager,
+                statement ->
+                {
+                    try(ResultSet resultSet = statement.executeQuery())
+                    {
+                        while (resultSet.next())
+                            rsProcessor.processNext(resultSet);
+                    }
 
-        try
-                (
-                        Connection connection = connectionManager.getConnection();
-                        PreparedStatement statement = statementGenerator.createStatement(connection);
-                        ResultSet resultSet = statement.executeQuery()
-                )
-        {
-            while (resultSet.next())
-                rsProcessor.processNext(resultSet);
-        }
+                    return null;
+                }
+        );
+    }
+
+    public static Void query(StatementGenerator statementGenerator, ConnectionManager connectionManager) throws SQLException
+    {
+        return executeQuery(statementGenerator, connectionManager,
+                statement ->
+                {
+                    statement.execute();
+                    return null;
+                }
+        );
     }
 
     private static <T> T processNext(ResultSet resultSet, ResultSetProcessor<T> rsProcessor) throws SQLException
@@ -93,8 +114,12 @@ public class QueryManager
         T processNext(ResultSet resultSet) throws SQLException;
     }
 
-    public interface ResultSetVoidProcessor
+    @FunctionalInterface
+    public interface ResultSetVoidProcessor extends ResultSetProcessor<Void> {}
+
+    @FunctionalInterface
+    private interface StatementExecutor<T>
     {
-        void processNext(ResultSet resultSet) throws SQLException;
+        T execute(PreparedStatement statement) throws SQLException;
     }
 }
