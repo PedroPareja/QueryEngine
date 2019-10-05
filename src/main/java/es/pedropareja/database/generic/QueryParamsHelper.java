@@ -11,6 +11,7 @@ public class QueryParamsHelper
     private static final ParamSetter<Integer> intSetter = (s,i,v) -> s.setInt(i, v);
     private static final ParamSetter<String> stringSetter =  (s,i,v) -> s.setString(i, v);
     private static final ParamSetter<BigDecimal> bigDecimalSetter = (s,i,v) -> s.setBigDecimal(i, v);
+    private static final ParamSetter<Boolean> booleanSetter = (s,i,v) -> s.setBoolean(i, v);
 
     private final PreparedStatement statement;
     private int paramIndex = 1;
@@ -124,6 +125,26 @@ public class QueryParamsHelper
     public void setAllBigDecimal(Collection<BigDecimal> collection, boolean condition) throws SQLException
     {
         setAllParam(bigDecimalSetter, collection, condition);
+    }
+
+    public void setBoolean(Boolean value) throws SQLException
+    {
+        setParam(booleanSetter, value);
+    }
+
+    public void setBoolean(Boolean value, boolean condition) throws SQLException
+    {
+        setParam(booleanSetter, value, condition);
+    }
+
+    public void setAllBoolean(Collection<Boolean> collection) throws SQLException
+    {
+        setAllParam(booleanSetter, collection);
+    }
+
+    public void setAllBoolean(Collection<Boolean> collection, boolean condition) throws SQLException
+    {
+        setAllParam(booleanSetter, collection, condition);
     }
 
     public <U, F extends Enum<?> & DBFilterProcessor<U>> void applyFilter(Class<F> filterProcessorType, U filter)

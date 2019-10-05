@@ -51,7 +51,7 @@ public class QueryManager
                    {
                        List<T> result = new ArrayList<>();
                        T element;
-                       
+
                        while ((element = processNext(resultSet, rsProcessor)) != null)
                            result.add(element);
 
