@@ -6,6 +6,7 @@ import es.pedropareja.database.generic.QueryManager.StatementGenerator;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class DBWriter implements AutoCloseable
 {
@@ -30,9 +31,19 @@ public class DBWriter implements AutoCloseable
 
     public static void executeWrite(StatementGenerator statementGenerator, ConnectionManager connectionManager) throws SQLException
     {
-        try(DBWriter dbWriter = new DBWriter(connectionManager))
+        try (DBWriter dbWriter = new DBWriter(connectionManager))
         {
             dbWriter.executeWrite(statementGenerator);
+        }
+    }
+
+    public static <T> T executeWrite(StatementGenerator statementGenerator, StatementExecutor<T> statementExecutor,
+            ConnectionManager connectionManager)
+                throws SQLException
+    {
+        try (DBWriter dbWriter = new DBWriter(connectionManager))
+        {
+            return dbWriter.executeWrite(statementGenerator, statementExecutor);
         }
     }
 
@@ -86,7 +97,7 @@ public class DBWriter implements AutoCloseable
         }
     }
 
-    public void executeWrite(StatementGenerator statementGenerator) throws SQLException
+    private <T> T execute(StatementGenerator statementGenerator, StatementExecutor<T> statementExecutor) throws SQLException
     {
         committed = false;
 
@@ -96,7 +107,10 @@ public class DBWriter implements AutoCloseable
 
             try (PreparedStatement statement = statementGenerator.createStatement(connection))
             {
-                statement.execute();
+                if(statementExecutor != null)
+                    return statementExecutor.execute(statement);
+                else
+                    statement.execute();
             }
         }
         catch (Exception e)
@@ -104,6 +118,18 @@ public class DBWriter implements AutoCloseable
             error = true;
             throw e;
         }
+
+        return null;
+    }
+
+    public void executeWrite(StatementGenerator statementGenerator) throws SQLException
+    {
+        execute(statementGenerator, statement -> statement.execute());
+    }
+
+    public <T> T executeWrite(StatementGenerator statementGenerator, StatementExecutor<T> statementExecutor) throws SQLException
+    {
+        return execute(statementGenerator, statementExecutor);
     }
 
     public boolean isAutoCommit()
@@ -134,5 +160,11 @@ public class DBWriter implements AutoCloseable
     public void resetError()
     {
         error = false;
+    }
+
+    @FunctionalInterface
+    public interface StatementExecutor<T>
+    {
+        T execute(PreparedStatement statement) throws SQLException;
     }
 }
