@@ -28,6 +28,14 @@ public class DBWriter implements AutoCloseable
         this.autoRollback = autoRollback;
     }
 
+    public static void executeWrite(StatementGenerator statementGenerator, ConnectionManager connectionManager) throws SQLException
+    {
+        try(DBWriter dbWriter = new DBWriter(connectionManager))
+        {
+            dbWriter.executeWrite(statementGenerator);
+        }
+    }
+
     private Connection getConnection() throws SQLException
     {
         if(connectionManager == null)
@@ -61,7 +69,7 @@ public class DBWriter implements AutoCloseable
     }
 
     @Override
-    public void close() throws Exception
+    public void close() throws SQLException
     {
         if(currentConnection != null)
         {
@@ -78,7 +86,7 @@ public class DBWriter implements AutoCloseable
         }
     }
 
-    private void executeWrite(StatementGenerator statementGenerator) throws SQLException
+    public void executeWrite(StatementGenerator statementGenerator) throws SQLException
     {
         committed = false;
 
