@@ -97,8 +97,18 @@ public class QueryManager
     }
 
     @FunctionalInterface
-    public interface ResultSetVoidProcessor extends ResultSetProcessor<Void> {}
+    public interface ResultSetVoidProcessor extends ResultSetProcessor<Void>
+    {
+        void processNextVoid(ResultSet resultSet) throws SQLException;
 
+        @Override
+        default Void processNext(ResultSet resultSet) throws SQLException
+        {
+            processNextVoid(resultSet);
+            return null;
+        }
+    }
+    
     @FunctionalInterface
     private interface ResultSetExecutor <T>
     {
