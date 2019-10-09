@@ -29,6 +29,7 @@ public class QGAutoPrv<T extends Enum<?> & DBFieldInfo> extends QGQueryMiddleEnd
         init.setFullNamespaces();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <U> void genOutput(StringBuilder stringBuilder, U context)
     {
@@ -77,7 +78,7 @@ public class QGAutoPrv<T extends Enum<?> & DBFieldInfo> extends QGQueryMiddleEnd
     }
 
     @Override
-    public QGAutoPrv getPrv()
+    public QGAutoPrv<T> getPrv()
     {
         return this;
     }

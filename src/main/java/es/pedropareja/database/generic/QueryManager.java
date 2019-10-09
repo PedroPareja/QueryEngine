@@ -108,7 +108,7 @@ public class QueryManager
             return null;
         }
     }
-    
+
     @FunctionalInterface
     private interface ResultSetExecutor <T>
     {
