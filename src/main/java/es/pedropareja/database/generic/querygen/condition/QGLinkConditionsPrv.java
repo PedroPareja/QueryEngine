@@ -77,7 +77,7 @@ public interface QGLinkConditionsPrv<T extends QGQuery & QGLinkConditions<T>, U 
     @Override
     default <U extends DBFieldInfo> T in(U field, Collection<?> collection)
     {
-        return addCondition(new QGConditionIn<>(field, collection.size()));
+        return addCondition(new QGConditionIn<>(field, collection != null ? collection.size() : 0));
     }
 
     @Override
