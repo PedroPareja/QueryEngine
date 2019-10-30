@@ -136,6 +136,7 @@ public abstract class QGQueryBase implements QGLinkBase, QGQuery
         return null;
     }
 
+    @Override
     public boolean getNextOptionalAppearanceValueAndReset()
     {
         boolean result = nextOptionalAppearanceValue;
@@ -143,6 +144,7 @@ public abstract class QGQueryBase implements QGLinkBase, QGQuery
         return result;
     }
 
+    @Override
     public void setNextOptionalAppearanceValue(boolean nextOptionalAppearanceValue)
     {
         this.nextOptionalAppearanceValue = nextOptionalAppearanceValue;

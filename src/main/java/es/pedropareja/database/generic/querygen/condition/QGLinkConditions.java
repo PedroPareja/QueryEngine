@@ -7,7 +7,7 @@ import es.pedropareja.database.generic.querygen.optional.QGLinkOptional;
 
 import java.util.Collection;
 
-public interface QGLinkConditions<T extends QGQuery & QGLinkConditions<T>> extends QGLinkOptional<T>
+public interface QGLinkConditions<T extends QGLinkConditions<T>> extends QGLinkOptional<T>
 {
     <U extends DBFieldInfo> T equals(U field);
     <U extends DBFieldInfo> T equals(U field1, U field2);
