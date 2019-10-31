@@ -1,8 +1,6 @@
 package es.pedropareja.database.generic.querygen.base;
 
-public interface QGQuery extends QGOptionalityEnabled
+public interface QGQuery extends QGInitReferenced, QGOptionalityEnabled
 {
-    QGQueryInit getInit();
-
     <T> String toString(T context);
 }

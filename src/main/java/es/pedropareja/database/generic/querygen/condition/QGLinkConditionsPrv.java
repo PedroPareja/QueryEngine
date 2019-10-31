@@ -2,6 +2,8 @@ package es.pedropareja.database.generic.querygen.condition;
 
 import es.pedropareja.database.generic.DBFieldInfo;
 import es.pedropareja.database.generic.DBFilterProcessor;
+import es.pedropareja.database.generic.querygen.base.QGInitReferenced;
+import es.pedropareja.database.generic.querygen.base.QGOptionalityEnabled;
 import es.pedropareja.database.generic.querygen.base.QGQuery;
 import es.pedropareja.database.generic.querygen.base.QGQueryMiddleEnd;
 import es.pedropareja.database.generic.querygen.condition.QGConditionComparation.ComparationType;
@@ -10,17 +12,16 @@ import es.pedropareja.database.generic.querygen.optional.QGLinkOptionalPrv;
 import java.util.Collection;
 import java.util.List;
 
-public interface QGLinkConditionsPrv<T extends QGQuery & QGLinkConditions<T>, U extends QGQueryMiddleEnd> extends QGLinkConditions<T>, QGLinkOptionalPrv<T, U>
+public interface QGLinkConditionsPrv<T extends QGOptionalityEnabled & QGLinkConditions<T> & QGInitReferenced>
+        extends QGLinkConditions<T>, QGLinkOptionalPrv<T>
 {
     List<QGConditionBase> getConditionList();
 
     T getThis();
 
-    U getPrv();
-
     default <U extends DBFieldInfo> T addCondition(QGConditionBase condition)
     {
-        if(getPrv().getNextOptionalAppearanceValueAndReset())
+        if(getThis().getNextOptionalAppearanceValueAndReset())
             getConditionList().add(condition);
 
         return getThis();
@@ -47,10 +48,10 @@ public interface QGLinkConditionsPrv<T extends QGQuery & QGLinkConditions<T>, U 
     @Override
     default <U extends DBFieldInfo> T exists(QGQuery query)
     {
-        if(getPrv().getNextOptionalAppearanceValueAndReset())
+        if(getThis().getNextOptionalAppearanceValueAndReset())
         {
             getConditionList().add(new QGConditionExists(query));
-            getPrv().getInit().setFullNamespaces();
+            getThis().getInit().setFullNamespaces();
         }
 
         return getThis();
@@ -59,10 +60,10 @@ public interface QGLinkConditionsPrv<T extends QGQuery & QGLinkConditions<T>, U 
     @Override
     default <U extends DBFieldInfo> T in(U field, QGQuery query)
     {
-        if(getPrv().getNextOptionalAppearanceValueAndReset())
+        if(getThis().getNextOptionalAppearanceValueAndReset())
         {
             getConditionList().add(new QGConditionInQuery<>(field, query));
-            getPrv().getInit().setFullNamespaces();
+            getThis().getInit().setFullNamespaces();
         }
 
         return getThis();

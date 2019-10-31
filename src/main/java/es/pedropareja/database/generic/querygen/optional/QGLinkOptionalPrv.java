@@ -1,19 +1,15 @@
 package es.pedropareja.database.generic.querygen.optional;
 
-import es.pedropareja.database.generic.querygen.base.QGLinkBase;
-import es.pedropareja.database.generic.querygen.base.QGQuery;
-import es.pedropareja.database.generic.querygen.base.QGQueryMiddleEnd;
+import es.pedropareja.database.generic.querygen.base.QGOptionalityEnabled;
 
-public interface QGLinkOptionalPrv<T extends QGQuery, U extends QGQueryMiddleEnd> extends QGLinkOptional<T>, QGLinkBase
+public interface QGLinkOptionalPrv<T extends QGOptionalityEnabled> extends QGLinkOptional<T>
 {
     T getThis();
-
-    U getPrv();
 
     @Override
     default T optional(boolean appearanceOption)
     {
-        getPrv().setNextOptionalAppearanceValue(appearanceOption);
+        getThis().setNextOptionalAppearanceValue(appearanceOption);
         return getThis();
     }
 }
