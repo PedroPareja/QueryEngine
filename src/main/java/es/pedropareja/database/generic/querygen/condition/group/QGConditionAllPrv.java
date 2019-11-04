@@ -4,47 +4,54 @@ import es.pedropareja.database.generic.querygen.base.QGInitReferenced;
 import es.pedropareja.database.generic.querygen.base.QGOptionalityEnabled;
 import es.pedropareja.database.generic.querygen.base.QGQueryInit;
 import es.pedropareja.database.generic.querygen.condition.QGConditionBase;
-import es.pedropareja.database.generic.querygen.condition.QGLinkConditionsPrv;
-
-import java.util.List;
 
 public class QGConditionAllPrv<T extends QGOptionalityEnabled & QGInitReferenced>
-    implements QGConditionAll<T>, QGLinkConditionsPrv<QGConditionAll<T>>
+    extends QGConditionGroupPrv<QGConditionAll<T>,T>
+    implements QGConditionAll<T>
 {
 
-    @Override
-    public boolean getNextOptionalAppearanceValueAndReset()
+    public QGConditionAllPrv(QGQueryInit init, T parent)
     {
-        return false;
+        super(init, parent);
+    }
+
+
+    @Override
+    public <T> void genOutput(StringBuilder stringBuilder, boolean fullNamespaces, T context)
+    {
+        if(!isNull())
+        {
+            boolean conditionWritten = false;
+
+            stringBuilder.append(" (");
+
+            for (QGConditionBase condition: conditionList)
+            {
+                if(!condition.isNull())
+                {
+                    if(conditionWritten)
+                        stringBuilder.append(" AND");
+
+                    condition.genOutput(stringBuilder, fullNamespaces, context);
+                    conditionWritten = true;
+                }
+            }
+
+            stringBuilder.append(")");
+        }
+
     }
 
     @Override
-    public void setNextOptionalAppearanceValue(boolean nextOptionalAppearanceValue)
+    public boolean isNull()
     {
+        if(conditionList.isEmpty())
+            return true;
 
-    }
+        for(QGConditionBase condition: conditionList)
+            if(!condition.isNull())
+                return false;
 
-    @Override
-    public List<QGConditionBase> getConditionList()
-    {
-        return null;
-    }
-
-    @Override
-    public QGConditionAll<T> getThis()
-    {
-        return null;
-    }
-
-    @Override
-    public T end()
-    {
-        return null;
-    }
-
-    @Override
-    public QGQueryInit getInit()
-    {
-        return null;
+        return true;
     }
 }
