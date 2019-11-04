@@ -7,10 +7,7 @@ import es.pedropareja.database.generic.querygen.base.QGOptionalityEnabled;
 import es.pedropareja.database.generic.querygen.base.QGQuery;
 import es.pedropareja.database.generic.querygen.base.QGQueryMiddleEnd;
 import es.pedropareja.database.generic.querygen.condition.QGConditionComparation.ComparationType;
-import es.pedropareja.database.generic.querygen.condition.group.QGConditionAll;
-import es.pedropareja.database.generic.querygen.condition.group.QGConditionAllPrv;
-import es.pedropareja.database.generic.querygen.condition.group.QGConditionAny;
-import es.pedropareja.database.generic.querygen.condition.group.QGConditionAnyPrv;
+import es.pedropareja.database.generic.querygen.condition.group.*;
 import es.pedropareja.database.generic.querygen.optional.QGLinkOptionalPrv;
 
 import java.util.Collection;
@@ -171,6 +168,14 @@ public interface QGLinkConditionsPrv<T extends QGOptionalityEnabled & QGLinkCond
     default QGConditionAny<T> any()
     {
         QGConditionAny<T> result = new QGConditionAnyPrv<>(getInit(), getThis());
+        addCondition(result);
+        return result;
+    }
+
+    @Override
+    default QGConditionNot<T> not()
+    {
+        QGConditionNot<T> result = new QGConditionNotPrv<>(getInit(), getThis());
         addCondition(result);
         return result;
     }
