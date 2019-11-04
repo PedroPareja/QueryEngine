@@ -6,6 +6,7 @@ import es.pedropareja.database.generic.querygen.base.QGInitReferenced;
 import es.pedropareja.database.generic.querygen.base.QGOptionalityEnabled;
 import es.pedropareja.database.generic.querygen.base.QGQuery;
 import es.pedropareja.database.generic.querygen.condition.group.QGConditionAll;
+import es.pedropareja.database.generic.querygen.condition.group.QGConditionAny;
 import es.pedropareja.database.generic.querygen.optional.QGLinkOptional;
 
 import java.util.Collection;
@@ -30,6 +31,7 @@ public interface QGLinkConditions<T extends QGLinkConditions<T>> extends QGLinkO
     <U extends DBFieldInfo> T lessOrEqual(U field1, U field2);
 
     QGConditionAll<T> all();
+    QGConditionAny<T> any();
 
     <U, F extends Enum<?> & DBFilterProcessor<U>> T applyFilter(Class<F> filterProcessorType, U filter);
     <U, F extends Enum<?> & DBFilterProcessor<U>> T applyFilters(Class<F> filterProcessorType, Collection<U> filters);
