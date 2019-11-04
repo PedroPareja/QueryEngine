@@ -1,21 +1,18 @@
 package es.pedropareja.database.generic.querygen.where;
 
 import es.pedropareja.database.generic.DBFieldInfo;
-import es.pedropareja.database.generic.DBFilterProcessor;
 import es.pedropareja.database.generic.querygen.auto.QGAutoFields;
 import es.pedropareja.database.generic.querygen.base.QGQueryBase;
 import es.pedropareja.database.generic.querygen.base.QGQueryInit;
 import es.pedropareja.database.generic.querygen.base.QGQueryMiddleEnd;
 import es.pedropareja.database.generic.querygen.condition.QGConditionBase;
-import es.pedropareja.database.generic.querygen.condition.QGLinkConditions;
 import es.pedropareja.database.generic.querygen.condition.QGLinkConditionsPrv;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class QGWherePrv extends QGQueryMiddleEnd
-        implements QGWhere, QGLinkConditionsPrv<QGWhere, QGWherePrv>, QGAutoFields
+        implements QGWhere, QGLinkConditionsPrv<QGWhere>, QGAutoFields
 {
     private List<QGConditionBase> conditionList = new ArrayList<>();
 
@@ -35,13 +32,6 @@ public class QGWherePrv extends QGQueryMiddleEnd
     {
         return this;
     }
-
-    @Override
-    public QGWherePrv getPrv()
-    {
-        return this;
-    }
-
 
     @Override
     public <T> void genOutput(StringBuilder stringBuilder, T context)

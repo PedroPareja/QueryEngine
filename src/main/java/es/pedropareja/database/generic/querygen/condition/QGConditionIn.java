@@ -20,7 +20,7 @@ public class QGConditionIn<T extends DBFieldInfo> implements QGConditionBase
     @Override
     public <T> void genOutput(StringBuilder stringBuilder, boolean fullNamespaces, T context)
     {
-        if(numberOfParameters > 0)
+        if(!isNull())
         {
             stringBuilder.append(" ");
             QGQueryBase.printField(stringBuilder, field, fullNamespaces, context);
@@ -48,5 +48,11 @@ public class QGConditionIn<T extends DBFieldInfo> implements QGConditionBase
     public List<DBFieldInfo> getAutoFields()
     {
         return Arrays.asList(field);
+    }
+
+    @Override
+    public boolean isNull()
+    {
+        return numberOfParameters < 1;
     }
 }

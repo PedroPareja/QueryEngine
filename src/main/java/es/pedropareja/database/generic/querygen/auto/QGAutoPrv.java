@@ -16,7 +16,9 @@ import es.pedropareja.database.generic.querygen.optional.QGLinkOptionalPrv;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class QGAutoPrv<T extends Enum<?> & DBFieldInfo> extends QGQueryMiddleEnd implements QGAuto, QGLinkOptionalPrv<QGAuto, QGAutoPrv<T>>
+public class QGAutoPrv<T extends Enum<?> & DBFieldInfo>
+        extends QGQueryMiddleEnd
+        implements QGAuto, QGLinkOptionalPrv<QGAuto>
 {
     private final DBTableMapper tableMapper;
     private final Class<T> mainTable;
@@ -73,12 +75,6 @@ public class QGAutoPrv<T extends Enum<?> & DBFieldInfo> extends QGQueryMiddleEnd
 
     @Override
     public QGAuto getThis()
-    {
-        return this;
-    }
-
-    @Override
-    public QGAutoPrv<T> getPrv()
     {
         return this;
     }

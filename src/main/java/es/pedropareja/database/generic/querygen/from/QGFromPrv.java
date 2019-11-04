@@ -6,7 +6,7 @@ import es.pedropareja.database.generic.querygen.base.QGQueryInit;
 import es.pedropareja.database.generic.querygen.base.QGQueryMiddleEnd;
 import es.pedropareja.database.generic.querygen.optional.QGLinkOptionalPrv;
 
-public class QGFromPrv<T extends Enum<?> & DBFieldInfo> extends QGQueryMiddleEnd implements QGFrom, QGLinkOptionalPrv<QGFrom, QGFromPrv<T>>
+public class QGFromPrv<T extends Enum<?> & DBFieldInfo> extends QGQueryMiddleEnd implements QGFrom, QGLinkOptionalPrv<QGFrom>
 {
     private final Class<T> tableType;
 
@@ -37,12 +37,6 @@ public class QGFromPrv<T extends Enum<?> & DBFieldInfo> extends QGQueryMiddleEnd
 
     @Override
     public QGFrom getThis()
-    {
-        return this;
-    }
-
-    @Override
-    public QGFromPrv<T> getPrv()
     {
         return this;
     }

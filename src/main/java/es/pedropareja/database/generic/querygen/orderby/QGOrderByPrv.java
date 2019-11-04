@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class QGOrderByPrv<T extends Enum<?> & DBFieldInfo> extends QGQueryMiddleEnd
-        implements QGOrderBy, QGLinkOptionalPrv<QGOrderBy, QGOrderByPrv<T>>, QGAutoFields
+        implements QGOrderBy, QGLinkOptionalPrv<QGOrderBy>, QGAutoFields
 {
     private static final Order DEFAULT_ORDER = Order.ASC;
 
@@ -56,12 +56,6 @@ public class QGOrderByPrv<T extends Enum<?> & DBFieldInfo> extends QGQueryMiddle
 
     @Override
     public QGOrderBy getThis()
-    {
-        return this;
-    }
-
-    @Override
-    public QGOrderByPrv<T> getPrv()
     {
         return this;
     }

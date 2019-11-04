@@ -7,6 +7,8 @@ import es.pedropareja.database.generic.querygen.base.QGOptionalityEnabled;
 import es.pedropareja.database.generic.querygen.base.QGQuery;
 import es.pedropareja.database.generic.querygen.base.QGQueryMiddleEnd;
 import es.pedropareja.database.generic.querygen.condition.QGConditionComparation.ComparationType;
+import es.pedropareja.database.generic.querygen.condition.group.QGConditionAll;
+import es.pedropareja.database.generic.querygen.condition.group.QGConditionAllPrv;
 import es.pedropareja.database.generic.querygen.optional.QGLinkOptionalPrv;
 
 import java.util.Collection;
@@ -153,5 +155,13 @@ public interface QGLinkConditionsPrv<T extends QGOptionalityEnabled & QGLinkCond
     default <U extends DBFieldInfo> T lessOrEqual(U field1, U field2)
     {
         return addCondition(new QGConditionComparation<>(ComparationType.LESS_EQUAL, field1, field2));
+    }
+
+    @Override
+    default QGConditionAll<T> all()
+    {
+        QGConditionAll<T> result = new QGConditionAllPrv<>(getInit(), getThis());
+        addCondition(result);
+        return result;
     }
 }

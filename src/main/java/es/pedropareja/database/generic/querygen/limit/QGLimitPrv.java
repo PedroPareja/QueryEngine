@@ -7,7 +7,7 @@ import es.pedropareja.database.generic.querygen.optional.QGLinkOptionalPrv;
 
 import java.util.Objects;
 
-public class QGLimitPrv extends QGQueryMiddleEnd implements QGLimit, QGLinkOptionalPrv<QGLimit, QGLimitPrv>
+public class QGLimitPrv extends QGQueryMiddleEnd implements QGLimit, QGLinkOptionalPrv<QGLimit>
 {
     private final Integer rowLimit;
 
@@ -44,12 +44,6 @@ public class QGLimitPrv extends QGQueryMiddleEnd implements QGLimit, QGLinkOptio
 
     @Override
     public QGLimit getThis()
-    {
-        return this;
-    }
-
-    @Override
-    public QGLimitPrv getPrv()
     {
         return this;
     }

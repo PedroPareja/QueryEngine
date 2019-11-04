@@ -9,7 +9,7 @@ import es.pedropareja.database.generic.querygen.condition.QGLinkConditionsPrv;
 import java.util.ArrayList;
 import java.util.List;
 
-public class QGOnPrv extends QGQueryMiddleEnd implements QGOn, QGLinkConditionsPrv<QGOn, QGOnPrv>
+public class QGOnPrv extends QGQueryMiddleEnd implements QGOn, QGLinkConditionsPrv<QGOn>
 {
     private List<QGConditionBase> conditionList = new ArrayList<>();
 
@@ -26,12 +26,6 @@ public class QGOnPrv extends QGQueryMiddleEnd implements QGOn, QGLinkConditionsP
 
     @Override
     public QGOn getThis()
-    {
-        return this;
-    }
-
-    @Override
-    public QGOnPrv getPrv()
     {
         return this;
     }

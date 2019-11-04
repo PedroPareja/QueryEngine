@@ -6,5 +6,8 @@ public interface QGConditionBase extends QGAutoFields
 {
     <T> void genOutput(StringBuilder stringBuilder, boolean fullNamespaces, T context);
 
-    boolean isNull();
+    default boolean isNull()
+    {
+        return false;
+    }
 }
