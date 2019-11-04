@@ -72,4 +72,38 @@ public abstract class QGConditionGroupPrv<U extends QGConditionGroup<U,T>, T ext
 
         return result;
     }
+
+    @Override
+    public boolean isNull()
+    {
+        if(conditionList.isEmpty())
+            return true;
+
+        for(QGConditionBase condition: conditionList)
+            if(!condition.isNull())
+                return false;
+
+        return true;
+    }
+
+    protected static <T> void genOutput(StringBuilder stringBuilder, boolean fullNamespaces, T context, List<QGConditionBase> conditionList, String nexusOperator)
+    {
+        boolean conditionWritten = false;
+
+        stringBuilder.append(" (");
+
+        for (QGConditionBase condition: conditionList)
+        {
+            if(!condition.isNull())
+            {
+                if(conditionWritten)
+                    stringBuilder.append(" ").append(nexusOperator);
+
+                condition.genOutput(stringBuilder, fullNamespaces, context);
+                conditionWritten = true;
+            }
+        }
+
+        stringBuilder.append(")");
+    }
 }
