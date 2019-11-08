@@ -9,12 +9,19 @@ import es.pedropareja.database.generic.querygen.optional.QGLinkOptionalPrv;
 public class QGJoinPrv<T extends Enum<?> & DBFieldInfo> extends QGQueryMiddleEnd implements QGJoin, QGLinkOptionalPrv<QGJoin>
 {
     private final Class<T> tableType;
+    private final JoinType joinType;
 
-    public QGJoinPrv(Class<T> tableType, QGQueryInit init)
+    public QGJoinPrv(Class<T> tableType, QGQueryInit init, JoinType joinType)
     {
         super(init);
         this.tableType = tableType;
+        this.joinType = joinType;
         init.setFullNamespaces();
+    }
+
+    public QGJoinPrv(Class<T> tableType, QGQueryInit init)
+    {
+        this(tableType, init, JoinType.INNER);
     }
 
     @Override
