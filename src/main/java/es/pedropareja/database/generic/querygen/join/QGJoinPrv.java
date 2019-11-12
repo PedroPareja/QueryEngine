@@ -27,6 +27,21 @@ public class QGJoinPrv<T extends Enum<?> & DBFieldInfo> extends QGQueryMiddleEnd
     @Override
     public <U> void genOutput(StringBuilder stringBuilder, U context)
     {
+        switch (joinType)
+        {
+            case LEFT:
+                stringBuilder.append(" LEFT");
+                break;
+
+            case RIGHT:
+                stringBuilder.append(" RIGHT");
+                break;
+
+            case FULL:
+                stringBuilder.append(" FULL");
+                break;
+        }
+
         stringBuilder.append(" JOIN ");
 
         printTablePath(stringBuilder, tableType, context);
