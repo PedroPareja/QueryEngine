@@ -2,11 +2,10 @@ package es.pedropareja.database.generic.querygen.expression.base;
 
 public abstract class QGExpressionBase implements QGExpressionPrv
 {
-    private final QGExpressionBase init;
-    private QGExpressionBase next;
-    private boolean fullNamespaces = false;
+    private final QGExpressionPrv init;
+    private QGExpressionPrv next;
 
-    public QGExpressionBase(QGExpressionBase init)
+    public QGExpressionBase(QGExpressionPrv init)
     {
         this.init = init;
     }
@@ -16,46 +15,26 @@ public abstract class QGExpressionBase implements QGExpressionPrv
         this.init = this;
     }
 
-    public QGExpressionBase getInit()
+    public QGExpressionPrv getInit()
     {
         return init;
     }
 
-    public QGExpressionBase getNext()
+    public QGExpressionPrv getNext()
     {
         return next;
     }
 
-    public void setNext(QGExpressionBase next)
+    public void setNext(QGExpressionPrv next)
     {
         this.next = next;
-    }
-
-    public boolean isFullNamespaces()
-    {
-        return init.fullNamespaces;
-    }
-
-    public void setFullNamespaces()
-    {
-        init.fullNamespaces = true;
     }
 
     @Override
-    public <T extends QGExpressionBase> T assignNext(T next)
+    public <T extends QGExpressionPrv> T assignNext(T next)
     {
         this.next = next;
         return next;
-    }
-
-    protected abstract <T> void genOutput(StringBuilder stringBuilder, T context);
-
-    protected <T> void getOutputSequence(StringBuilder stringBuilder, T context)
-    {
-        genOutput(stringBuilder, context);
-
-        if(next != null)
-            next.getOutputSequence(stringBuilder, context);
     }
 
     @Override
@@ -67,7 +46,7 @@ public abstract class QGExpressionBase implements QGExpressionPrv
     public <T> String toString(T context)
     {
         StringBuilder stringBuilder = new StringBuilder();
-        init.getOutputSequence(stringBuilder, context);
+        genExpressionOutput(stringBuilder, true, context);
         return stringBuilder.toString();
     }
 

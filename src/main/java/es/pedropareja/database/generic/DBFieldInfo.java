@@ -1,5 +1,6 @@
 package es.pedropareja.database.generic;
 
+import es.pedropareja.database.generic.querygen.base.QGQueryBase;
 import es.pedropareja.database.generic.querygen.expression.base.QGExpression;
 
 public interface DBFieldInfo extends QGExpression
@@ -15,5 +16,11 @@ public interface DBFieldInfo extends QGExpression
             return false;
 
         return this == other;
+    }
+
+    @Override
+    default <T> void genExpressionOutput(StringBuilder stringBuilder, boolean fullNamespaces, T context)
+    {
+        QGQueryBase.printField(stringBuilder, this,  fullNamespaces, context);
     }
 }

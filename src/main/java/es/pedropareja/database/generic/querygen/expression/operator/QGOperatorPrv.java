@@ -1,6 +1,7 @@
 package es.pedropareja.database.generic.querygen.expression.operator;
 
 import es.pedropareja.database.generic.querygen.expression.base.QGExpressionBase;
+import es.pedropareja.database.generic.querygen.expression.base.QGExpressionPrv;
 import es.pedropareja.database.generic.querygen.expression.field.QGLinkFieldPrv;
 import es.pedropareja.database.generic.querygen.expression.id.QGLinkIdPrv;
 
@@ -9,14 +10,14 @@ public class QGOperatorPrv extends QGExpressionBase
 {
     private final Type type;
 
-    public QGOperatorPrv(QGExpressionBase init, Type type)
+    public QGOperatorPrv(QGExpressionPrv init, Type type)
     {
         super(init);
         this.type = type;
     }
 
     @Override
-    protected <T> void genOutput(StringBuilder stringBuilder, T context)
+    public <T> void genOutput(StringBuilder stringBuilder, boolean fullNamespaces, T context)
     {
         stringBuilder.append(" ").append(type.getSymbol());
     }
