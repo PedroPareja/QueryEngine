@@ -2,6 +2,7 @@ package es.pedropareja.database.generic.querygen.expression.aggregate;
 
 import es.pedropareja.database.generic.DBFieldInfo;
 import es.pedropareja.database.generic.querygen.base.QGQueryBase;
+import es.pedropareja.database.generic.querygen.expression.as.QGLinkAsPrv;
 import es.pedropareja.database.generic.querygen.expression.base.QGExpressionBase;
 import es.pedropareja.database.generic.querygen.expression.base.QGExpressionPrv;
 
@@ -11,7 +12,7 @@ import java.util.Objects;
 import static es.pedropareja.database.generic.querygen.base.QGQueryBase.joinLists;
 
 public class QGAggregatePrv<T extends Enum<?> & DBFieldInfo>
-        extends QGExpressionBase implements QGAggregate
+        extends QGExpressionBase implements QGAggregate, QGLinkAsPrv
 {
     private final Type type;
     private final T field;
