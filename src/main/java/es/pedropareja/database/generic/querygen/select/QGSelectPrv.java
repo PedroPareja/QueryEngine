@@ -4,22 +4,24 @@ import es.pedropareja.database.generic.DBFieldInfo;
 import es.pedropareja.database.generic.querygen.auto.QGAutoFields;
 import es.pedropareja.database.generic.querygen.base.QGQueryBase;
 import es.pedropareja.database.generic.querygen.base.QGQueryInit;
+import es.pedropareja.database.generic.querygen.expression.base.QGExpression;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class QGSelectPrv extends QGQueryInit implements QGSelect, QGAutoFields
 {
-    private final DBFieldInfo[] fieldList;
+    private List<QGExpression> expressionList;
     private boolean distinct = false;
 
     @SafeVarargs
-    public QGSelectPrv(DBFieldInfo ... fieldList)
+    public QGSelectPrv(QGExpression ... expressions)
     {
-        this.fieldList = fieldList;
+        this.expressionList = Arrays.asList(expressions);
     }
 
-    public QGSelectPrv() { this.fieldList = null; }
+    public QGSelectPrv() { this.expressionList = null; }
 
     @Override
     public QGSelect distinct()
@@ -31,7 +33,12 @@ public class QGSelectPrv extends QGQueryInit implements QGSelect, QGAutoFields
     @Override
     public List<DBFieldInfo> getAutoFields()
     {
-        return Arrays.asList(fieldList);
+        List<DBFieldInfo> result = new ArrayList<>();
+
+        for(QGExpression expression: expressionList)
+            result.addAll(expression.getAutoFields());
+
+        return result;
     }
 
     @Override
@@ -39,14 +46,15 @@ public class QGSelectPrv extends QGQueryInit implements QGSelect, QGAutoFields
     {
         stringBuilder.append("SELECT").append(distinct ? " DISTINCT " : " ");
 
-        if(fieldList == null || fieldList.length == 0)
+        if(expressionList == null || expressionList.isEmpty())
             stringBuilder.append("*");
         else
         {
-            for (int i = 0; i < fieldList.length; i++)
+            for (int i = 0; i < expressionList.size(); i++)
             {
                 stringBuilder.append(i != 0 ? ", " : "");
-                printField(stringBuilder, fieldList[i], fullNamespaces, context);
+                //printField(stringBuilder, fieldList[i], fullNamespaces, context);
+                expressionList.get(i).genExpressionOutput(stringBuilder, fullNamespaces, context);
             }
         }
 
@@ -61,6 +69,6 @@ public class QGSelectPrv extends QGQueryInit implements QGSelect, QGAutoFields
 
         QGSelectPrv qSelect = (QGSelectPrv) q;
 
-        return fieldArrayEquals(fieldList, qSelect.fieldList) && distinct == qSelect.distinct;
+        return fieldArrayEquals(expressionList, qSelect.expressionList) && distinct == qSelect.distinct;
     }
 }

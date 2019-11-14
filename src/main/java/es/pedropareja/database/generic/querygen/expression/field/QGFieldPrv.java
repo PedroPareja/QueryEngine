@@ -7,6 +7,8 @@ import es.pedropareja.database.generic.querygen.expression.base.QGExpressionBase
 import es.pedropareja.database.generic.querygen.expression.base.QGExpressionPrv;
 import es.pedropareja.database.generic.querygen.expression.operator.QGLinkOperatorsPrv;
 
+import java.util.List;
+
 public class QGFieldPrv<T extends Enum<?> & DBFieldInfo> extends QGExpressionBase
         implements QGField, QGLinkOperatorsPrv, QGLinkAsPrv
 {
@@ -30,5 +32,11 @@ public class QGFieldPrv<T extends Enum<?> & DBFieldInfo> extends QGExpressionBas
         printSpaceIfNotFirst(stringBuilder);
 
         QGQueryBase.printField(stringBuilder, field, fullNamespaces, context);
+    }
+
+    @Override
+    protected List<DBFieldInfo> getElementAutoFields()
+    {
+        return field.getAutoFields();
     }
 }

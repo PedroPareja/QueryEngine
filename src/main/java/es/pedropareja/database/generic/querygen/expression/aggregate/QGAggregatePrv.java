@@ -5,6 +5,11 @@ import es.pedropareja.database.generic.querygen.base.QGQueryBase;
 import es.pedropareja.database.generic.querygen.expression.base.QGExpressionBase;
 import es.pedropareja.database.generic.querygen.expression.base.QGExpressionPrv;
 
+import java.util.List;
+import java.util.Objects;
+
+import static es.pedropareja.database.generic.querygen.base.QGQueryBase.joinLists;
+
 public class QGAggregatePrv<T extends Enum<?> & DBFieldInfo>
         extends QGExpressionBase implements QGAggregate
 {
@@ -61,4 +66,11 @@ public class QGAggregatePrv<T extends Enum<?> & DBFieldInfo>
 
         stringBuilder.append(")");
     }
+
+    @Override
+    public List<DBFieldInfo> getElementAutoFields()
+    {
+        return field.getAutoFields();
+    }
+
 }

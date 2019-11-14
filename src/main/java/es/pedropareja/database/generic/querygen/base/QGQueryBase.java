@@ -5,6 +5,7 @@ import es.pedropareja.database.generic.querygen.QueryGenConfig;
 import es.pedropareja.database.generic.querygen.condition.QGConditionBase;
 import es.pedropareja.database.generic.querygen.condition.QGLinkConditions;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class QGQueryBase implements QGLinkBase, QGQuery
@@ -178,5 +179,23 @@ public abstract class QGQueryBase implements QGLinkBase, QGQuery
                 return false;
 
         return true;
+    }
+
+    public static <T> List<T> joinLists(List<T> list1, List<T> list2)
+    {
+        if(list1 == null)
+            return list2;
+
+        if(list2 == null)
+            return list1;
+
+        List<T> result = new ArrayList<>(list1);
+        result.addAll(list2);
+        return result;
+    }
+
+    public static <T> boolean equalsElements(T e1, T e2)
+    {
+        return e1 != null ? e1.equals(e2) : e2 == null;
     }
 }

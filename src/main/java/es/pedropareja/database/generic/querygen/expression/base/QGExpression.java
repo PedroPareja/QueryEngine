@@ -1,6 +1,8 @@
 package es.pedropareja.database.generic.querygen.expression.base;
 
-public interface QGExpression
+import es.pedropareja.database.generic.querygen.auto.QGAutoFields;
+
+public interface QGExpression extends QGAutoFields
 {
     <T> void genExpressionOutput(StringBuilder stringBuilder, boolean fullNamespaces, T context);
 }

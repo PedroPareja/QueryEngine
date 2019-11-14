@@ -1,8 +1,11 @@
 package es.pedropareja.database.generic.querygen.expression.id;
 
+import es.pedropareja.database.generic.DBFieldInfo;
 import es.pedropareja.database.generic.querygen.expression.base.QGExpressionBase;
 import es.pedropareja.database.generic.querygen.expression.base.QGExpressionPrv;
 import es.pedropareja.database.generic.querygen.expression.operator.QGLinkOperatorsPrv;
+
+import java.util.List;
 
 public class QGIdPrv extends QGExpressionBase implements QGId, QGLinkOperatorsPrv
 {
@@ -27,5 +30,11 @@ public class QGIdPrv extends QGExpressionBase implements QGId, QGLinkOperatorsPr
             stringBuilder.append(" ");
 
         stringBuilder.append(id);
+    }
+
+    @Override
+    protected List<DBFieldInfo> getElementAutoFields()
+    {
+        return null;
     }
 }
