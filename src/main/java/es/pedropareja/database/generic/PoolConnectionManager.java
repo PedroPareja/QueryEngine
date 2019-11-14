@@ -5,16 +5,17 @@ import com.zaxxer.hikari.HikariDataSource;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Properties;
 
 public abstract class PoolConnectionManager implements QueryManager.ConnectionManager
 {
-    public abstract HikariConfig getConfig();
+    public abstract Properties getConfig();
 
     protected final HikariDataSource dataSource;
 
     protected PoolConnectionManager()
     {
-        this.dataSource = new HikariDataSource(getConfig());
+        this.dataSource = new HikariDataSource(new HikariConfig(getConfig()));
     }
 
     @Override
