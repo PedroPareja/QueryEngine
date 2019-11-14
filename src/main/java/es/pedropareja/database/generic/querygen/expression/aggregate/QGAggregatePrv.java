@@ -53,6 +53,11 @@ public class QGAggregatePrv<T extends Enum<?> & DBFieldInfo>
         this(type, null, id);
     }
 
+    public QGAggregatePrv(Type type)
+    {
+        this(type, null, null);
+    }
+
     @Override
     public  <U> void genOutput(StringBuilder stringBuilder, boolean fullNamespaces, U context)
     {
@@ -63,6 +68,8 @@ public class QGAggregatePrv<T extends Enum<?> & DBFieldInfo>
             field.genExpressionOutput(stringBuilder, fullNamespaces, context);
         else if(id != null)
             stringBuilder.append(id);
+        else
+            stringBuilder.append("*");
 
         stringBuilder.append(")");
     }

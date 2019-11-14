@@ -2,6 +2,7 @@ package es.pedropareja.database.generic.querygen.expression;
 
 import es.pedropareja.database.generic.DBFieldInfo;
 import es.pedropareja.database.generic.querygen.expression.aggregate.QGAggregate;
+import es.pedropareja.database.generic.querygen.expression.aggregate.QGAggregate.Type;
 import es.pedropareja.database.generic.querygen.expression.aggregate.QGAggregatePrv;
 import es.pedropareja.database.generic.querygen.expression.field.QGField;
 import es.pedropareja.database.generic.querygen.expression.field.QGFieldPrv;
@@ -31,6 +32,8 @@ public class QGExprGen
     {
         return new QGAggregatePrv<>(QGAggregate.Type.COUNT, id);
     }
+
+    public static QGAggregate count() { return new QGAggregatePrv<>(Type.COUNT); }
 
     public static <T extends Enum<?> & DBFieldInfo> QGAggregate min(T field)
     {
