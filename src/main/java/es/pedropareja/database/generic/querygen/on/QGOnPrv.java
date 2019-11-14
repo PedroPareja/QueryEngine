@@ -46,13 +46,4 @@ public class QGOnPrv extends QGQueryMiddleEnd implements QGOn, QGLinkConditionsP
 
         genOutputNext(stringBuilder, context);
     }
-
-    @Override
-    public boolean equalsUntilHere(QGQueryBase q)
-    {
-        if(!(q instanceof QGOnPrv))
-            return false;
-
-        return conditionListEquals(conditionList, ((QGOnPrv)q).conditionList);
-    }
 }

@@ -21,13 +21,4 @@ public class QGUpdatePrv<T extends Enum<?> & DBFieldInfo> extends QGQueryInit im
 
         genOutputNext(stringBuilder, context);
     }
-
-    @Override
-    public boolean equalsUntilHere(QGQueryBase q)
-    {
-        if(!(q instanceof QGUpdatePrv))
-            return false;
-
-        return tableType.equals(((QGUpdatePrv<?>)q).tableType);
-    }
 }

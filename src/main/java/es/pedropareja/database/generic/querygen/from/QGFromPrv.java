@@ -27,15 +27,6 @@ public class QGFromPrv<T extends Enum<?> & DBFieldInfo> extends QGQueryMiddleEnd
     }
 
     @Override
-    public boolean equalsUntilHere(QGQueryBase q)
-    {
-        if(!(q instanceof QGFromPrv))
-            return false;
-
-        return tableType.equals(((QGFromPrv)q).tableType);
-    }
-
-    @Override
     public QGFrom getThis()
     {
         return this;

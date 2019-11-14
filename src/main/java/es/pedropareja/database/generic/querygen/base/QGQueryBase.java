@@ -80,62 +80,6 @@ public abstract class QGQueryBase implements QGLinkBase, QGQuery
             stringBuilder.append("\"");
     }
 
-    @Override
-    public boolean equals(Object obj)
-    {
-        if(obj == null || !(obj instanceof QGQueryBase))
-            return false;
-
-        return getInit().equalsQuery(((QGQueryBase) obj).getInit());
-    }
-
-    public boolean equalsQuery(QGQueryBase query)
-    {
-        if(query == null || !equalsUntilHere(query))
-            return false;
-
-        if(next == null)
-            return query.next == null;
-
-        return next.equalsQuery(query.next);
-    }
-
-    public abstract boolean equalsUntilHere(QGQueryBase q);
-
-    public boolean equalsUntilConditionsElement(QGQueryBase q)
-    {
-        QGQueryBase qThis = this;
-        QGQueryBase qOther = q;
-
-        while(qThis != null)
-        {
-            if(qThis instanceof QGLinkConditions && qOther instanceof QGLinkConditions)
-                return qThis.getClass() == qOther.getClass();
-
-            if(!qThis.equalsUntilHere(qOther))
-                return false;
-
-            qThis = qThis.next;
-            qOther = qOther.next;
-        }
-
-        return qOther == null;
-    }
-
-    public QGLinkConditions searchNextConditionsElement()
-    {
-        QGQueryBase qElement = this;
-
-        while (qElement != null)
-        {
-            if(qElement instanceof QGLinkConditions)
-                return (QGLinkConditions)qElement;
-
-            qElement = qElement.next;
-        }
-
-        return null;
-    }
 
     @Override
     public boolean getNextOptionalAppearanceValueAndReset()

@@ -63,17 +63,6 @@ public class QGAutoPrv<T extends Enum<?> & DBFieldInfo>
     }
 
     @Override
-    public boolean equalsUntilHere(QGQueryBase q)
-    {
-        if(!(q instanceof QGAutoPrv))
-            return false;
-
-        QGAutoPrv instance = (QGAutoPrv) q;
-
-        return tableMapper.equals(instance.tableMapper);
-    }
-
-    @Override
     public QGAuto getThis()
     {
         return this;
@@ -85,12 +74,6 @@ public class QGAutoPrv<T extends Enum<?> & DBFieldInfo>
         public <T> void genOutput(StringBuilder stringBuilder, T context)
         {
             genOutputNext(stringBuilder, context);
-        }
-
-        @Override
-        public boolean equalsUntilHere(QGQueryBase q)
-        {
-            return false;
         }
     }
 }

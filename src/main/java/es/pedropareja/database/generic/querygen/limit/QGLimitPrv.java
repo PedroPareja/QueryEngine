@@ -32,17 +32,6 @@ public class QGLimitPrv extends QGQueryMiddleEnd implements QGLimit, QGLinkOptio
     }
 
     @Override
-    public boolean equalsUntilHere(QGQueryBase q)
-    {
-        if(!(q instanceof QGLimitPrv))
-            return false;
-
-        QGLimitPrv qLimit = (QGLimitPrv) q;
-
-        return Objects.equals(rowLimit, qLimit.rowLimit);
-    }
-
-    @Override
     public QGLimit getThis()
     {
         return this;

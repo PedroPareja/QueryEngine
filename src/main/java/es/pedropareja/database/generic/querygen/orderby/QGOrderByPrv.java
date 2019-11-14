@@ -44,17 +44,6 @@ public class QGOrderByPrv<T extends Enum<?> & DBFieldInfo> extends QGQueryMiddle
     }
 
     @Override
-    public boolean equalsUntilHere(QGQueryBase q)
-    {
-        if(!(q instanceof QGOrderByPrv))
-            return false;
-
-        QGOrderByPrv<?> qOrderBy = (QGOrderByPrv<?>) q;
-
-        return field.equalsField(qOrderBy.field) && order == qOrderBy.order;
-    }
-
-    @Override
     public QGOrderBy getThis()
     {
         return this;

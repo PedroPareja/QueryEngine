@@ -21,13 +21,4 @@ public class QGDeletePrv<T extends Enum<?> & DBFieldInfo> extends QGQueryInit im
 
         genOutputNext(stringBuilder, context);
     }
-
-    @Override
-    public boolean equalsUntilHere(QGQueryBase q)
-    {
-        if(!(q instanceof QGDeletePrv))
-            return false;
-
-        return tableType.equals(((QGDeletePrv)q).tableType);
-    }
 }

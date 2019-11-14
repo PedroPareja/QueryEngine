@@ -60,15 +60,4 @@ public class QGSelectPrv extends QGQueryInit implements QGSelect, QGAutoFields
 
         genOutputNext(stringBuilder, context);
     }
-
-    @Override
-    public boolean equalsUntilHere(QGQueryBase q)
-    {
-        if(!(q instanceof QGSelectPrv))
-            return false;
-
-        QGSelectPrv qSelect = (QGSelectPrv) q;
-
-        return fieldArrayEquals(expressionList, qSelect.expressionList) && distinct == qSelect.distinct;
-    }
 }

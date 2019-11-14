@@ -38,13 +38,4 @@ public class QGInsertPrv extends QGQueryInit implements QGInsert
 
         genOutputNext(stringBuilder, context);
     }
-
-    @Override
-    public boolean equalsUntilHere(QGQueryBase q)
-    {
-        if(!(q instanceof QGInsertPrv))
-            return false;
-
-        return fieldArrayEquals(fieldList, ((QGInsertPrv)q).fieldList);
-    }
 }

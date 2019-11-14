@@ -28,15 +28,6 @@ public class QGIntoPrv<T extends Enum<?> & DBFieldInfo> extends QGQueryMiddleEnd
         stringBuilder.append(")");
     }
 
-    @Override
-    public boolean equalsUntilHere(QGQueryBase q)
-    {
-        if(!(q instanceof QGIntoPrv))
-            return false;
-
-        return tableType.equals(((QGIntoPrv<?>)q).tableType);
-    }
-
     public Class<T> getTableType()
     {
         return tableType;

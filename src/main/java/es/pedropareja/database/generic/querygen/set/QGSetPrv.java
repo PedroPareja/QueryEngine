@@ -30,13 +30,4 @@ public class QGSetPrv extends QGQueryMiddleEnd implements QGSet
 
         genOutputNext(stringBuilder, context);
     }
-
-    @Override
-    public boolean equalsUntilHere(QGQueryBase q)
-    {
-        if(!(q instanceof QGSetPrv))
-            return false;
-
-        return fieldArrayEquals(fieldList, ((QGSetPrv)q).fieldList);
-    }
 }

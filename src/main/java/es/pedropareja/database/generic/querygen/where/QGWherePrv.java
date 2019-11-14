@@ -52,15 +52,6 @@ public class QGWherePrv extends QGQueryMiddleEnd
     }
 
     @Override
-    public boolean equalsUntilHere(QGQueryBase q)
-    {
-        if(!(q instanceof QGWherePrv))
-            return false;
-
-        return conditionListEquals(conditionList, ((QGWherePrv)q).conditionList);
-    }
-
-    @Override
     public List<DBFieldInfo> getAutoFields()
     {
         List<DBFieldInfo> result = new ArrayList<>();

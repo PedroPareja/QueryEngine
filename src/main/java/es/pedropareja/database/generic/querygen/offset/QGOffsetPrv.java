@@ -29,13 +29,4 @@ public class QGOffsetPrv extends QGQueryMiddleEnd implements QGOffset
 
         genOutputNext(stringBuilder, context);
     }
-
-    @Override
-    public boolean equalsUntilHere(QGQueryBase q)
-    {
-        if(!(q instanceof QGOffsetPrv))
-            return false;
-
-        return Objects.equals(offset, ((QGOffsetPrv)q).offset);
-    }
 }
