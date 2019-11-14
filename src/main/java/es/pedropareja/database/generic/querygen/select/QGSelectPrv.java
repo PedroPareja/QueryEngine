@@ -31,6 +31,17 @@ public class QGSelectPrv extends QGQueryInit implements QGSelect, QGAutoFields
     }
 
     @Override
+    public QGSelect and(QGExpression... expressions)
+    {
+        if(expressionList != null)
+            expressionList.addAll(Arrays.asList(expressions));
+        else
+            expressionList = Arrays.asList(expressions);
+
+        return this;
+    }
+
+    @Override
     public List<DBFieldInfo> getAutoFields()
     {
         List<DBFieldInfo> result = new ArrayList<>();
