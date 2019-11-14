@@ -13,7 +13,7 @@ import es.pedropareja.database.generic.querygen.update.QGUpdate;
 import es.pedropareja.database.generic.querygen.update.QGUpdatePrv;
 
 
-public class QueryGen implements QGExprGen
+public class QueryGen
 {
     public static QGSelect select() { return new QGSelectPrv(); }
 
