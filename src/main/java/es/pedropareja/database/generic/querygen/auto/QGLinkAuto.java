@@ -11,7 +11,7 @@ public interface QGLinkAuto extends QGLinkBase
         return assignNext(new QGAutoPrv<>(tableMapper, mainTable, getInit()));
     }
 
-    default <T extends Enum<?> & DBFieldInfo> QGAuto auto(DBTableMapper tableMapper, Class<T> mainTable, Class<T>... ignoreTables)
+    default <T extends Enum<?> & DBFieldInfo, U extends Enum<?> & DBFieldInfo> QGAuto auto(DBTableMapper tableMapper, Class<T> mainTable, Class<U>... ignoreTables)
     {
         return assignNext(new QGAutoPrv<>(tableMapper, mainTable, ignoreTables, getInit()));
     }
