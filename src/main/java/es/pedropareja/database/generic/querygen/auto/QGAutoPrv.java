@@ -13,6 +13,7 @@ import es.pedropareja.database.generic.querygen.join.QGLinkJoin;
 import es.pedropareja.database.generic.querygen.on.QGOn;
 import es.pedropareja.database.generic.querygen.optional.QGLinkOptionalPrv;
 
+import java.util.Arrays;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -22,12 +23,23 @@ public class QGAutoPrv<T extends Enum<?> & DBFieldInfo>
 {
     private final DBTableMapper tableMapper;
     private final Class<T> mainTable;
+    private final Class<T>[] ignoreTables;
 
     public QGAutoPrv(DBTableMapper tableMapper, Class<T> mainTable, QGQueryInit init)
     {
         super(init);
         this.tableMapper = tableMapper;
         this.mainTable = mainTable;
+        this.ignoreTables = null;
+        init.setFullNamespaces();
+    }
+
+    public QGAutoPrv(DBTableMapper tableMapper, Class<T> mainTable, Class<T>[] ignoreTables, QGQueryInit init)
+    {
+        super(init);
+        this.tableMapper = tableMapper;
+        this.mainTable = mainTable;
+        this.ignoreTables = ignoreTables;
         init.setFullNamespaces();
     }
 
@@ -40,6 +52,9 @@ public class QGAutoPrv<T extends Enum<?> & DBFieldInfo>
 
         Class<T> fromTable = mainTable != null ? mainTable : (Class<T>) autoTables.toArray()[0];
         autoTables.remove(fromTable);
+
+        if(ignoreTables != null)
+            autoTables.removeAll(Arrays.asList(ignoreTables));
 
         QGLinkJoin linkJoin = new NullInit().from(fromTable);
 
