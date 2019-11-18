@@ -17,13 +17,13 @@ import java.util.Arrays;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class QGAutoPrv<T extends Enum<?> & DBFieldInfo, U extends Enum<?> & DBFieldInfo>
+public class QGAutoPrv<T extends Enum<?> & DBFieldInfo>
         extends QGQueryMiddleEnd
         implements QGAuto, QGLinkOptionalPrv<QGAuto>
 {
     private final DBTableMapper tableMapper;
     private final Class<T> mainTable;
-    private final Class<U>[] ignoreTables;
+    private final Class<? extends DBFieldInfo>[] ignoreTables;
 
     public QGAutoPrv(DBTableMapper tableMapper, Class<T> mainTable, QGQueryInit init)
     {
@@ -34,7 +34,7 @@ public class QGAutoPrv<T extends Enum<?> & DBFieldInfo, U extends Enum<?> & DBFi
         init.setFullNamespaces();
     }
 
-    public QGAutoPrv(DBTableMapper tableMapper, Class<T> mainTable, Class<U>[] ignoreTables, QGQueryInit init)
+    public QGAutoPrv(DBTableMapper tableMapper, Class<T> mainTable, Class<? extends DBFieldInfo>[] ignoreTables, QGQueryInit init)
     {
         super(init);
         this.tableMapper = tableMapper;
