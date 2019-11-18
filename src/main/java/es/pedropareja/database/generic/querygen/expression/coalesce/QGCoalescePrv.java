@@ -2,13 +2,16 @@ package es.pedropareja.database.generic.querygen.expression.coalesce;
 
 import es.pedropareja.database.generic.DBFieldInfo;
 import es.pedropareja.database.generic.querygen.base.QGQueryBase;
+import es.pedropareja.database.generic.querygen.expression.as.QGLinkAsPrv;
 import es.pedropareja.database.generic.querygen.expression.base.QGExpression;
 import es.pedropareja.database.generic.querygen.expression.base.QGExpressionBase;
 import es.pedropareja.database.generic.querygen.expression.base.QGExpressionPrv;
+import es.pedropareja.database.generic.querygen.expression.operator.QGLinkOperatorsPrv;
 
 import java.util.List;
 
-public class QGCoalescePrv extends QGExpressionBase implements QGCoalesce
+public class QGCoalescePrv extends QGExpressionBase
+        implements QGCoalesce, QGLinkAsPrv, QGLinkOperatorsPrv
 {
     private final QGExpression[] parameters;
 
@@ -20,7 +23,8 @@ public class QGCoalescePrv extends QGExpressionBase implements QGCoalesce
 
     public QGCoalescePrv(QGExpression[] parameters)
     {
-        this(null, parameters);
+        super();
+        this.parameters = parameters;
     }
 
     @Override
