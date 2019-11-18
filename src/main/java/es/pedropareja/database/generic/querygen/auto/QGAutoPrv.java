@@ -13,9 +13,7 @@ import es.pedropareja.database.generic.querygen.join.QGLinkJoin;
 import es.pedropareja.database.generic.querygen.on.QGOn;
 import es.pedropareja.database.generic.querygen.optional.QGLinkOptionalPrv;
 
-import java.util.Arrays;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 public class QGAutoPrv<T extends Enum<?> & DBFieldInfo>
         extends QGQueryMiddleEnd
@@ -23,24 +21,25 @@ public class QGAutoPrv<T extends Enum<?> & DBFieldInfo>
 {
     private final DBTableMapper tableMapper;
     private final Class<T> mainTable;
-    private final Class<? extends DBFieldInfo>[] ignoreTables;
+    private List<Class<? extends DBFieldInfo>> ignoreTables = null;
 
     public QGAutoPrv(DBTableMapper tableMapper, Class<T> mainTable, QGQueryInit init)
     {
         super(init);
         this.tableMapper = tableMapper;
         this.mainTable = mainTable;
-        this.ignoreTables = null;
         init.setFullNamespaces();
     }
 
-    public QGAutoPrv(DBTableMapper tableMapper, Class<T> mainTable, Class<? extends DBFieldInfo>[] ignoreTables, QGQueryInit init)
+    @SuppressWarnings("unchecked")
+    @Override
+    public QGAuto ignoreTables(Class<? extends DBFieldInfo>... tables)
     {
-        super(init);
-        this.tableMapper = tableMapper;
-        this.mainTable = mainTable;
-        this.ignoreTables = ignoreTables;
-        init.setFullNamespaces();
+        if(ignoreTables == null)
+            ignoreTables = new ArrayList<>();
+
+        ignoreTables.addAll(Arrays.asList(tables));
+        return this;
     }
 
     @SuppressWarnings("unchecked")
@@ -54,7 +53,7 @@ public class QGAutoPrv<T extends Enum<?> & DBFieldInfo>
         autoTables.remove(fromTable);
 
         if(ignoreTables != null)
-            autoTables.removeAll(Arrays.asList(ignoreTables));
+            autoTables.removeAll(ignoreTables);
 
         QGLinkJoin linkJoin = new NullInit().from(fromTable);
 
