@@ -4,6 +4,9 @@ import es.pedropareja.database.generic.DBFieldInfo;
 import es.pedropareja.database.generic.querygen.expression.aggregate.QGAggregate;
 import es.pedropareja.database.generic.querygen.expression.aggregate.QGAggregate.Type;
 import es.pedropareja.database.generic.querygen.expression.aggregate.QGAggregatePrv;
+import es.pedropareja.database.generic.querygen.expression.base.QGExpression;
+import es.pedropareja.database.generic.querygen.expression.coalesce.QGCoalesce;
+import es.pedropareja.database.generic.querygen.expression.coalesce.QGCoalescePrv;
 import es.pedropareja.database.generic.querygen.expression.field.QGField;
 import es.pedropareja.database.generic.querygen.expression.field.QGFieldPrv;
 import es.pedropareja.database.generic.querygen.expression.id.QGId;
@@ -73,5 +76,11 @@ public class QGExprGen
     public static QGId id(String idValue)
     {
         return new QGIdPrv(idValue);
+    }
+
+    @SafeVarargs
+    public static QGCoalesce coalesce(QGExpression... parameters)
+    {
+        return new QGCoalescePrv(parameters);
     }
 }
