@@ -47,7 +47,12 @@ public class QGSelectPrv extends QGQueryInit implements QGSelect, QGAutoFields
         List<DBFieldInfo> result = new ArrayList<>();
 
         for(QGExpression expression: expressionList)
-            result.addAll(expression.getAutoFields());
+        {
+            List<DBFieldInfo> autoFields = expression.getAutoFields();
+
+            if(autoFields != null)
+                result.addAll(autoFields);
+        }
 
         return result;
     }
