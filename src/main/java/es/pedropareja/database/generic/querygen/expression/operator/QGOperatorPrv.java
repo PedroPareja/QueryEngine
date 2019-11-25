@@ -6,11 +6,12 @@ import es.pedropareja.database.generic.querygen.expression.base.QGExpressionPrv;
 import es.pedropareja.database.generic.querygen.expression.coalesce.QGLinkCoalescePrv;
 import es.pedropareja.database.generic.querygen.expression.field.QGLinkFieldPrv;
 import es.pedropareja.database.generic.querygen.expression.id.QGLinkIdPrv;
+import es.pedropareja.database.generic.querygen.expression.number.QGLinkNumberPrv;
 
 import java.util.List;
 
 public class QGOperatorPrv extends QGExpressionBase
-        implements QGOperator, QGLinkFieldPrv, QGLinkIdPrv, QGLinkCoalescePrv
+        implements QGOperator, QGLinkFieldPrv, QGLinkIdPrv, QGLinkCoalescePrv, QGLinkNumberPrv
 {
     private final Type type;
 

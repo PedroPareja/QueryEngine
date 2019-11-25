@@ -4,9 +4,10 @@ import es.pedropareja.database.generic.querygen.expression.base.QGExpression;
 import es.pedropareja.database.generic.querygen.expression.coalesce.QGLinkCoalesce;
 import es.pedropareja.database.generic.querygen.expression.field.QGLinkField;
 import es.pedropareja.database.generic.querygen.expression.id.QGLinkId;
+import es.pedropareja.database.generic.querygen.expression.number.QGLinkNumber;
 
 public interface QGOperator
-        extends QGExpression, QGLinkField, QGLinkId, QGLinkCoalesce
+        extends QGExpression, QGLinkField, QGLinkId, QGLinkCoalesce, QGLinkNumber
 {
 
     enum Type

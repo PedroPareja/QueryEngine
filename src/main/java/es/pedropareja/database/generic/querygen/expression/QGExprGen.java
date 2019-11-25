@@ -11,6 +11,10 @@ import es.pedropareja.database.generic.querygen.expression.field.QGField;
 import es.pedropareja.database.generic.querygen.expression.field.QGFieldPrv;
 import es.pedropareja.database.generic.querygen.expression.id.QGId;
 import es.pedropareja.database.generic.querygen.expression.id.QGIdPrv;
+import es.pedropareja.database.generic.querygen.expression.number.QGNumber;
+import es.pedropareja.database.generic.querygen.expression.number.QGNumberPrv;
+
+import java.math.BigDecimal;
 
 public class QGExprGen
 {
@@ -82,5 +86,20 @@ public class QGExprGen
     public static QGCoalesce coalesce(QGExpression... parameters)
     {
         return new QGCoalescePrv(parameters);
+    }
+
+    public static QGNumber number(BigDecimal value)
+    {
+        return new QGNumberPrv(value);
+    }
+
+    public static QGNumber number(int value)
+    {
+        return new QGNumberPrv(value);
+    }
+
+    public static QGNumber number(String value)
+    {
+        return new QGNumberPrv(value);
     }
 }
