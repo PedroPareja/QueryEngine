@@ -1,6 +1,5 @@
 package es.pedropareja.database.generic.querygen.expression.aggregate;
 
-import es.pedropareja.database.generic.DBFieldInfo;
 import es.pedropareja.database.generic.querygen.expression.base.QGExpression;
 import es.pedropareja.database.generic.querygen.expression.field.QGField;
 
