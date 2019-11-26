@@ -1,72 +1,50 @@
 package es.pedropareja.database.generic.querygen.expression.aggregate;
 
 import es.pedropareja.database.generic.DBFieldInfo;
+import es.pedropareja.database.generic.querygen.expression.aggregate.QGAggregate.Type;
+import es.pedropareja.database.generic.querygen.expression.base.QGExpression;
 import es.pedropareja.database.generic.querygen.expression.base.QGExpressionPrv;
 
 public interface QGLinkAggregatePrv extends QGLinkAggregate, QGExpressionPrv
 {
-    default <T extends Enum<?> & DBFieldInfo> QGAggregate assignFunction(QGAggregate.Type type, T field)
+    default QGAggregate assignFunction(QGAggregate.Type type, QGExpression exp)
     {
-        return assignNext(new QGAggregatePrv<>(getInit(), type, field));
+        return assignNext(new QGAggregatePrv<>(getInit(), type, exp));
     }
 
-    default QGAggregate assignFunction(QGAggregate.Type type, String id)
+    @Override
+    default QGAggregate avg(QGExpression exp)
     {
-        return assignNext(new QGAggregatePrv<>(getInit(), type, id));
+        return assignFunction(QGAggregate.Type.AVG, exp);
     }
 
-    default <T extends Enum<?> & DBFieldInfo> QGAggregate avg(T field)
+    @Override
+    default QGAggregate count(QGExpression exp)
     {
-        return assignFunction(QGAggregate.Type.AVG, field);
+        return assignFunction(QGAggregate.Type.COUNT, exp);
     }
 
-    default QGAggregate avg(String id)
-    {
-        return assignFunction(QGAggregate.Type.AVG, id);
-    }
-
-    default <T extends Enum<?> & DBFieldInfo> QGAggregate count(T field)
-    {
-        return assignFunction(QGAggregate.Type.COUNT, field);
-    }
-
-    default QGAggregate count(String id)
-    {
-        return assignFunction(QGAggregate.Type.COUNT, id);
-    }
-
+    @Override
     default QGAggregate count()
     {
-        return assignFunction(QGAggregate.Type.COUNT, "*");
+        return assignNext(new QGAggregatePrv<>(Type.COUNT));
     }
 
-    default <T extends Enum<?> & DBFieldInfo> QGAggregate min(T field)
+    @Override
+    default QGAggregate min(QGExpression exp)
     {
-        return assignFunction(QGAggregate.Type.MIN, field);
+        return assignFunction(QGAggregate.Type.MIN, exp);
     }
 
-    default QGAggregate min(String id)
+    @Override
+    default QGAggregate max(QGExpression exp)
     {
-        return assignFunction(QGAggregate.Type.MIN, id);
+        return assignFunction(QGAggregate.Type.MAX, exp);
     }
 
-    default <T extends Enum<?> & DBFieldInfo> QGAggregate max(T field)
+    @Override
+    default QGAggregate sum(QGExpression exp)
     {
-        return assignFunction(QGAggregate.Type.MAX, field);
-    }
-
-    default QGAggregate max(String id)
-    {
-        return assignFunction(QGAggregate.Type.MAX, id);
-    }
-
-    default <T extends Enum<?> & DBFieldInfo> QGAggregate sum(T field)
-    {
-        return assignFunction(QGAggregate.Type.SUM, field);
-    }
-
-    default QGAggregate sum(String id)
-    {
-        return assignFunction(QGAggregate.Type.SUM, id);
+        return assignFunction(QGAggregate.Type.SUM, exp);
     }
 }

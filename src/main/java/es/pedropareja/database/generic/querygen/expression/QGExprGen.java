@@ -20,56 +20,31 @@ public class QGExprGen
 {
     private QGExprGen() {}
 
-    public static <T extends Enum<?> & DBFieldInfo> QGAggregate avg(T field)
+    public static QGAggregate avg(QGExpression exp)
     {
-        return new QGAggregatePrv<>(QGAggregate.Type.AVG, field);
+        return new QGAggregatePrv<>(Type.AVG, exp);
     }
 
-    public static QGAggregate avg(String id)
+    public static QGAggregate count(QGExpression exp)
     {
-        return new QGAggregatePrv<>(QGAggregate.Type.AVG, id);
-    }
-
-    public static <T extends Enum<?> & DBFieldInfo> QGAggregate count(T field)
-    {
-        return new QGAggregatePrv<>(QGAggregate.Type.COUNT, field);
-    }
-
-    public static QGAggregate count(String id)
-    {
-        return new QGAggregatePrv<>(QGAggregate.Type.COUNT, id);
+        return new QGAggregatePrv<>(QGAggregate.Type.COUNT, exp);
     }
 
     public static QGAggregate count() { return new QGAggregatePrv<>(Type.COUNT); }
 
-    public static <T extends Enum<?> & DBFieldInfo> QGAggregate min(T field)
+    public static QGAggregate min(QGExpression exp)
     {
-        return new QGAggregatePrv<>(QGAggregate.Type.MIN, field);
+        return new QGAggregatePrv<>(QGAggregate.Type.MIN, exp);
     }
 
-    public static QGAggregate min(String id)
+    public static QGAggregate max(QGExpression exp)
     {
-        return new QGAggregatePrv<>(QGAggregate.Type.MIN, id);
+        return new QGAggregatePrv<>(QGAggregate.Type.MAX, exp);
     }
 
-    public static <T extends Enum<?> & DBFieldInfo> QGAggregate max(T field)
+    public static QGAggregate sum(QGExpression exp)
     {
-        return new QGAggregatePrv<>(QGAggregate.Type.MAX, field);
-    }
-
-    public static QGAggregate max(String id)
-    {
-        return new QGAggregatePrv<>(QGAggregate.Type.MAX, id);
-    }
-
-    public static <T extends Enum<?> & DBFieldInfo> QGAggregate sum(T field)
-    {
-        return new QGAggregatePrv<>(QGAggregate.Type.SUM, field);
-    }
-
-    public static QGAggregate sum(String id)
-    {
-        return new QGAggregatePrv<>(QGAggregate.Type.SUM, id);
+        return new QGAggregatePrv<>(QGAggregate.Type.SUM, exp);
     }
 
     public static <T extends Enum<?> & DBFieldInfo> QGField field(T fieldValue)
