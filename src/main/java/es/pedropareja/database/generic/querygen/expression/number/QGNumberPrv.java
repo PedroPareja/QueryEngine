@@ -54,9 +54,7 @@ public class QGNumberPrv extends QGExpressionBase implements QGNumber, QGLinkOpe
     @Override
     public <T> void genOutput(StringBuilder stringBuilder, boolean fullNamespaces, T context)
     {
-        if(getInit() != this)
-            stringBuilder.append(" ");
-
+        printSpaceIfNotFirst(stringBuilder);
         stringBuilder.append(value);
     }
 }

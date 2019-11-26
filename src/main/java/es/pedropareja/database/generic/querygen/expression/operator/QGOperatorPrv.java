@@ -24,7 +24,8 @@ public class QGOperatorPrv extends QGExpressionBase
     @Override
     public <T> void genOutput(StringBuilder stringBuilder, boolean fullNamespaces, T context)
     {
-        stringBuilder.append(" ").append(type.getSymbol()).append(" ");
+        printSpaceIfNotFirst(stringBuilder);
+        stringBuilder.append(type.getSymbol());
     }
 
     @Override
