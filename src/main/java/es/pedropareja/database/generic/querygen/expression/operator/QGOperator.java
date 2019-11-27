@@ -15,7 +15,9 @@ public interface QGOperator
         PLUS("+"),
         MINUS("-"),
         MULTIPLY("*"),
-        DIVIDE("/");
+        DIVIDE("/"),
+        PARENTHESIS_OPEN("("),
+        PARENTHESIS_CLOSE(")");
 
         private final String symbol;
 

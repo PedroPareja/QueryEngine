@@ -13,6 +13,8 @@ import es.pedropareja.database.generic.querygen.expression.id.QGId;
 import es.pedropareja.database.generic.querygen.expression.id.QGIdPrv;
 import es.pedropareja.database.generic.querygen.expression.number.QGNumber;
 import es.pedropareja.database.generic.querygen.expression.number.QGNumberPrv;
+import es.pedropareja.database.generic.querygen.expression.operator.QGOperator;
+import es.pedropareja.database.generic.querygen.expression.operator.QGOperatorPrv;
 
 import java.math.BigDecimal;
 
@@ -77,4 +79,8 @@ public class QGExprGen
     {
         return new QGNumberPrv(value);
     }
+
+    public static QGOperator openParenthesis() { return new QGOperatorPrv(QGOperator.Type.PARENTHESIS_OPEN); }
+
+    public static QGOperator closeParenthesis() { return new QGOperatorPrv(QGOperator.Type.PARENTHESIS_CLOSE); }
 }

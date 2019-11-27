@@ -21,6 +21,12 @@ public class QGOperatorPrv extends QGExpressionBase
         this.type = type;
     }
 
+    public QGOperatorPrv(Type type)
+    {
+        super();
+        this.type = type;
+    }
+
     @Override
     public <T> void genOutput(StringBuilder stringBuilder, boolean fullNamespaces, T context)
     {
