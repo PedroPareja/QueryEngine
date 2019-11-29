@@ -52,7 +52,9 @@ public interface QGLinkConditionsPrv<T extends QGOptionalityEnabled & QGLinkCond
         if(getThis().getNextOptionalAppearanceValueAndReset())
         {
             getConditionList().add(new QGConditionExists(query));
-            getThis().getInit().setFullNamespaces();
+
+            if(getThis().getInit() != null)
+                getThis().getInit().setFullNamespaces();
         }
 
         return getThis();
@@ -64,7 +66,9 @@ public interface QGLinkConditionsPrv<T extends QGOptionalityEnabled & QGLinkCond
         if(getThis().getNextOptionalAppearanceValueAndReset())
         {
             getConditionList().add(new QGConditionInQuery<>(field, query));
-            getThis().getInit().setFullNamespaces();
+
+            if(getThis().getInit() != null)
+                getThis().getInit().setFullNamespaces();
         }
 
         return getThis();
