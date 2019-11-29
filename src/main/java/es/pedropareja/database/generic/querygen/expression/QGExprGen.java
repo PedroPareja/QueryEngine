@@ -5,6 +5,8 @@ import es.pedropareja.database.generic.querygen.expression.aggregate.QGAggregate
 import es.pedropareja.database.generic.querygen.expression.aggregate.QGAggregate.Type;
 import es.pedropareja.database.generic.querygen.expression.aggregate.QGAggregatePrv;
 import es.pedropareja.database.generic.querygen.expression.base.QGExpression;
+import es.pedropareja.database.generic.querygen.expression.casecmd.QGCase;
+import es.pedropareja.database.generic.querygen.expression.casecmd.QGCasePrv;
 import es.pedropareja.database.generic.querygen.expression.coalesce.QGCoalesce;
 import es.pedropareja.database.generic.querygen.expression.coalesce.QGCoalescePrv;
 import es.pedropareja.database.generic.querygen.expression.field.QGField;
@@ -83,4 +85,7 @@ public class QGExprGen
     public static QGOperator openParenthesis() { return new QGOperatorPrv(QGOperator.Type.PARENTHESIS_OPEN); }
 
     public static QGOperator closeParenthesis() { return new QGOperatorPrv(QGOperator.Type.PARENTHESIS_CLOSE); }
+
+    public static QGCase caseSelection() { return new QGCasePrv(); }
 }
+
