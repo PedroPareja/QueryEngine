@@ -8,28 +8,30 @@ import es.pedropareja.database.generic.querygen.base.QGQuery;
 import es.pedropareja.database.generic.querygen.condition.group.QGConditionAll;
 import es.pedropareja.database.generic.querygen.condition.group.QGConditionAny;
 import es.pedropareja.database.generic.querygen.condition.group.QGConditionNot;
+import es.pedropareja.database.generic.querygen.expression.base.QGExpression;
 import es.pedropareja.database.generic.querygen.optional.QGLinkOptional;
 
 import java.util.Collection;
 
 public interface QGLinkConditions<T extends QGLinkConditions<T>> extends QGLinkOptional<T>, QGOptionalityEnabled, QGInitReferenced
 {
-    <U extends DBFieldInfo> T equals(U field);
-    <U extends DBFieldInfo> T equals(U field1, U field2);
+    T equals(QGExpression exp);
+    T equals(QGExpression exp1, QGExpression exp2);
     <U extends DBFieldInfo> T equalsAny(U field);
     <U extends DBFieldInfo> T exists(QGQuery query);
     <U extends DBFieldInfo> T in(U field, QGQuery query);
     <U extends DBFieldInfo> T in(U field, int numberOfParameters);
     <U extends DBFieldInfo> T in(U field, Collection<?> collection);
-    <U extends DBFieldInfo> T like(U field);
-    <U extends DBFieldInfo> T greater(U field);
-    <U extends DBFieldInfo> T greater(U field1, U field2);
-    <U extends DBFieldInfo> T greaterOrEqual(U field);
-    <U extends DBFieldInfo> T greaterOrEqual(U field1, U field2);
-    <U extends DBFieldInfo> T less(U field);
-    <U extends DBFieldInfo> T less(U field1, U field2);
-    <U extends DBFieldInfo> T lessOrEqual(U field);
-    <U extends DBFieldInfo> T lessOrEqual(U field1, U field2);
+    T like(QGExpression exp);
+    T like(QGExpression exp1, QGExpression exp2);
+    T greater(QGExpression exp);
+    T greater(QGExpression exp1, QGExpression exp2);
+    T greaterOrEqual(QGExpression exp);
+    T greaterOrEqual(QGExpression exp1, QGExpression exp2);
+    T less(QGExpression exp);
+    T less(QGExpression exp1, QGExpression exp2);
+    T lessOrEqual(QGExpression exp);
+    T lessOrEqual(QGExpression exp1, QGExpression exp2);
 
     QGConditionAll<T> all();
     QGConditionAny<T> any();
