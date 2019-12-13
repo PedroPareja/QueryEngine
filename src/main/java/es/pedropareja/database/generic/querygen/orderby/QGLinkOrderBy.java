@@ -1,6 +1,5 @@
 package es.pedropareja.database.generic.querygen.orderby;
 
-import es.pedropareja.database.generic.DBFieldInfo;
 import es.pedropareja.database.generic.querygen.Order;
 import es.pedropareja.database.generic.querygen.base.QGLinkBase;
 import es.pedropareja.database.generic.querygen.expression.base.QGExpression;
