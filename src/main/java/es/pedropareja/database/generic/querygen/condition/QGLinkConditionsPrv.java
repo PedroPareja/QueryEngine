@@ -167,6 +167,12 @@ public interface QGLinkConditionsPrv<T extends QGOptionalityEnabled & QGLinkCond
     }
 
     @Override
+    default T isNull(QGExpression exp)
+    {
+        return addCondition(new QGConditionIsNull(exp));
+    }
+
+    @Override
     default QGConditionAll<T> all()
     {
         QGConditionAll<T> result = new QGConditionAllPrv<>(getInit(), getThis());

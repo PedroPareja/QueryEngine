@@ -32,6 +32,7 @@ public interface QGLinkConditions<T extends QGLinkConditions<T>> extends QGLinkO
     T less(QGExpression exp1, QGExpression exp2);
     T lessOrEqual(QGExpression exp);
     T lessOrEqual(QGExpression exp1, QGExpression exp2);
+    T isNull(QGExpression exp);
 
     QGConditionAll<T> all();
     QGConditionAny<T> any();
