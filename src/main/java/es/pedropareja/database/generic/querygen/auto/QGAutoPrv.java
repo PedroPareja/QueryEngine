@@ -13,8 +13,7 @@ import es.pedropareja.database.generic.querygen.join.QGLinkJoin;
 import es.pedropareja.database.generic.querygen.on.QGOn;
 import es.pedropareja.database.generic.querygen.optional.QGLinkOptionalPrv;
 
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 public class QGAutoPrv<T extends Enum<?> & DBFieldInfo>
         extends QGQueryMiddleEnd
@@ -22,6 +21,7 @@ public class QGAutoPrv<T extends Enum<?> & DBFieldInfo>
 {
     private final DBTableMapper tableMapper;
     private final Class<T> mainTable;
+    private List<Class<? extends DBFieldInfo>> ignoreTables = null;
 
     public QGAutoPrv(DBTableMapper tableMapper, Class<T> mainTable, QGQueryInit init)
     {
@@ -33,6 +33,17 @@ public class QGAutoPrv<T extends Enum<?> & DBFieldInfo>
 
     @SuppressWarnings("unchecked")
     @Override
+    public QGAuto ignoreTables(Class<? extends DBFieldInfo>... tables)
+    {
+        if(ignoreTables == null)
+            ignoreTables = new ArrayList<>();
+
+        ignoreTables.addAll(Arrays.asList(tables));
+        return this;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
     public <U> void genOutput(StringBuilder stringBuilder, U context)
     {
         Set<Class<? extends DBFieldInfo>> autoTables = new TreeSet<>((a,b) -> a.hashCode() - b.hashCode());
@@ -40,6 +51,9 @@ public class QGAutoPrv<T extends Enum<?> & DBFieldInfo>
 
         Class<T> fromTable = mainTable != null ? mainTable : (Class<T>) autoTables.toArray()[0];
         autoTables.remove(fromTable);
+
+        if(ignoreTables != null)
+            autoTables.removeAll(ignoreTables);
 
         QGLinkJoin linkJoin = new NullInit().from(fromTable);
 

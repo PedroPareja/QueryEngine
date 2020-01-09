@@ -26,9 +26,7 @@ public class QGIdPrv extends QGExpressionBase implements QGId, QGLinkOperatorsPr
     @Override
     public <T> void genOutput(StringBuilder stringBuilder, boolean fullNamespaces, T context)
     {
-        if(getInit() != this)
-            stringBuilder.append(" ");
-
+        printSpaceIfNotFirst(stringBuilder);
         stringBuilder.append(id);
     }
 

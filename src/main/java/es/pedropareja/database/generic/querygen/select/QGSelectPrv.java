@@ -18,7 +18,7 @@ public class QGSelectPrv extends QGQueryInit implements QGSelect, QGAutoFields
     @SafeVarargs
     public QGSelectPrv(QGExpression ... expressions)
     {
-        this.expressionList = Arrays.asList(expressions);
+        this.expressionList = new ArrayList<>(Arrays.asList(expressions));
     }
 
     public QGSelectPrv() { this.expressionList = null; }
@@ -36,7 +36,7 @@ public class QGSelectPrv extends QGQueryInit implements QGSelect, QGAutoFields
         if(expressionList != null)
             expressionList.addAll(Arrays.asList(expressions));
         else
-            expressionList = Arrays.asList(expressions);
+            expressionList = new ArrayList<>(Arrays.asList(expressions));
 
         return this;
     }
@@ -47,7 +47,12 @@ public class QGSelectPrv extends QGQueryInit implements QGSelect, QGAutoFields
         List<DBFieldInfo> result = new ArrayList<>();
 
         for(QGExpression expression: expressionList)
-            result.addAll(expression.getAutoFields());
+        {
+            List<DBFieldInfo> autoFields = expression.getAutoFields();
+
+            if(autoFields != null)
+                result.addAll(autoFields);
+        }
 
         return result;
     }

@@ -1,62 +1,41 @@
 package es.pedropareja.database.generic.querygen.expression.aggregate;
 
 import es.pedropareja.database.generic.DBFieldInfo;
-import es.pedropareja.database.generic.querygen.base.QGQueryBase;
 import es.pedropareja.database.generic.querygen.expression.as.QGLinkAsPrv;
+import es.pedropareja.database.generic.querygen.expression.base.QGExpression;
 import es.pedropareja.database.generic.querygen.expression.base.QGExpressionBase;
 import es.pedropareja.database.generic.querygen.expression.base.QGExpressionPrv;
 
 import java.util.List;
-import java.util.Objects;
-
-import static es.pedropareja.database.generic.querygen.base.QGQueryBase.joinLists;
 
 public class QGAggregatePrv<T extends Enum<?> & DBFieldInfo>
         extends QGExpressionBase implements QGAggregate, QGLinkAsPrv
 {
     private final Type type;
-    private final T field;
-    private final String id;
+    private final QGExpression exp;
 
-    private QGAggregatePrv(QGExpressionPrv init, Type type, T field, String id)
+    public QGAggregatePrv(QGExpressionPrv init, Type type, QGExpression exp)
     {
         super(init);
         this.type = type;
-        this.field = field;
-        this.id = id;
+        this.exp = exp;
     }
 
-    private QGAggregatePrv(Type type, T field, String id)
+    public QGAggregatePrv(Type type, QGExpression exp)
     {
         super();
         this.type = type;
-        this.field = field;
-        this.id = id;
+        this.exp = exp;
     }
 
-    public QGAggregatePrv(QGExpressionPrv init, Type type, T field)
+    public QGAggregatePrv(QGExpressionPrv init, Type type)
     {
-        this(init, type, field, null);
-    }
-
-    public QGAggregatePrv(Type type, T field)
-    {
-        this(type, field, null);
-    }
-
-    public QGAggregatePrv(QGExpressionPrv init, Type type, String id)
-    {
-        this(init, type, null, id);
-    }
-
-    public QGAggregatePrv(Type type, String id)
-    {
-        this(type, null, id);
+       this(init, type, null);
     }
 
     public QGAggregatePrv(Type type)
     {
-        this(type, null, null);
+        this(type, null);
     }
 
     @Override
@@ -65,10 +44,8 @@ public class QGAggregatePrv<T extends Enum<?> & DBFieldInfo>
         printSpaceIfNotFirst(stringBuilder);
         stringBuilder.append(type.name()).append("(");
 
-        if(field != null)
-            field.genExpressionOutput(stringBuilder, fullNamespaces, context);
-        else if(id != null)
-            stringBuilder.append(id);
+        if(exp != null)
+            exp.genExpressionOutput(stringBuilder, fullNamespaces, context);
         else
             stringBuilder.append("*");
 
@@ -78,7 +55,6 @@ public class QGAggregatePrv<T extends Enum<?> & DBFieldInfo>
     @Override
     public List<DBFieldInfo> getElementAutoFields()
     {
-        return field.getAutoFields();
+        return exp.getAutoFields();
     }
-
 }

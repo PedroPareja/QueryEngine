@@ -3,13 +3,15 @@ package es.pedropareja.database.generic.querygen.expression.operator;
 import es.pedropareja.database.generic.DBFieldInfo;
 import es.pedropareja.database.generic.querygen.expression.base.QGExpressionBase;
 import es.pedropareja.database.generic.querygen.expression.base.QGExpressionPrv;
+import es.pedropareja.database.generic.querygen.expression.coalesce.QGLinkCoalescePrv;
 import es.pedropareja.database.generic.querygen.expression.field.QGLinkFieldPrv;
 import es.pedropareja.database.generic.querygen.expression.id.QGLinkIdPrv;
+import es.pedropareja.database.generic.querygen.expression.number.QGLinkNumberPrv;
 
 import java.util.List;
 
 public class QGOperatorPrv extends QGExpressionBase
-        implements QGOperator, QGLinkFieldPrv, QGLinkIdPrv
+        implements QGOperator, QGLinkFieldPrv, QGLinkIdPrv, QGLinkCoalescePrv, QGLinkNumberPrv
 {
     private final Type type;
 
@@ -19,10 +21,17 @@ public class QGOperatorPrv extends QGExpressionBase
         this.type = type;
     }
 
+    public QGOperatorPrv(Type type)
+    {
+        super();
+        this.type = type;
+    }
+
     @Override
     public <T> void genOutput(StringBuilder stringBuilder, boolean fullNamespaces, T context)
     {
-        stringBuilder.append(" ").append(type.getSymbol());
+        printSpaceIfNotFirst(stringBuilder);
+        stringBuilder.append(type.getSymbol());
     }
 
     @Override

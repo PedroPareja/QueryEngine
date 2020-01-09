@@ -4,65 +4,51 @@ import es.pedropareja.database.generic.DBFieldInfo;
 import es.pedropareja.database.generic.querygen.expression.aggregate.QGAggregate;
 import es.pedropareja.database.generic.querygen.expression.aggregate.QGAggregate.Type;
 import es.pedropareja.database.generic.querygen.expression.aggregate.QGAggregatePrv;
+import es.pedropareja.database.generic.querygen.expression.base.QGExpression;
+import es.pedropareja.database.generic.querygen.expression.casecmd.QGCase;
+import es.pedropareja.database.generic.querygen.expression.casecmd.QGCasePrv;
+import es.pedropareja.database.generic.querygen.expression.coalesce.QGCoalesce;
+import es.pedropareja.database.generic.querygen.expression.coalesce.QGCoalescePrv;
 import es.pedropareja.database.generic.querygen.expression.field.QGField;
 import es.pedropareja.database.generic.querygen.expression.field.QGFieldPrv;
 import es.pedropareja.database.generic.querygen.expression.id.QGId;
 import es.pedropareja.database.generic.querygen.expression.id.QGIdPrv;
+import es.pedropareja.database.generic.querygen.expression.number.QGNumber;
+import es.pedropareja.database.generic.querygen.expression.number.QGNumberPrv;
+import es.pedropareja.database.generic.querygen.expression.operator.QGOperator;
+import es.pedropareja.database.generic.querygen.expression.operator.QGOperatorPrv;
+
+import java.math.BigDecimal;
 
 public class QGExprGen
 {
     private QGExprGen() {}
 
-    public static <T extends Enum<?> & DBFieldInfo> QGAggregate avg(T field)
+    public static QGAggregate avg(QGExpression exp)
     {
-        return new QGAggregatePrv<>(QGAggregate.Type.AVG, field);
+        return new QGAggregatePrv<>(Type.AVG, exp);
     }
 
-    public static QGAggregate avg(String id)
+    public static QGAggregate count(QGExpression exp)
     {
-        return new QGAggregatePrv<>(QGAggregate.Type.AVG, id);
-    }
-
-    public static <T extends Enum<?> & DBFieldInfo> QGAggregate count(T field)
-    {
-        return new QGAggregatePrv<>(QGAggregate.Type.COUNT, field);
-    }
-
-    public static QGAggregate count(String id)
-    {
-        return new QGAggregatePrv<>(QGAggregate.Type.COUNT, id);
+        return new QGAggregatePrv<>(QGAggregate.Type.COUNT, exp);
     }
 
     public static QGAggregate count() { return new QGAggregatePrv<>(Type.COUNT); }
 
-    public static <T extends Enum<?> & DBFieldInfo> QGAggregate min(T field)
+    public static QGAggregate min(QGExpression exp)
     {
-        return new QGAggregatePrv<>(QGAggregate.Type.MIN, field);
+        return new QGAggregatePrv<>(QGAggregate.Type.MIN, exp);
     }
 
-    public static QGAggregate min(String id)
+    public static QGAggregate max(QGExpression exp)
     {
-        return new QGAggregatePrv<>(QGAggregate.Type.MIN, id);
+        return new QGAggregatePrv<>(QGAggregate.Type.MAX, exp);
     }
 
-    public static <T extends Enum<?> & DBFieldInfo> QGAggregate max(T field)
+    public static QGAggregate sum(QGExpression exp)
     {
-        return new QGAggregatePrv<>(QGAggregate.Type.MAX, field);
-    }
-
-    public static QGAggregate max(String id)
-    {
-        return new QGAggregatePrv<>(QGAggregate.Type.MAX, id);
-    }
-
-    public static <T extends Enum<?> & DBFieldInfo> QGAggregate sum(T field)
-    {
-        return new QGAggregatePrv<>(QGAggregate.Type.SUM, field);
-    }
-
-    public static QGAggregate sum(String id)
-    {
-        return new QGAggregatePrv<>(QGAggregate.Type.SUM, id);
+        return new QGAggregatePrv<>(QGAggregate.Type.SUM, exp);
     }
 
     public static <T extends Enum<?> & DBFieldInfo> QGField field(T fieldValue)
@@ -74,4 +60,32 @@ public class QGExprGen
     {
         return new QGIdPrv(idValue);
     }
+
+    @SafeVarargs
+    public static QGCoalesce coalesce(QGExpression... parameters)
+    {
+        return new QGCoalescePrv(parameters);
+    }
+
+    public static QGNumber number(BigDecimal value)
+    {
+        return new QGNumberPrv(value);
+    }
+
+    public static QGNumber number(int value)
+    {
+        return new QGNumberPrv(value);
+    }
+
+    public static QGNumber number(String value)
+    {
+        return new QGNumberPrv(value);
+    }
+
+    public static QGOperator openParenthesis() { return new QGOperatorPrv(QGOperator.Type.PARENTHESIS_OPEN); }
+
+    public static QGOperator closeParenthesis() { return new QGOperatorPrv(QGOperator.Type.PARENTHESIS_CLOSE); }
+
+    public static QGCase caseSelection() { return new QGCasePrv(); }
 }
+

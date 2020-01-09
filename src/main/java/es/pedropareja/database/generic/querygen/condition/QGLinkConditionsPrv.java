@@ -5,9 +5,9 @@ import es.pedropareja.database.generic.DBFilterProcessor;
 import es.pedropareja.database.generic.querygen.base.QGInitReferenced;
 import es.pedropareja.database.generic.querygen.base.QGOptionalityEnabled;
 import es.pedropareja.database.generic.querygen.base.QGQuery;
-import es.pedropareja.database.generic.querygen.base.QGQueryMiddleEnd;
 import es.pedropareja.database.generic.querygen.condition.QGConditionComparation.ComparationType;
 import es.pedropareja.database.generic.querygen.condition.group.*;
+import es.pedropareja.database.generic.querygen.expression.base.QGExpression;
 import es.pedropareja.database.generic.querygen.optional.QGLinkOptionalPrv;
 
 import java.util.Collection;
@@ -29,15 +29,15 @@ public interface QGLinkConditionsPrv<T extends QGOptionalityEnabled & QGLinkCond
     }
 
     @Override
-    default <U extends DBFieldInfo> T equals(U field)
+    default T equals(QGExpression exp)
     {
-        return addCondition(new QGConditionComparation<>(ComparationType.EQUALS, field));
+        return addCondition(new QGConditionComparation(ComparationType.EQUALS, exp));
     }
 
     @Override
-    default <U extends DBFieldInfo> T equals(U field1, U field2)
+    default T equals(QGExpression exp1, QGExpression exp2)
     {
-        return addCondition(new QGConditionComparation<>(ComparationType.EQUALS, field1, field2));
+        return addCondition(new QGConditionComparation(ComparationType.EQUALS, exp1, exp2));
     }
 
     @Override
@@ -52,7 +52,9 @@ public interface QGLinkConditionsPrv<T extends QGOptionalityEnabled & QGLinkCond
         if(getThis().getNextOptionalAppearanceValueAndReset())
         {
             getConditionList().add(new QGConditionExists(query));
-            getThis().getInit().setFullNamespaces();
+
+            if(getThis().getInit() != null)
+                getThis().getInit().setFullNamespaces();
         }
 
         return getThis();
@@ -64,7 +66,9 @@ public interface QGLinkConditionsPrv<T extends QGOptionalityEnabled & QGLinkCond
         if(getThis().getNextOptionalAppearanceValueAndReset())
         {
             getConditionList().add(new QGConditionInQuery<>(field, query));
-            getThis().getInit().setFullNamespaces();
+
+            if(getThis().getInit() != null)
+                getThis().getInit().setFullNamespaces();
         }
 
         return getThis();
@@ -103,57 +107,69 @@ public interface QGLinkConditionsPrv<T extends QGOptionalityEnabled & QGLinkCond
     }
 
     @Override
-    default <U extends DBFieldInfo> T like(U field)
+    default T like(QGExpression exp)
     {
-        return addCondition(new QGConditionComparation<>(ComparationType.LIKE, field));
+        return addCondition(new QGConditionComparation(ComparationType.LIKE, exp));
     }
 
     @Override
-    default <U extends DBFieldInfo> T greater(U field)
+    default T like(QGExpression exp1, QGExpression exp2)
     {
-        return addCondition(new QGConditionComparation<>(ComparationType.GREATER, field));
+        return addCondition(new QGConditionComparation(ComparationType.LIKE, exp1, exp2));
     }
 
     @Override
-    default <U extends DBFieldInfo> T greater(U field1, U field2)
+    default T greater(QGExpression exp)
     {
-        return addCondition(new QGConditionComparation<>(ComparationType.GREATER, field1, field2));
+        return addCondition(new QGConditionComparation(ComparationType.GREATER, exp));
     }
 
     @Override
-    default <U extends DBFieldInfo> T greaterOrEqual(U field)
+    default T greater(QGExpression exp1, QGExpression exp2)
     {
-        return addCondition(new QGConditionComparation<>(ComparationType.GREATER_EQUAL, field));
+        return addCondition(new QGConditionComparation(ComparationType.GREATER, exp1, exp2));
     }
 
     @Override
-    default <U extends DBFieldInfo> T greaterOrEqual(U field1, U field2)
+    default T greaterOrEqual(QGExpression exp)
     {
-        return addCondition(new QGConditionComparation<>(ComparationType.GREATER_EQUAL, field1, field2));
+        return addCondition(new QGConditionComparation(ComparationType.GREATER_EQUAL, exp));
     }
 
     @Override
-    default <U extends DBFieldInfo> T less(U field)
+    default T greaterOrEqual(QGExpression exp1, QGExpression exp2)
     {
-        return addCondition(new QGConditionComparation<>(ComparationType.LESS, field));
+        return addCondition(new QGConditionComparation(ComparationType.GREATER_EQUAL, exp1, exp2));
     }
 
     @Override
-    default <U extends DBFieldInfo> T less(U field1, U field2)
+    default T less(QGExpression exp)
     {
-        return addCondition(new QGConditionComparation<>(ComparationType.LESS, field1, field2));
+        return addCondition(new QGConditionComparation(ComparationType.LESS, exp));
     }
 
     @Override
-    default <U extends DBFieldInfo> T lessOrEqual(U field)
+    default T less(QGExpression exp1, QGExpression exp2)
     {
-        return addCondition(new QGConditionComparation<>(ComparationType.LESS_EQUAL, field));
+        return addCondition(new QGConditionComparation(ComparationType.LESS, exp1, exp2));
     }
 
     @Override
-    default <U extends DBFieldInfo> T lessOrEqual(U field1, U field2)
+    default T lessOrEqual(QGExpression exp)
     {
-        return addCondition(new QGConditionComparation<>(ComparationType.LESS_EQUAL, field1, field2));
+        return addCondition(new QGConditionComparation(ComparationType.LESS_EQUAL, exp));
+    }
+
+    @Override
+    default T lessOrEqual(QGExpression exp1, QGExpression exp2)
+    {
+        return addCondition(new QGConditionComparation(ComparationType.LESS_EQUAL, exp1, exp2));
+    }
+
+    @Override
+    default T isNull(QGExpression exp)
+    {
+        return addCondition(new QGConditionIsNull(exp));
     }
 
     @Override

@@ -4,26 +4,31 @@ import es.pedropareja.database.generic.DBFieldInfo;
 import es.pedropareja.database.generic.querygen.auto.QGAutoFields;
 import es.pedropareja.database.generic.querygen.base.QGQueryInit;
 import es.pedropareja.database.generic.querygen.base.QGQueryMiddleEnd;
+import es.pedropareja.database.generic.querygen.expression.base.QGExpression;
 import es.pedropareja.database.generic.querygen.optional.QGLinkOptionalPrv;
 
-import java.util.Arrays;
 import java.util.List;
 
-public class QGGroupByPrv<T extends Enum<?> & DBFieldInfo> extends QGQueryMiddleEnd
+public class QGGroupByPrv extends QGQueryMiddleEnd
         implements QGGroupBy, QGLinkOptionalPrv<QGGroupBy>, QGAutoFields
 {
-    private T[] fieldList;
+    private QGExpression[] expList;
 
-    public QGGroupByPrv(QGQueryInit init, T[] fieldList)
+    public QGGroupByPrv(QGQueryInit init, QGExpression[] expList)
     {
         super(init);
-        this.fieldList = fieldList;
+        this.expList = expList;
     }
 
     @Override
     public List<DBFieldInfo> getAutoFields()
     {
-        return Arrays.asList(fieldList);
+        List<DBFieldInfo> result = null;
+
+        for(QGExpression exp: expList)
+            result = joinLists(result, exp.getAutoFields());
+
+        return result;
     }
 
     @Override
@@ -31,10 +36,10 @@ public class QGGroupByPrv<T extends Enum<?> & DBFieldInfo> extends QGQueryMiddle
     {
         stringBuilder.append(" GROUP BY");
 
-        for(int i=0; i < fieldList.length; i++)
+        for(int i=0; i < expList.length; i++)
         {
             stringBuilder.append(i == 0 ? " " : ", ");
-            printField(stringBuilder, fieldList[i], getInit().isFullNamespaces(), context);
+            expList[i].genExpressionOutput(stringBuilder, getInit().isFullNamespaces(), context);
         }
     }
 

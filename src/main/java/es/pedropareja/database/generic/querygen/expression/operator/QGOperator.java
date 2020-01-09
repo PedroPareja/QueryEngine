@@ -1,11 +1,13 @@
 package es.pedropareja.database.generic.querygen.expression.operator;
 
 import es.pedropareja.database.generic.querygen.expression.base.QGExpression;
+import es.pedropareja.database.generic.querygen.expression.coalesce.QGLinkCoalesce;
 import es.pedropareja.database.generic.querygen.expression.field.QGLinkField;
 import es.pedropareja.database.generic.querygen.expression.id.QGLinkId;
+import es.pedropareja.database.generic.querygen.expression.number.QGLinkNumber;
 
 public interface QGOperator
-        extends QGExpression, QGLinkField, QGLinkId
+        extends QGExpression, QGLinkField, QGLinkId, QGLinkCoalesce, QGLinkNumber
 {
 
     enum Type
@@ -13,7 +15,9 @@ public interface QGOperator
         PLUS("+"),
         MINUS("-"),
         MULTIPLY("*"),
-        DIVIDE("/");
+        DIVIDE("/"),
+        PARENTHESIS_OPEN("("),
+        PARENTHESIS_CLOSE(")");
 
         private final String symbol;
 
