@@ -4,7 +4,6 @@ import es.pedropareja.database.generic.DBFieldInfo;
 import es.pedropareja.database.generic.querygen.base.QGQueryBase;
 import es.pedropareja.database.generic.querygen.expression.base.QGExpression;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 

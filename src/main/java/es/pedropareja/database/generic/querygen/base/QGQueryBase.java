@@ -3,7 +3,6 @@ package es.pedropareja.database.generic.querygen.base;
 import es.pedropareja.database.generic.DBFieldInfo;
 import es.pedropareja.database.generic.querygen.QueryGenConfig;
 import es.pedropareja.database.generic.querygen.condition.QGConditionBase;
-import es.pedropareja.database.generic.querygen.condition.QGLinkConditions;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -3,7 +3,6 @@ package es.pedropareja.database.generic.querygen;
 import es.pedropareja.database.generic.DBFieldInfo;
 import es.pedropareja.database.generic.querygen.delete.QGDelete;
 import es.pedropareja.database.generic.querygen.delete.QGDeletePrv;
-import es.pedropareja.database.generic.querygen.expression.QGExprGen;
 import es.pedropareja.database.generic.querygen.expression.base.QGExpression;
 import es.pedropareja.database.generic.querygen.insert.QGInsert;
 import es.pedropareja.database.generic.querygen.insert.QGInsertPrv;

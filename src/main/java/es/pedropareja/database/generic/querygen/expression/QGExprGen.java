@@ -1,6 +1,7 @@
 package es.pedropareja.database.generic.querygen.expression;
 
 import es.pedropareja.database.generic.DBFieldInfo;
+import es.pedropareja.database.generic.querygen.Order;
 import es.pedropareja.database.generic.querygen.expression.aggregate.QGAggregate;
 import es.pedropareja.database.generic.querygen.expression.aggregate.QGAggregate.Type;
 import es.pedropareja.database.generic.querygen.expression.aggregate.QGAggregatePrv;
@@ -17,6 +18,8 @@ import es.pedropareja.database.generic.querygen.expression.number.QGNumber;
 import es.pedropareja.database.generic.querygen.expression.number.QGNumberPrv;
 import es.pedropareja.database.generic.querygen.expression.operator.QGOperator;
 import es.pedropareja.database.generic.querygen.expression.operator.QGOperatorPrv;
+import es.pedropareja.database.generic.querygen.orderby.QGOrderElement;
+import es.pedropareja.database.generic.querygen.orderby.QGOrderElementPrv;
 
 import java.math.BigDecimal;
 
@@ -87,5 +90,9 @@ public class QGExprGen
     public static QGOperator closeParenthesis() { return new QGOperatorPrv(QGOperator.Type.PARENTHESIS_CLOSE); }
 
     public static QGCase caseSelection() { return new QGCasePrv(); }
+
+    public static QGOrderElement order(QGExpression exp, Order orderType) { return new QGOrderElementPrv(exp, orderType); }
+
+    public static QGOrderElement order(QGExpression exp) { return new QGOrderElementPrv(exp); }
 }
 

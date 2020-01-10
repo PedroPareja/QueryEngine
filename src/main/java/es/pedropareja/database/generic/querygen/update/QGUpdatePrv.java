@@ -1,7 +1,6 @@
 package es.pedropareja.database.generic.querygen.update;
 
 import es.pedropareja.database.generic.DBFieldInfo;
-import es.pedropareja.database.generic.querygen.base.QGQueryBase;
 import es.pedropareja.database.generic.querygen.base.QGQueryInit;
 
 public class QGUpdatePrv<T extends Enum<?> & DBFieldInfo> extends QGQueryInit implements QGUpdate

@@ -1,7 +1,6 @@
 package es.pedropareja.database.generic.querygen.from;
 
 import es.pedropareja.database.generic.DBFieldInfo;
-import es.pedropareja.database.generic.querygen.base.QGQueryBase;
 import es.pedropareja.database.generic.querygen.base.QGQueryInit;
 import es.pedropareja.database.generic.querygen.base.QGQueryMiddleEnd;
 import es.pedropareja.database.generic.querygen.optional.QGLinkOptionalPrv;

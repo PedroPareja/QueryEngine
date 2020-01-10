@@ -1,10 +1,7 @@
 package es.pedropareja.database.generic.querygen.offset;
 
-import es.pedropareja.database.generic.querygen.base.QGQueryBase;
 import es.pedropareja.database.generic.querygen.base.QGQueryInit;
 import es.pedropareja.database.generic.querygen.base.QGQueryMiddleEnd;
-
-import java.util.Objects;
 
 public class QGOffsetPrv extends QGQueryMiddleEnd implements QGOffset
 {
