@@ -1,11 +1,8 @@
 package es.pedropareja.database.generic.querygen.limit;
 
-import es.pedropareja.database.generic.querygen.base.QGQueryBase;
 import es.pedropareja.database.generic.querygen.base.QGQueryInit;
 import es.pedropareja.database.generic.querygen.base.QGQueryMiddleEnd;
 import es.pedropareja.database.generic.querygen.optional.QGLinkOptionalPrv;
-
-import java.util.Objects;
 
 public class QGLimitPrv extends QGQueryMiddleEnd implements QGLimit, QGLinkOptionalPrv<QGLimit>
 {

@@ -1,6 +1,5 @@
 package es.pedropareja.database.generic.querygen.on;
 
-import es.pedropareja.database.generic.querygen.base.QGQueryBase;
 import es.pedropareja.database.generic.querygen.base.QGQueryInit;
 import es.pedropareja.database.generic.querygen.base.QGQueryMiddleEnd;
 import es.pedropareja.database.generic.querygen.condition.QGConditionBase;

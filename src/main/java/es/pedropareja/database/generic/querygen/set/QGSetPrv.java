@@ -1,7 +1,6 @@
 package es.pedropareja.database.generic.querygen.set;
 
 import es.pedropareja.database.generic.DBFieldInfo;
-import es.pedropareja.database.generic.querygen.base.QGQueryBase;
 import es.pedropareja.database.generic.querygen.base.QGQueryInit;
 import es.pedropareja.database.generic.querygen.base.QGQueryMiddleEnd;
 
