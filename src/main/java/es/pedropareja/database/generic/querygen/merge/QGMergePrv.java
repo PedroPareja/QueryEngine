@@ -18,5 +18,7 @@ public class QGMergePrv<T extends Enum<?> & DBFieldInfo> extends QGQueryInit imp
     {
         stringBuilder.append("MERGE INTO ");
         printTablePath(stringBuilder, tableType, context);
+
+        genOutputNext(stringBuilder, context);
     }
 }

@@ -13,5 +13,11 @@ public class QGMergeUsingAsPrv extends QGQueryMiddleEnd implements QGMergeUsingA
         this.id = id;
     }
 
-    
+    @Override
+    public <T> void genOutput(StringBuilder stringBuilder, T context)
+    {
+        stringBuilder.append(" AS ").append(id);
+
+        genOutputNext(stringBuilder, context);
+    }
 }

@@ -21,5 +21,7 @@ public class QGMergeUsingPrv extends QGQueryMiddleEnd implements QGMergeUsing
         stringBuilder.append(" USING (");
         query.getInit().genOutput(stringBuilder, context);
         stringBuilder.append(")");
+
+        genOutputNext(stringBuilder, context);
     }
 }
