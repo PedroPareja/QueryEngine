@@ -6,6 +6,8 @@ import es.pedropareja.database.generic.querygen.delete.QGDeletePrv;
 import es.pedropareja.database.generic.querygen.expression.base.QGExpression;
 import es.pedropareja.database.generic.querygen.insert.QGInsert;
 import es.pedropareja.database.generic.querygen.insert.QGInsertPrv;
+import es.pedropareja.database.generic.querygen.merge.QGMerge;
+import es.pedropareja.database.generic.querygen.merge.QGMergePrv;
 import es.pedropareja.database.generic.querygen.select.QGSelect;
 import es.pedropareja.database.generic.querygen.select.QGSelectPrv;
 import es.pedropareja.database.generic.querygen.update.QGUpdate;
@@ -26,4 +28,5 @@ public class QueryGen
 
     public static <T extends Enum<?> & DBFieldInfo> QGDelete delete(Class<T> tableType) { return new QGDeletePrv<>(tableType); }
 
+    public static <T extends Enum<?> & DBFieldInfo> QGMerge merge(Class<T> tableType) { return new QGMergePrv<>(tableType); }
 }
