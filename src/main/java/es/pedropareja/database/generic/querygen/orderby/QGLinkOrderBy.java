@@ -15,4 +15,9 @@ public interface QGLinkOrderBy extends QGLinkBase
     {
         return assignNext(new QGOrderByPrv(exp, order, getInit()));
     }
+
+    default QGOrderBy orderBy(QGOrderElement... orderElements)
+    {
+        return assignNext(new QGOrderByPrv(getInit(), orderElements));
+    }
 }

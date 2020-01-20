@@ -1,8 +1,10 @@
 package es.pedropareja.database.generic.querygen.merge.when;
 
 import es.pedropareja.database.generic.querygen.base.QGQuery;
+import es.pedropareja.database.generic.querygen.merge.insert.QGLinkMergeInsert;
+import es.pedropareja.database.generic.querygen.merge.update.QGLinkMergeUpdate;
 
-public interface QGMergeWhen extends QGQuery
+public interface QGMergeWhen extends QGQuery, QGLinkMergeInsert, QGLinkMergeUpdate
 {
     enum QGMergeWhenType
     {
