@@ -18,6 +18,7 @@ public class QGMergeWhenPrv extends QGQueryMiddleEnd implements QGMergeWhen
     {
         stringBuilder.append(" WHEN ");
         stringBuilder.append(type.getSqlText());
+        stringBuilder.append(" THEN ");
 
         genOutputNext(stringBuilder, context);
     }
