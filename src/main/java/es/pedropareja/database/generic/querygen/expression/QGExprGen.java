@@ -18,6 +18,8 @@ import es.pedropareja.database.generic.querygen.expression.number.QGNumber;
 import es.pedropareja.database.generic.querygen.expression.number.QGNumberPrv;
 import es.pedropareja.database.generic.querygen.expression.operator.QGOperator;
 import es.pedropareja.database.generic.querygen.expression.operator.QGOperatorPrv;
+import es.pedropareja.database.generic.querygen.expression.param.QGParam;
+import es.pedropareja.database.generic.querygen.expression.param.QGParamPrv;
 import es.pedropareja.database.generic.querygen.orderby.QGOrderElement;
 import es.pedropareja.database.generic.querygen.orderby.QGOrderElementPrv;
 
@@ -94,5 +96,7 @@ public class QGExprGen
     public static QGOrderElement order(QGExpression exp, Order orderType) { return new QGOrderElementPrv(exp, orderType); }
 
     public static QGOrderElement order(QGExpression exp) { return new QGOrderElementPrv(exp); }
+
+    public static QGParam param() { return new QGParamPrv(); }
 }
 
