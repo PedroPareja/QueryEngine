@@ -25,6 +25,8 @@ public class QGIntoPrv<T extends Enum<?> & DBFieldInfo> extends QGQueryMiddleEnd
             stringBuilder.append(i != 0 ? ", " : "").append("?");
 
         stringBuilder.append(")");
+
+        genOutputNext(stringBuilder, context);
     }
 
     public Class<T> getTableType()
