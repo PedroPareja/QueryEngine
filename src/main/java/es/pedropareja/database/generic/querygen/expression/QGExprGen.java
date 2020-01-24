@@ -98,5 +98,7 @@ public class QGExprGen
     public static QGOrderElement order(QGExpression exp) { return new QGOrderElementPrv(exp); }
 
     public static QGParam param() { return new QGParamPrv(); }
+
+    public static QGParam params(int repetitions) { return new QGParamPrv(repetitions); }
 }
 

@@ -8,11 +8,28 @@ import java.util.List;
 
 public class QGParamPrv extends QGExpressionBase implements QGParam
 {
-    public QGParamPrv() {}
+    private final int repetitions;
+
+    public QGParamPrv()
+    {
+        this.repetitions = 1;
+    }
+
+    public QGParamPrv(int repetitions)
+    {
+        this.repetitions = repetitions;
+    }
 
     public QGParamPrv(QGExpressionPrv init)
     {
         super(init);
+        this.repetitions = 1;
+    }
+
+    public QGParamPrv(QGExpressionPrv init, int repetitions)
+    {
+        super(init);
+        this.repetitions = repetitions;
     }
 
     @Override
@@ -21,11 +38,23 @@ public class QGParamPrv extends QGExpressionBase implements QGParam
         return null;
     }
 
+    @Override
+    public int getRepetitions()
+    {
+        return repetitions;
+    }
 
     @Override
     public <T> void genOutput(StringBuilder stringBuilder, boolean fullNamespaces, T context)
     {
         printSpaceIfNotFirst(stringBuilder);
-        stringBuilder.append("?");
+
+        for(int i=0; i < repetitions; i++)
+        {
+            if(i!=0)
+                stringBuilder.append(", ");
+
+            stringBuilder.append("?");
+        }
     }
 }
