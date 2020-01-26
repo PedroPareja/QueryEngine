@@ -25,7 +25,7 @@ public class QGValuesPrv extends QGQueryMiddleEnd implements QGValues
         this.values.addAll(Arrays.asList(values));
         return this;
     }
-    
+
     @Override
     public <T> void genOutput(StringBuilder stringBuilder, T context)
     {
@@ -40,5 +40,7 @@ public class QGValuesPrv extends QGQueryMiddleEnd implements QGValues
         }
 
         stringBuilder.append(")");
+
+        genOutputNext(stringBuilder, context);
     }
 }
