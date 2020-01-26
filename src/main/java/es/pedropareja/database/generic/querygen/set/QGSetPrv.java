@@ -3,16 +3,29 @@ package es.pedropareja.database.generic.querygen.set;
 import es.pedropareja.database.generic.DBFieldInfo;
 import es.pedropareja.database.generic.querygen.base.QGQueryInit;
 import es.pedropareja.database.generic.querygen.base.QGQueryMiddleEnd;
+import es.pedropareja.database.generic.querygen.expression.base.QGExpression;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class QGSetPrv extends QGQueryMiddleEnd implements QGSet
 {
-    private final DBFieldInfo[] fieldList;
+    private final List<QGSetAssignment> setAssignments = new ArrayList<>();
 
     @SafeVarargs
     public QGSetPrv(QGQueryInit init, DBFieldInfo ... fieldList)
     {
         super(init);
-        this.fieldList = fieldList;
+
+        for(DBFieldInfo field: fieldList)
+            setAssignments.add(new QGSetAssignmentPrv(field));
+    }
+
+    public QGSetPrv(QGQueryInit init, DBFieldInfo field, QGExpression value)
+    {
+        super(init);
+
+        setAssignments.add(new QGSetAssignmentPrv(field, value));
     }
 
     @Override
@@ -20,13 +33,43 @@ public class QGSetPrv extends QGQueryMiddleEnd implements QGSet
     {
         stringBuilder.append(" SET ");
 
-        for(int i=0; i < fieldList.length; i++)
+        for(int i=0; i < setAssignments.size(); i++)
         {
-            stringBuilder.append(i != 0 ? ", " : "");
-            printField(stringBuilder, fieldList[i], getInit().isFullNamespaces(), context);
-            stringBuilder.append(" = ?");
+            if(i != 0)
+                stringBuilder.append(", ");
+
+            setAssignments.get(i).getField().genExpressionOutput(stringBuilder, getInit().isFullNamespaces(), context);
+            stringBuilder.append(" = ");
+
+            if(setAssignments.get(i).getValue() != null)
+                setAssignments.get(i).getValue().genExpressionOutput(stringBuilder, getInit().isFullNamespaces(), context);
+            else
+                stringBuilder.append("?");
         }
 
         genOutputNext(stringBuilder, context);
+    }
+
+    @Override
+    public QGSet set(DBFieldInfo field)
+    {
+        setAssignments.add(new QGSetAssignmentPrv(field));
+        return this;
+    }
+
+    @Override
+    public QGSet set(DBFieldInfo field, QGExpression value)
+    {
+        setAssignments.add(new QGSetAssignmentPrv(field, value));
+        return this;
+    }
+
+    @Override
+    public QGSet set(QGSetAssignment... setAssignments)
+    {
+        for(QGSetAssignment setAssignment: setAssignments)
+            this.setAssignments.add(setAssignment);
+
+        return this;
     }
 }
