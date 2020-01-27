@@ -3,6 +3,7 @@ package es.pedropareja.database.generic;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.Collection;
 
 public class QueryParamsHelper
@@ -13,6 +14,7 @@ public class QueryParamsHelper
     private static final ParamSetter<String> stringSetter =  (s,i,v) -> s.setString(i, v);
     private static final ParamSetter<BigDecimal> bigDecimalSetter = (s,i,v) -> s.setBigDecimal(i, v);
     private static final ParamSetter<Boolean> booleanSetter = (s,i,v) -> s.setBoolean(i, v);
+    private static final ParamSetter<Timestamp> timestampSetter = (s,i,v) -> s.setTimestamp(i, v);
 
     private final PreparedStatement statement;
     private int paramIndex = 1;
@@ -166,6 +168,26 @@ public class QueryParamsHelper
     public void setAllBoolean(Collection<Boolean> collection, boolean condition) throws SQLException
     {
         setAllParam(booleanSetter, collection, condition);
+    }
+
+    public void setTimestamp(Timestamp value) throws SQLException
+    {
+        setParam(timestampSetter, value);
+    }
+
+    public void setTimestamp(Timestamp value, boolean condition) throws SQLException
+    {
+        setParam(timestampSetter, value, condition);
+    }
+
+    public void setAllTimestamp(Collection<Timestamp> collection) throws SQLException
+    {
+        setAllParam(timestampSetter, collection);
+    }
+
+    public void setAllTimestamp(Collection<Timestamp> collection, boolean condition) throws SQLException
+    {
+        setAllParam(timestampSetter, collection, condition);
     }
 
     public <U, F extends Enum<?> & DBFilterProcessor<U>> void applyFilter(Class<F> filterProcessorType, U filter)
