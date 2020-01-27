@@ -1,8 +1,9 @@
 package es.pedropareja.database.generic.querygen.expression.param;
 
+import es.pedropareja.database.generic.querygen.expression.as.QGLinkAs;
 import es.pedropareja.database.generic.querygen.expression.base.QGExpression;
 
-public interface QGParam extends QGExpression
+public interface QGParam extends QGExpression, QGLinkAs
 {
     int getRepetitions();
 }
