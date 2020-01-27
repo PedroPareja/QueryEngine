@@ -1,12 +1,13 @@
 package es.pedropareja.database.generic.querygen.expression.param;
 
 import es.pedropareja.database.generic.DBFieldInfo;
+import es.pedropareja.database.generic.querygen.expression.as.QGLinkAsPrv;
 import es.pedropareja.database.generic.querygen.expression.base.QGExpressionBase;
 import es.pedropareja.database.generic.querygen.expression.base.QGExpressionPrv;
 
 import java.util.List;
 
-public class QGParamPrv extends QGExpressionBase implements QGParam
+public class QGParamPrv extends QGExpressionBase implements QGParam, QGLinkAsPrv
 {
     private final int repetitions;
 
