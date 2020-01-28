@@ -28,6 +28,14 @@ public class QGSetPrv extends QGQueryMiddleEnd implements QGSet
         setAssignments.add(new QGSetAssignmentPrv(field, value));
     }
 
+    public QGSetPrv(QGQueryInit init, QGSetAssignment ... setAssignments)
+    {
+        super(init);
+
+        for(QGSetAssignment setAssignment: setAssignments)
+            this.setAssignments.add(setAssignment);
+    }
+
     @Override
     public <U> void genOutput(StringBuilder stringBuilder, U context)
     {
@@ -51,9 +59,11 @@ public class QGSetPrv extends QGQueryMiddleEnd implements QGSet
     }
 
     @Override
-    public QGSet set(DBFieldInfo field)
+    public QGSet set(DBFieldInfo ... fields)
     {
-        setAssignments.add(new QGSetAssignmentPrv(field));
+        for(DBFieldInfo field: fields)
+            setAssignments.add(new QGSetAssignmentPrv(field));
+
         return this;
     }
 
