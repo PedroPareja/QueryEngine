@@ -46,7 +46,7 @@ public class QGNumberPrv extends QGExpressionBase implements QGNumber, QGLinkOpe
     }
 
     @Override
-    protected List<DBFieldInfo> getElementAutoFields()
+    public List<DBFieldInfo> getElementAutoFields()
     {
         return null;
     }

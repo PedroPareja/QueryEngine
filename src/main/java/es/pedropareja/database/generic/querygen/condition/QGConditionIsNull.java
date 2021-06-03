@@ -15,10 +15,18 @@ public class QGConditionIsNull implements QGConditionBase
     }
 
     @Override
-    public <T> void genOutput(StringBuilder stringBuilder, boolean fullNamespaces, T context)
+    public <T> void genExpressionOutput(StringBuilder stringBuilder, boolean fullNamespaces, T context)
     {
         stringBuilder.append(" ");
+
+        if(exp.isComplex())
+            stringBuilder.append("(");
+
         exp.genExpressionOutput(stringBuilder, fullNamespaces, context);
+
+        if(exp.isComplex())
+            stringBuilder.append(")");
+
         stringBuilder.append(" IS NULL");
     }
 

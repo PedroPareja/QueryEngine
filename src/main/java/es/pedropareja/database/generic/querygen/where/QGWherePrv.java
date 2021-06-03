@@ -2,6 +2,7 @@ package es.pedropareja.database.generic.querygen.where;
 
 import es.pedropareja.database.generic.DBFieldInfo;
 import es.pedropareja.database.generic.querygen.auto.QGAutoFields;
+import es.pedropareja.database.generic.querygen.base.QGQueryBase;
 import es.pedropareja.database.generic.querygen.base.QGQueryInit;
 import es.pedropareja.database.generic.querygen.base.QGQueryMiddleEnd;
 import es.pedropareja.database.generic.querygen.condition.QGConditionBase;
@@ -41,7 +42,7 @@ public class QGWherePrv extends QGQueryMiddleEnd
 
             for (int i = 0; i < conditionList.size(); i++)
             {
-                conditionList.get(i).genOutput(stringBuilder, getInit().isFullNamespaces(), context);
+                conditionList.get(i).genExpressionOutput(stringBuilder, getInit().isFullNamespaces(), context);
                 if (i < conditionList.size() - 1)
                     stringBuilder.append(" AND");
             }
@@ -56,7 +57,7 @@ public class QGWherePrv extends QGQueryMiddleEnd
         List<DBFieldInfo> result = new ArrayList<>();
 
         for(QGConditionBase condition: conditionList)
-            result.addAll(condition.getAutoFields());
+            result = QGQueryBase.joinLists(result, condition.getAutoFields());
 
         return result;
     }

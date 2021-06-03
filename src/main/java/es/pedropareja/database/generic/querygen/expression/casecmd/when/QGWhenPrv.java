@@ -1,6 +1,7 @@
 package es.pedropareja.database.generic.querygen.expression.casecmd.when;
 
 import es.pedropareja.database.generic.DBFieldInfo;
+import es.pedropareja.database.generic.querygen.base.QGQueryBase;
 import es.pedropareja.database.generic.querygen.base.QGQueryInit;
 import es.pedropareja.database.generic.querygen.condition.QGConditionBase;
 import es.pedropareja.database.generic.querygen.condition.QGLinkConditionsPrv;
@@ -65,7 +66,15 @@ public class QGWhenPrv implements QGWhen, QGLinkConditionsPrv<QGWhen>
     @Override
     public List<DBFieldInfo> getAutoFields()
     {
-        return thenExp != null ? thenExp.getAutoFields() : null;
+        List<DBFieldInfo> result = null;
+
+        for(QGConditionBase condition: conditionList)
+            result = QGQueryBase.joinLists(result, condition.getAutoFields());
+
+        if(thenExp != null)
+            result = QGQueryBase.joinLists(result, thenExp.getAutoFields());
+
+        return result;
     }
 
     @Override
@@ -77,7 +86,7 @@ public class QGWhenPrv implements QGWhen, QGLinkConditionsPrv<QGWhen>
 
             for(int i=0; i < conditionList.size(); i++)
             {
-                conditionList.get(i).genOutput(stringBuilder, fullNamespaces, context);
+                conditionList.get(i).genExpressionOutput(stringBuilder, fullNamespaces, context);
                 if (i < conditionList.size() - 1)
                     stringBuilder.append(" AND");
             }
@@ -85,5 +94,11 @@ public class QGWhenPrv implements QGWhen, QGLinkConditionsPrv<QGWhen>
             stringBuilder.append(" THEN ");
             thenExp.genExpressionOutput(stringBuilder, fullNamespaces, context);
         }
+    }
+
+    @Override
+    public boolean isComplex()
+    {
+        return true;
     }
 }

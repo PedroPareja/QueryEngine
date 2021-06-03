@@ -1,10 +1,5 @@
 package es.pedropareja.database.generic.querygen.expression.base;
 
-import es.pedropareja.database.generic.DBFieldInfo;
-import es.pedropareja.database.generic.querygen.base.QGQueryBase;
-
-import java.util.List;
-
 public abstract class QGExpressionBase implements QGExpressionPrv
 {
     private final QGExpressionPrv init;
@@ -62,13 +57,8 @@ public abstract class QGExpressionBase implements QGExpressionPrv
     }
 
     @Override
-    public List<DBFieldInfo> getAutoFields()
+    public boolean isComplex()
     {
-        if(getNext() != null)
-            return QGQueryBase.joinLists(getNext().getAutoFields(), getElementAutoFields());
-
-        return getElementAutoFields();
+        return init != null && init.getNext() != null;
     }
-
-    protected abstract List<DBFieldInfo> getElementAutoFields();
 }

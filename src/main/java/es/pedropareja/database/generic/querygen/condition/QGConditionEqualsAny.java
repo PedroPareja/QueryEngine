@@ -16,7 +16,7 @@ public class QGConditionEqualsAny<T extends DBFieldInfo> implements QGConditionB
     }
 
     @Override
-    public <T> void genOutput(StringBuilder stringBuilder, boolean fullNamespaces, T context)
+    public <T> void genExpressionOutput(StringBuilder stringBuilder, boolean fullNamespaces, T context)
     {
         stringBuilder.append(" ");
 

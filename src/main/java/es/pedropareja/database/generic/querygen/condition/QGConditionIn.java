@@ -6,19 +6,19 @@ import es.pedropareja.database.generic.querygen.base.QGQueryBase;
 import java.util.Arrays;
 import java.util.List;
 
-public class QGConditionIn<T extends DBFieldInfo> implements QGConditionBase
+public class QGConditionIn implements QGConditionBase
 {
-    private final T field;
+    private final DBFieldInfo field;
     private final int numberOfParameters;
 
-    public QGConditionIn(T field, int numberOfParameters)
+    public QGConditionIn(DBFieldInfo field, int numberOfParameters)
     {
         this.field = field;
         this.numberOfParameters = numberOfParameters;
     }
 
     @Override
-    public <T> void genOutput(StringBuilder stringBuilder, boolean fullNamespaces, T context)
+    public <T> void genExpressionOutput(StringBuilder stringBuilder, boolean fullNamespaces, T context)
     {
         if(!isNull())
         {
@@ -39,7 +39,7 @@ public class QGConditionIn<T extends DBFieldInfo> implements QGConditionBase
         if(!(obj instanceof QGConditionIn))
             return false;
 
-        QGConditionIn<?> o = (QGConditionIn)obj;
+        QGConditionIn o = (QGConditionIn)obj;
 
         return field.equalsField(o.field) && numberOfParameters == o.numberOfParameters;
     }

@@ -1,26 +1,26 @@
 package es.pedropareja.database.generic.querygen.join;
 
-import es.pedropareja.database.generic.DBFieldInfo;
 import es.pedropareja.database.generic.querygen.base.QGQueryInit;
 import es.pedropareja.database.generic.querygen.base.QGQueryMiddleEnd;
+import es.pedropareja.database.generic.querygen.expression.base.QGExpression;
 import es.pedropareja.database.generic.querygen.optional.QGLinkOptionalPrv;
 
-public class QGJoinPrv<T extends Enum<?> & DBFieldInfo> extends QGQueryMiddleEnd implements QGJoin, QGLinkOptionalPrv<QGJoin>
+public class QGJoinPrv extends QGQueryMiddleEnd implements QGJoin, QGLinkOptionalPrv<QGJoin>
 {
-    private final Class<T> tableType;
+    private final QGExpression tableExp;
     private final JoinType joinType;
 
-    public QGJoinPrv(Class<T> tableType, QGQueryInit init, JoinType joinType)
+    public QGJoinPrv(QGExpression tableExp, QGQueryInit init, JoinType joinType)
     {
         super(init);
-        this.tableType = tableType;
+        this.tableExp = tableExp;
         this.joinType = joinType;
         init.setFullNamespaces();
     }
 
-    public QGJoinPrv(Class<T> tableType, QGQueryInit init)
+    public QGJoinPrv(QGExpression tableExp, QGQueryInit init)
     {
-        this(tableType, init, JoinType.INNER);
+        this(tableExp, init, JoinType.INNER);
     }
 
     @Override
@@ -43,7 +43,7 @@ public class QGJoinPrv<T extends Enum<?> & DBFieldInfo> extends QGQueryMiddleEnd
 
         stringBuilder.append(" JOIN ");
 
-        printTablePath(stringBuilder, tableType, context);
+        tableExp.genExpressionOutput(stringBuilder, true, context);
 
         genOutputNext(stringBuilder, context);
     }

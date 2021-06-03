@@ -1,29 +1,39 @@
 package es.pedropareja.database.generic.querygen.auto;
 
-import es.pedropareja.database.generic.DBFieldInfo;
+import es.pedropareja.database.generic.DBTable;
 import es.pedropareja.database.generic.DBTableMapper;
 import es.pedropareja.database.generic.DBTableMapper.FieldEquity;
 import es.pedropareja.database.generic.DBTableMapper.Solution;
 import es.pedropareja.database.generic.DBTableMapper.TableJoin;
+import es.pedropareja.database.generic.DBTableWrapper;
 import es.pedropareja.database.generic.querygen.base.QGQueryBase;
 import es.pedropareja.database.generic.querygen.base.QGQueryInit;
 import es.pedropareja.database.generic.querygen.base.QGQueryMiddleEnd;
 import es.pedropareja.database.generic.querygen.from.QGLinkFrom;
+import es.pedropareja.database.generic.querygen.join.QGJoin.JoinType;
 import es.pedropareja.database.generic.querygen.join.QGLinkJoin;
 import es.pedropareja.database.generic.querygen.on.QGOn;
 import es.pedropareja.database.generic.querygen.optional.QGLinkOptionalPrv;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
 
-public class QGAutoPrv<T extends Enum<?> & DBFieldInfo>
+public class QGAutoPrv
         extends QGQueryMiddleEnd
         implements QGAuto, QGLinkOptionalPrv<QGAuto>
 {
     private final DBTableMapper tableMapper;
-    private final Class<T> mainTable;
-    private List<Class<? extends DBFieldInfo>> ignoreTables = null;
+    private final DBTable mainTable;
+    private List<DBTable> ignoreTables = null;
+    private Map<DBTable, JoinType> linkMap = null;
 
-    public QGAutoPrv(DBTableMapper tableMapper, Class<T> mainTable, QGQueryInit init)
+    public QGAutoPrv(DBTableMapper tableMapper, DBTable mainTable, QGQueryInit init)
     {
         super(init);
         this.tableMapper = tableMapper;
@@ -31,42 +41,97 @@ public class QGAutoPrv<T extends Enum<?> & DBFieldInfo>
         init.setFullNamespaces();
     }
 
-    @SuppressWarnings("unchecked")
     @Override
-    public QGAuto ignoreTables(Class<? extends DBFieldInfo>... tables)
+    public QGAuto ignoreTables(DBTable ... tables)
     {
         if(ignoreTables == null)
             ignoreTables = new ArrayList<>();
 
         ignoreTables.addAll(Arrays.asList(tables));
+
         return this;
     }
 
     @SuppressWarnings("unchecked")
     @Override
+    public QGAuto ignoreTables(Class<? extends DBTable>... tables)
+    {
+        return ignoreTables(getTableInstances(tables).toArray(new DBTable[0]));
+    }
+
+    @Override
+    public QGAuto setLink(JoinType joinType, DBTable... tables)
+    {
+        for(DBTable table: tables)
+            setLink(table, joinType);
+
+        return this;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public QGAuto setLink(JoinType joinType, Class<? extends DBTable>... tables)
+    {
+        return setLink(joinType, getTableInstances(tables).toArray(new DBTable[0]));
+    }
+
+    @SuppressWarnings("unchecked")
+    private List<DBTable> getTableInstances(Class<? extends DBTable>... tables)
+    {
+        List<DBTable> result = new ArrayList<>();
+
+        for(Class<? extends DBTable> table: tables)
+            result.add(getTableInstance(table));
+
+        return result;
+    }
+
+    private JoinType getLink(DBTable table)
+    {
+        JoinType result = null;
+
+        if(linkMap != null)
+            result = linkMap.get(table);
+
+        return result != null ? result : JoinType.INNER;
+    }
+
+    private void setLink(DBTable table, JoinType joinType)
+    {
+        if(linkMap == null)
+            linkMap = new HashMap<>();
+
+        linkMap.put(table, joinType);
+    }
+
+    @Override
     public <U> void genOutput(StringBuilder stringBuilder, U context)
     {
-        Set<Class<? extends DBFieldInfo>> autoTables = new TreeSet<>((a,b) -> a.hashCode() - b.hashCode());
-        autoTables.addAll(getInit().getAutoTables());
+        Set<DBTableWrapper> autoTables = new TreeSet<>();
+        Set<DBTable> autoTablesSource = getInit().getAutoTables();
 
-        Class<T> fromTable = mainTable != null ? mainTable : (Class<T>) autoTables.toArray()[0];
-        autoTables.remove(fromTable);
+        for(DBTable table: autoTablesSource)
+            autoTables.add(new DBTableWrapper(table));
+
+        DBTable fromTable = mainTable != null ? mainTable : autoTables.toArray(new DBTableWrapper[0])[0].getTable();
+        autoTables.remove(new DBTableWrapper(fromTable));
 
         if(ignoreTables != null)
-            autoTables.removeAll(ignoreTables);
+            for(DBTable table: ignoreTables)
+                autoTables.remove(new DBTableWrapper(table));
 
         QGLinkJoin linkJoin = new NullInit().from(fromTable);
 
         linkJoin.getInit().setFullNamespaces();
 
-        Solution joinsSolution = tableMapper.solve(fromTable, autoTables);
+        Solution joinsSolution = tableMapper.solve(fromTable, autoTables.stream().map(DBTableWrapper::getTable).collect(Collectors.toList()));
 
         for(TableJoin tableJoin: joinsSolution.getTableJoins())
         {
-            QGOn qgOn = linkJoin.join((Class<T>) tableJoin.getJoinTable()).on();
+            QGOn qgOn = linkJoin.join(tableJoin.getJoinTable(), getLink(tableJoin.getJoinTable())).on();
 
             for(FieldEquity fieldEquity: tableJoin.getFieldEquities())
-                qgOn.equals((T)fieldEquity.getField1(), (T)fieldEquity.getField2());
+                qgOn.equals(fieldEquity.getField1(), fieldEquity.getField2());
 
             linkJoin = qgOn;
         }

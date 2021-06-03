@@ -2,14 +2,23 @@ package es.pedropareja.database.generic;
 
 import es.pedropareja.database.generic.exceptions.QueryGenException;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Queue;
+import java.util.Set;
+import java.util.Stack;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
 public abstract class DBTableMapper
 {
     private static final int DEFAULT_SEARCH_DEPTH = 4;
 
-    private static final Comparator<Class<? extends DBFieldInfo>> tableComparator = (a,b) -> a.hashCode() - b.hashCode();
-    private Map<Class<? extends DBFieldInfo>, Map<Class<? extends DBFieldInfo>, TableMapperEntry>> searchMap = new TreeMap<>(tableComparator);
+    private Map<DBTable, Map<DBTable, TableMapperEntry>> searchMap = new TreeMap<>(DBTable.tableComparator);
 
     private int maxSearchDepth = DEFAULT_SEARCH_DEPTH;
 
@@ -41,11 +50,8 @@ public abstract class DBTableMapper
         if(fieldsTable1 == null || fieldsTable2 == null || fieldsTable1.length == 0 || fieldsTable2.length == 0)
             throw new QueryGenException("Field arrays must contain at least one element");
 
-        if(!(fieldsTable1[0] instanceof Enum) || !(fieldsTable2[0] instanceof Enum))
-            throw new QueryGenException("Field arrays must contain DBFieldInfo ENUM values");
-
-        final Class<? extends DBFieldInfo> table1 = fieldsTable1[0].getClass();
-        final Class<? extends DBFieldInfo> table2 = fieldsTable2[0].getClass();
+        final DBTable table1 = fieldsTable1[0].getParentTable();
+        final DBTable table2 = fieldsTable2[0].getParentTable();
 
         TableMapperEntry entry = new TableMapperEntry(fieldsTable1, fieldsTable2);
 
@@ -53,22 +59,22 @@ public abstract class DBTableMapper
         getChildrenMap(table2).put(table1, entry);
     }
 
-    private Map<Class<? extends DBFieldInfo>, TableMapperEntry> getChildrenMap(Class<? extends DBFieldInfo> key)
+    private Map<DBTable, TableMapperEntry> getChildrenMap(DBTable key)
     {
-        Map<Class<? extends DBFieldInfo>, TableMapperEntry> result = searchMap.get(key);
+        Map<DBTable, TableMapperEntry> result = searchMap.get(key);
 
         if(result == null)
         {
-            result = new TreeMap<>(tableComparator);
+            result = new TreeMap<>(DBTable.tableComparator);
             searchMap.put(key, result);
         }
 
         return result;
     }
 
-    public List<FieldEquity> getEquities(Class<? extends DBFieldInfo> table1, Class<? extends DBFieldInfo> table2)
+    public List<FieldEquity> getEquities(DBTable table1, DBTable table2)
     {
-        Map<Class<? extends DBFieldInfo>, TableMapperEntry> childrenMap = searchMap.get(table1);
+        Map<DBTable, TableMapperEntry> childrenMap = searchMap.get(table1);
 
         if(childrenMap == null)
             return null;
@@ -81,9 +87,9 @@ public abstract class DBTableMapper
         return entry.getEquities();
     }
 
-    public boolean existsEquity(Class<? extends DBFieldInfo> table1, Class<? extends DBFieldInfo> table2)
+    public boolean existsEquity(DBTable table1, DBTable table2)
     {
-        Map<Class<? extends DBFieldInfo>, TableMapperEntry> childrenMap = searchMap.get(table1);
+        Map<DBTable, TableMapperEntry> childrenMap = searchMap.get(table1);
 
         if(childrenMap == null)
             return false;
@@ -108,14 +114,14 @@ public abstract class DBTableMapper
         return Objects.hash(searchMap);
     }
 
-    public Solution solve(Class<? extends DBFieldInfo> fromTable, Collection<Class<? extends DBFieldInfo>> tables)
+    public Solution solve(DBTable fromTable, Collection<DBTable> tables)
     {
-        Set<Class<? extends DBFieldInfo>> processedTables = new TreeSet<>((a,b)-> a.hashCode() - b.hashCode());
+        Set<DBTable> processedTables = new TreeSet<>(DBTable.tableComparator);
         List<TableJoin> tableJoins = new ArrayList<>();
 
-        for(Class<? extends DBFieldInfo> table: tables)
+        for(DBTable table: tables)
         {
-            Stack<Class<? extends DBFieldInfo>> path = solvePath(fromTable, table);
+            Stack<DBTable> path = solvePath(fromTable, table);
             List<TableJoin> pathJoins = getJoins(path);
 
             for(TableJoin tableJoin: pathJoins)
@@ -129,13 +135,13 @@ public abstract class DBTableMapper
         return new Solution(fromTable, tableJoins);
     }
 
-    private TableJoin getTableJoin(Class<? extends DBFieldInfo> fromTable, Class<? extends DBFieldInfo> targetTable)
+    private TableJoin getTableJoin(DBTable fromTable, DBTable targetTable)
     {
         List<FieldEquity> equities = getEquities(fromTable, targetTable);
         return new TableJoin(targetTable, equities);
     }
 
-    private List<TableJoin> getJoins(Stack<Class<? extends DBFieldInfo>> joinStack)
+    private List<TableJoin> getJoins(Stack<DBTable> joinStack)
     {
         List<TableJoin> result = new ArrayList<>();
 
@@ -145,39 +151,38 @@ public abstract class DBTableMapper
         return result;
     }
 
-    private Stack<Class<? extends DBFieldInfo>> solvePath(Class<? extends DBFieldInfo> fromTable,
-            Class<? extends DBFieldInfo> targetTable)
+    private Stack<DBTable> solvePath(DBTable fromTable, DBTable targetTable)
     {
-        Queue<Stack<Class<? extends DBFieldInfo>>> searchQueue = new LinkedList<>();
-        Stack<Class<? extends DBFieldInfo>> initialStack = new Stack<>();
+        Queue<Stack<DBTable>> searchQueue = new LinkedList<>();
+        Stack<DBTable> initialStack = new Stack<>();
         initialStack.push(fromTable);
         searchQueue.add(initialStack);
 
         return solvePath(targetTable, searchQueue);
     }
 
-    private Stack<Class<? extends DBFieldInfo>> solvePath(Class<? extends DBFieldInfo> targetTable,
-            Queue<Stack<Class<? extends DBFieldInfo>>> searchQueue)
+    private Stack<DBTable> solvePath(DBTable targetTable,
+            Queue<Stack<DBTable>> searchQueue)
     {
         while(!searchQueue.isEmpty())
         {
-            Stack<Class<? extends DBFieldInfo>> solutionStack = searchQueue.poll();
+            Stack<DBTable> solutionStack = searchQueue.poll();
 
-            if(solutionStack.peek() == targetTable)
+            if(solutionStack.peek().equalsTable(targetTable))
                 return solutionStack;
 
             if(solutionStack.size() < maxSearchDepth)
-                for(Class<? extends DBFieldInfo> table: searchMap.keySet())
+                for(DBTable table: searchMap.keySet())
                     if(existsEquity(solutionStack.peek(), table))
                     {
-                        Stack<Class<? extends DBFieldInfo>> newStack = new Stack<>();
+                        Stack<DBTable> newStack = new Stack<>();
                         newStack.addAll(solutionStack);
                         newStack.add(table);
                         searchQueue.add(newStack);
                     }
         }
 
-        throw new QueryGenException("Could not solve table path to '" + targetTable.getName() + "'");
+        throw new QueryGenException("Could not solve table path to " + targetTable.getClass().getName() + ". Id = '" + targetTable.getId() + "'");
     }
 
     public static class TableMapperEntry
@@ -276,16 +281,16 @@ public abstract class DBTableMapper
 
     public static class TableJoin
     {
-        final Class<? extends DBFieldInfo> joinTable;
+        final DBTable joinTable;
         final List<FieldEquity> fieldEquities;
 
-        TableJoin(Class<? extends DBFieldInfo> joinTable, List<FieldEquity> fieldEquities)
+        TableJoin(DBTable joinTable, List<FieldEquity> fieldEquities)
         {
             this.joinTable = joinTable;
             this.fieldEquities = fieldEquities;
         }
 
-        public Class<? extends DBFieldInfo> getJoinTable()
+        public DBTable getJoinTable()
         {
             return joinTable;
         }
@@ -315,16 +320,16 @@ public abstract class DBTableMapper
 
     public static class Solution
     {
-        final Class<? extends DBFieldInfo> fromTable;
+        final DBTable fromTable;
         final List<TableJoin> tableJoins;
 
-        Solution(Class<? extends DBFieldInfo> fromTable, List<TableJoin> tableJoins)
+        Solution(DBTable fromTable, List<TableJoin> tableJoins)
         {
             this.fromTable = fromTable;
             this.tableJoins = tableJoins;
         }
 
-        public Class<? extends DBFieldInfo> getFromTable()
+        public DBTable getFromTable()
         {
             return fromTable;
         }

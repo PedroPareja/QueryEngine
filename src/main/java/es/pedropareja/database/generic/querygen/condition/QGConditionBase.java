@@ -1,13 +1,18 @@
 package es.pedropareja.database.generic.querygen.condition;
 
 import es.pedropareja.database.generic.querygen.auto.QGAutoFields;
+import es.pedropareja.database.generic.querygen.expression.base.QGExpression;
 
-public interface QGConditionBase extends QGAutoFields
+public interface QGConditionBase extends QGAutoFields, QGExpression
 {
-    <T> void genOutput(StringBuilder stringBuilder, boolean fullNamespaces, T context);
-
     default boolean isNull()
     {
         return false;
+    }
+
+    @Override
+    default boolean isComplex()
+    {
+        return true;
     }
 }

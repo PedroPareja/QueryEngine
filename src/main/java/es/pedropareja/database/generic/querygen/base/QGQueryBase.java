@@ -1,11 +1,14 @@
 package es.pedropareja.database.generic.querygen.base;
 
 import es.pedropareja.database.generic.DBFieldInfo;
+import es.pedropareja.database.generic.DBTable;
+import es.pedropareja.database.generic.exceptions.QueryGenException;
 import es.pedropareja.database.generic.querygen.QueryGenConfig;
 import es.pedropareja.database.generic.querygen.condition.QGConditionBase;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public abstract class QGQueryBase implements QGLinkBase, QGQuery
 {
@@ -38,20 +41,20 @@ public abstract class QGQueryBase implements QGLinkBase, QGQuery
     }
 
     @SuppressWarnings("unchecked")
-    public static <T extends DBFieldInfo, U> void printField(StringBuilder stringBuilder, T field, boolean fullNamespaces, U context)
+    public static <U> void printField(StringBuilder stringBuilder, DBFieldInfo field, boolean fullNamespaces, U context)
     {
         if(fullNamespaces)
         {
-            printTablePath(stringBuilder, (Class<T>)field.getClass(), context);
+            printTablePath(stringBuilder, field.getParentTable(), context);
             stringBuilder.append(".");
         }
 
         printOptionalQuoted(stringBuilder, field.getName());
     }
 
-    public static <T extends DBFieldInfo, U> void printTablePath(StringBuilder stringBuilder, Class<T> tableType, U context)
+    public static <U> void printTablePath(StringBuilder stringBuilder, DBTable table, U context)
     {
-        QGTableInfo tableInfo = QGTableInfo.getTableInfo(tableType, context);
+        QGTableInfo tableInfo = QGTableInfo.getTableInfo(table, context);
 
         if(!tableInfo.getDatabase().isEmpty())
         {
@@ -139,6 +142,41 @@ public abstract class QGQueryBase implements QGLinkBase, QGQuery
 
     public static <T> boolean equalsElements(T e1, T e2)
     {
-        return e1 != null ? e1.equals(e2) : e2 == null;
+        return Objects.equals(e1, e2);
+    }
+
+    public static DBTable getTableInstance(Class<? extends DBTable> tableType)
+    {
+        try
+        {
+            return (DBTable) tableType.getMethod("getInstance").invoke(null, new Object[0]);
+        }
+        catch (Exception e) {}
+
+        if(tableType.isEnum())
+            return tableType.getEnumConstants()[0].getFields()[0].getParentTable();
+
+        throw new QueryGenException("Table type '" + tableType.getName() + "' is not an enum nor implement static method getInstance. Fix it or use an instance of the table instead of the type");
+    }
+
+    @Override
+    public <T> void genExpressionOutput(StringBuilder stringBuilder, boolean fullNamespaces, T context)
+    {
+        if(fullNamespaces)
+            getInit().setFullNamespaces();
+
+        getInit().genOutput(stringBuilder, context);
+    }
+
+    @Override
+    public List<DBFieldInfo> getAutoFields()
+    {
+        return null;
+    }
+
+    @Override
+    public boolean isComplex()
+    {
+        return true;
     }
 }

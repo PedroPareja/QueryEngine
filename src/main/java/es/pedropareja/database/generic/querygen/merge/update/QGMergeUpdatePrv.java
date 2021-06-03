@@ -4,13 +4,14 @@ import es.pedropareja.database.generic.DBFieldInfo;
 import es.pedropareja.database.generic.querygen.base.QGQueryInit;
 import es.pedropareja.database.generic.querygen.base.QGQueryMiddleEnd;
 import es.pedropareja.database.generic.querygen.expression.base.QGExpression;
+import es.pedropareja.database.generic.querygen.optional.QGLinkOptionalPrv;
 import es.pedropareja.database.generic.querygen.set.QGSetAssignment;
 import es.pedropareja.database.generic.querygen.set.QGSetAssignmentPrv;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class QGMergeUpdatePrv extends QGQueryMiddleEnd implements QGMergeUpdate
+public class QGMergeUpdatePrv extends QGQueryMiddleEnd implements QGMergeUpdate, QGLinkOptionalPrv<QGMergeUpdate>
 {
     private final List<QGSetAssignment> setAssignments = new ArrayList<>();
 
@@ -22,7 +23,9 @@ public class QGMergeUpdatePrv extends QGQueryMiddleEnd implements QGMergeUpdate
     @Override
     public QGMergeUpdate set(DBFieldInfo field, QGExpression value)
     {
-        setAssignments.add(new QGSetAssignmentPrv(field, value));
+        if(getNextOptionalAppearanceValueAndReset())
+            setAssignments.add(new QGSetAssignmentPrv(field, value));
+
         return this;
     }
 
@@ -46,5 +49,11 @@ public class QGMergeUpdatePrv extends QGQueryMiddleEnd implements QGMergeUpdate
         }
 
         genOutputNext(stringBuilder, context);
+    }
+
+    @Override
+    public QGMergeUpdate getThis()
+    {
+        return this;
     }
 }

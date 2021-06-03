@@ -5,6 +5,7 @@ import es.pedropareja.database.generic.querygen.base.QGQueryBase;
 import es.pedropareja.database.generic.querygen.expression.as.QGLinkAsPrv;
 import es.pedropareja.database.generic.querygen.expression.base.QGExpression;
 import es.pedropareja.database.generic.querygen.expression.base.QGExpressionBase;
+import es.pedropareja.database.generic.querygen.expression.base.QGExpressionPrv;
 import es.pedropareja.database.generic.querygen.expression.casecmd.when.QGWhen;
 import es.pedropareja.database.generic.querygen.expression.casecmd.when.QGWhenPrv;
 import es.pedropareja.database.generic.querygen.expression.operator.QGLinkOperatorsPrv;
@@ -18,8 +19,15 @@ public class QGCasePrv extends QGExpressionBase
     private List<QGWhen> whenList = new ArrayList<>();
     private QGExpression elseExp;
 
+    public QGCasePrv() {}
+
+    public QGCasePrv(QGExpressionPrv init)
+    {
+        super(init);
+    }
+
     @Override
-    protected List<DBFieldInfo> getElementAutoFields()
+    public List<DBFieldInfo> getElementAutoFields()
     {
         List<DBFieldInfo> result = null;
 
@@ -35,6 +43,8 @@ public class QGCasePrv extends QGExpressionBase
     @Override
     public <T> void genOutput(StringBuilder stringBuilder, boolean fullNamespaces, T context)
     {
+        printSpaceIfNotFirst(stringBuilder);
+
         stringBuilder.append("CASE");
 
         for(QGWhen when: whenList)

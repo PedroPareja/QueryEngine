@@ -5,7 +5,7 @@ import es.pedropareja.database.generic.querygen.base.QGLinkBase;
 
 public interface QGLinkMergeInsert extends QGLinkBase
 {
-    default QGMergeInsert insert(DBFieldInfo ... fields)
+    default QGMergeInsert insert(DBFieldInfo... fields)
     {
         return assignNext(new QGMergeInsertPrv(getInit(), fields));
     }

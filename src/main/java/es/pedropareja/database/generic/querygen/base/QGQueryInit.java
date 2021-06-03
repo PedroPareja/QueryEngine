@@ -1,8 +1,10 @@
 package es.pedropareja.database.generic.querygen.base;
 
 import es.pedropareja.database.generic.DBFieldInfo;
+import es.pedropareja.database.generic.DBTable;
 import es.pedropareja.database.generic.querygen.auto.QGAutoFields;
 
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -46,16 +48,21 @@ public abstract class QGQueryInit extends QGQueryBase
     }
 
     @SuppressWarnings("unchecked")
-    public <T extends Enum<?> & DBFieldInfo> Set<Class<T>> getAutoTables()
+    public Set<DBTable> getAutoTables()
     {
-        Set<Class<T>> result = new TreeSet<>((a,b)-> a.hashCode() - b.hashCode());
+        Set<DBTable> result = new TreeSet<>((a,b)-> a.getId().hashCode() - b.getId().hashCode());
         QGQueryBase queryElement = this;
 
         while(queryElement != null)
         {
             if(queryElement instanceof QGAutoFields && queryElement.optionalAppearanceValue == true)
-                for(DBFieldInfo field: ((QGAutoFields)queryElement).getAutoFields())
-                    result.add((Class<T>)field.getClass());
+            {
+                List<DBFieldInfo> autoFields = ((QGAutoFields) queryElement).getAutoFields();
+
+                if(autoFields != null)
+                    for (DBFieldInfo field : autoFields)
+                        result.add(field.getParentTable());
+            }
 
             queryElement = queryElement.next;
         }

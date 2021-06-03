@@ -1,18 +1,18 @@
 package es.pedropareja.database.generic.querygen.from;
 
-import es.pedropareja.database.generic.DBFieldInfo;
 import es.pedropareja.database.generic.querygen.base.QGQueryInit;
 import es.pedropareja.database.generic.querygen.base.QGQueryMiddleEnd;
+import es.pedropareja.database.generic.querygen.expression.base.QGExpression;
 import es.pedropareja.database.generic.querygen.optional.QGLinkOptionalPrv;
 
-public class QGFromPrv<T extends Enum<?> & DBFieldInfo> extends QGQueryMiddleEnd implements QGFrom, QGLinkOptionalPrv<QGFrom>
+public class QGFromPrv extends QGQueryMiddleEnd implements QGFrom, QGLinkOptionalPrv<QGFrom>
 {
-    private final Class<T> tableType;
+    private final QGExpression tableExp;
 
-    QGFromPrv(Class<T> tableType, QGQueryInit init)
+    QGFromPrv(QGExpression tableExp, QGQueryInit init)
     {
         super(init);
-        this.tableType = tableType;
+        this.tableExp = tableExp;
     }
 
     @Override
@@ -20,7 +20,7 @@ public class QGFromPrv<T extends Enum<?> & DBFieldInfo> extends QGQueryMiddleEnd
     {
         stringBuilder.append(" FROM ");
 
-        printTablePath(stringBuilder, tableType, context);
+        tableExp.genExpressionOutput(stringBuilder, true, context);
 
         genOutputNext(stringBuilder, context);
     }

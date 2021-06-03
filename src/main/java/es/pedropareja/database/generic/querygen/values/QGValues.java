@@ -5,5 +5,5 @@ import es.pedropareja.database.generic.querygen.expression.base.QGExpression;
 
 public interface QGValues extends QGQuery
 {
-    QGValues and(QGExpression ... values);
+    QGValues and(QGExpression... values);
 }

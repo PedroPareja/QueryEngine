@@ -25,12 +25,12 @@ public class QGConditionNotPrv<T extends QGOptionalityEnabled & QGInitReferenced
     }
 
     @Override
-    public <T> void genOutput(StringBuilder stringBuilder, boolean fullNamespaces, T context)
+    public <T> void genExpressionOutput(StringBuilder stringBuilder, boolean fullNamespaces, T context)
     {
         if(!isNull())
         {
             stringBuilder.append(" NOT(");
-            conditionList.get(0).genOutput(stringBuilder, fullNamespaces, context);
+            conditionList.get(0).genExpressionOutput(stringBuilder, fullNamespaces, context);
             stringBuilder.append(")");
         }
     }

@@ -14,7 +14,7 @@ public class QGConditionAllPrv<T extends QGOptionalityEnabled & QGInitReferenced
     }
 
     @Override
-    public <T> void genOutput(StringBuilder stringBuilder, boolean fullNamespaces, T context)
+    public <T> void genExpressionOutput(StringBuilder stringBuilder, boolean fullNamespaces, T context)
     {
         if(!isNull())
             genOutput(stringBuilder, fullNamespaces, context, conditionList, "AND");

@@ -28,7 +28,7 @@ public class QGCoalescePrv extends QGExpressionBase
     }
 
     @Override
-    protected List<DBFieldInfo> getElementAutoFields()
+    public List<DBFieldInfo> getElementAutoFields()
     {
         List<DBFieldInfo> result = null;
 

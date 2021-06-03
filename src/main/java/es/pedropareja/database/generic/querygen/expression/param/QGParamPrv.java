@@ -34,7 +34,7 @@ public class QGParamPrv extends QGExpressionBase implements QGParam, QGLinkAsPrv
     }
 
     @Override
-    protected List<DBFieldInfo> getElementAutoFields()
+    public List<DBFieldInfo> getElementAutoFields()
     {
         return null;
     }

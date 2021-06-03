@@ -1,16 +1,23 @@
 package es.pedropareja.database.generic.querygen.set;
 
 import es.pedropareja.database.generic.DBFieldInfo;
+import es.pedropareja.database.generic.exceptions.QueryGenException;
 import es.pedropareja.database.generic.querygen.base.QGQueryInit;
 import es.pedropareja.database.generic.querygen.base.QGQueryMiddleEnd;
 import es.pedropareja.database.generic.querygen.expression.base.QGExpression;
+import es.pedropareja.database.generic.querygen.optional.QGLinkOptionalPrv;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class QGSetPrv extends QGQueryMiddleEnd implements QGSet
+public class QGSetPrv extends QGQueryMiddleEnd implements QGSet, QGLinkOptionalPrv<QGSet>
 {
     private final List<QGSetAssignment> setAssignments = new ArrayList<>();
+
+    public QGSetPrv(QGQueryInit init)
+    {
+        super(init);
+    }
 
     @SafeVarargs
     public QGSetPrv(QGQueryInit init, DBFieldInfo ... fieldList)
@@ -39,6 +46,9 @@ public class QGSetPrv extends QGQueryMiddleEnd implements QGSet
     @Override
     public <U> void genOutput(StringBuilder stringBuilder, U context)
     {
+        if(setAssignments.isEmpty())
+            throw new QueryGenException("There must be at least one SET statement in an UPDATE");
+
         stringBuilder.append(" SET ");
 
         for(int i=0; i < setAssignments.size(); i++)
@@ -61,8 +71,9 @@ public class QGSetPrv extends QGQueryMiddleEnd implements QGSet
     @Override
     public QGSet set(DBFieldInfo ... fields)
     {
-        for(DBFieldInfo field: fields)
-            setAssignments.add(new QGSetAssignmentPrv(field));
+        if(getNextOptionalAppearanceValueAndReset())
+            for(DBFieldInfo field: fields)
+                setAssignments.add(new QGSetAssignmentPrv(field));
 
         return this;
     }
@@ -70,16 +81,25 @@ public class QGSetPrv extends QGQueryMiddleEnd implements QGSet
     @Override
     public QGSet set(DBFieldInfo field, QGExpression value)
     {
-        setAssignments.add(new QGSetAssignmentPrv(field, value));
+        if(getNextOptionalAppearanceValueAndReset())
+            setAssignments.add(new QGSetAssignmentPrv(field, value));
+
         return this;
     }
 
     @Override
     public QGSet set(QGSetAssignment... setAssignments)
     {
-        for(QGSetAssignment setAssignment: setAssignments)
-            this.setAssignments.add(setAssignment);
+        if(getNextOptionalAppearanceValueAndReset())
+            for(QGSetAssignment setAssignment: setAssignments)
+                this.setAssignments.add(setAssignment);
 
+        return this;
+    }
+
+    @Override
+    public QGSet getThis()
+    {
         return this;
     }
 }

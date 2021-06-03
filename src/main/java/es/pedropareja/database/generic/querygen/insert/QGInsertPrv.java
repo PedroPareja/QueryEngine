@@ -28,7 +28,7 @@ public class QGInsertPrv extends QGQueryInit implements QGInsert
         if(next == null || !(next instanceof QGIntoPrv))
             throw new QueryGenException("QGInsert must be followed by QGInto");
 
-        printTablePath(stringBuilder, ((QGIntoPrv)next).getTableType(), context);
+        printTablePath(stringBuilder, ((QGIntoPrv)next).getTable(), context);
 
         stringBuilder.append(" (");
 

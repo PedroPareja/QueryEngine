@@ -9,18 +9,18 @@ import es.pedropareja.database.generic.querygen.expression.operator.QGLinkOperat
 
 import java.util.List;
 
-public class QGFieldPrv<T extends Enum<?> & DBFieldInfo> extends QGExpressionBase
+public class QGFieldPrv extends QGExpressionBase
         implements QGField, QGLinkOperatorsPrv, QGLinkAsPrv
 {
-    private final T field;
+    private final DBFieldInfo field;
 
-    public QGFieldPrv(QGExpressionPrv init, T field)
+    public QGFieldPrv(QGExpressionPrv init, DBFieldInfo field)
     {
         super(init);
         this.field = field;
     }
 
-    public QGFieldPrv(T field)
+    public QGFieldPrv(DBFieldInfo field)
     {
         super();
         this.field = field;
@@ -35,7 +35,7 @@ public class QGFieldPrv<T extends Enum<?> & DBFieldInfo> extends QGExpressionBas
     }
 
     @Override
-    protected List<DBFieldInfo> getElementAutoFields()
+    public List<DBFieldInfo> getElementAutoFields()
     {
         return field.getAutoFields();
     }

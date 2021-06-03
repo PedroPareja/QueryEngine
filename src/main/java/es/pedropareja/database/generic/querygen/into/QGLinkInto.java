@@ -1,12 +1,18 @@
 package es.pedropareja.database.generic.querygen.into;
 
-import es.pedropareja.database.generic.DBFieldInfo;
+import es.pedropareja.database.generic.DBTable;
 import es.pedropareja.database.generic.querygen.base.QGLinkBase;
+import es.pedropareja.database.generic.querygen.base.QGQueryBase;
 
 public interface QGLinkInto extends QGLinkBase
 {
-    default <T extends Enum<?> & DBFieldInfo> QGInto into(Class<T> tableType)
+    default QGInto into(DBTable table)
     {
-        return assignNext(new QGIntoPrv<>(tableType, getInit()));
+        return assignNext(new QGIntoPrv(table, getInit()));
+    }
+
+    default QGInto into(Class<? extends DBTable> tableType)
+    {
+        return into(QGQueryBase.getTableInstance(tableType));
     }
 }

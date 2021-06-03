@@ -26,16 +26,30 @@ public class QGConditionComparation implements QGConditionBase
     }
 
     @Override
-    public <T> void genOutput(StringBuilder stringBuilder, boolean fullNamespaces, T context)
+    public <T> void genExpressionOutput(StringBuilder stringBuilder, boolean fullNamespaces, T context)
     {
         stringBuilder.append(" ");
 
+        if(exp1.isComplex())
+            stringBuilder.append("(");
+
         exp1.genExpressionOutput(stringBuilder, fullNamespaces, context);
+
+        if(exp1.isComplex())
+            stringBuilder.append(")");
 
         stringBuilder.append(" ").append(type.symbol).append(" ");
 
         if(exp2 != null)
+        {
+            if(exp2.isComplex())
+                stringBuilder.append("(");
+
             exp2.genExpressionOutput(stringBuilder, fullNamespaces, context);
+
+            if(exp2.isComplex())
+                stringBuilder.append(")");
+        }
         else
             stringBuilder.append("?");
     }
@@ -63,6 +77,7 @@ public class QGConditionComparation implements QGConditionBase
 
         return QGQueryBase.joinLists(result, exp1.getAutoFields());
     }
+
 
     enum ComparationType
     {

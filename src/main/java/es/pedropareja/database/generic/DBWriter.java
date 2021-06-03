@@ -7,7 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class DBWriter implements AutoCloseable
+public class DBWriter implements AutoCloseable, ConnectionManager
 {
     private final ConnectionManager connectionManager;
     private Connection currentConnection;
@@ -46,15 +46,25 @@ public class DBWriter implements AutoCloseable
         }
     }
 
-    private Connection getConnection() throws SQLException
+    @Override
+    public Connection getConnection() throws SQLException
     {
         if(connectionManager == null)
             throw new SQLException("Connection Manager was not provided (null found)");
 
         if(currentConnection == null)
+        {
             currentConnection = connectionManager.getConnection();
+            currentConnection.setAutoCommit(false);
+        }
 
         return currentConnection;
+    }
+
+    @Override
+    public boolean isConnectionToKeptAlive()
+    {
+        return true;
     }
 
     public void rollback() throws SQLException
@@ -87,7 +97,7 @@ public class DBWriter implements AutoCloseable
             {
                 if (autoCommit && !error)
                     commit();
-                else if (autoRollback && error)
+                else if (autoRollback)
                     rollback();
             }
 
@@ -131,6 +141,32 @@ public class DBWriter implements AutoCloseable
         return execute(statementGenerator, statementExecutor);
     }
 
+    public <R, E extends Exception> R executeTransaction(FunctionExecutor<R,E> functionExecutor) throws E
+    {
+        try
+        {
+            return functionExecutor.execute();
+        }
+        catch (Exception e)
+        {
+            error = true;
+            throw e;
+        }
+    }
+
+    public <E extends Exception> void executeTransaction(CodeExecutor<E> codeExecutor) throws E
+    {
+        try
+        {
+            codeExecutor.execute();
+        }
+        catch (Exception e)
+        {
+            error = true;
+            throw e;
+        }
+    }
+
     public boolean isAutoCommit()
     {
         return autoCommit;
@@ -165,5 +201,17 @@ public class DBWriter implements AutoCloseable
     public interface StatementExecutor<T>
     {
         T execute(PreparedStatement statement) throws SQLException;
+    }
+
+    @FunctionalInterface
+    public interface FunctionExecutor<R, E extends Exception>
+    {
+        R execute() throws E;
+    }
+
+    @FunctionalInterface
+    public interface CodeExecutor<E extends Exception>
+    {
+        void execute() throws E;
     }
 }

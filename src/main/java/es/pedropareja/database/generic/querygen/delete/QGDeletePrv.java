@@ -1,22 +1,22 @@
 package es.pedropareja.database.generic.querygen.delete;
 
-import es.pedropareja.database.generic.DBFieldInfo;
+import es.pedropareja.database.generic.DBTable;
 import es.pedropareja.database.generic.querygen.base.QGQueryInit;
 
-public class QGDeletePrv<T extends Enum<?> & DBFieldInfo> extends QGQueryInit implements QGDelete
+public class QGDeletePrv extends QGQueryInit implements QGDelete
 {
-    private final Class<T> tableType;
+    private final DBTable table;
 
-    public QGDeletePrv(Class<T> tableType)
+    public QGDeletePrv(DBTable table)
     {
-        this.tableType = tableType;
+        this.table = table;
     }
 
     @Override
     public <U> void genOutput(StringBuilder stringBuilder, U context)
     {
         stringBuilder.append("DELETE FROM ");
-        printTablePath(stringBuilder, tableType, context);
+        printTablePath(stringBuilder, table, context);
 
         genOutputNext(stringBuilder, context);
     }

@@ -6,6 +6,8 @@ import es.pedropareja.database.generic.querygen.expression.base.QGExpression;
 
 public interface QGLinkSet extends QGLinkBase
 {
+    default QGSet set() { return assignNext(new QGSetPrv(getInit())); }
+
     @SuppressWarnings("unchecked")
     default QGSet set(DBFieldInfo... fieldList)
     {
@@ -17,7 +19,7 @@ public interface QGLinkSet extends QGLinkBase
         return assignNext(new QGSetPrv(getInit(), field, value));
     }
 
-    default QGSet set(QGSetAssignment ... setAssignments)
+    default QGSet set(QGSetAssignment... setAssignments)
     {
         return assignNext(new QGSetPrv(getInit(), setAssignments));
     }

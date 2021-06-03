@@ -4,5 +4,5 @@ import es.pedropareja.database.generic.DBFieldInfo;
 
 public interface QGLinkField
 {
-    <T extends Enum<?> & DBFieldInfo> QGField field(T fieldInfo);
+    QGField field(DBFieldInfo fieldInfo);
 }

@@ -1,22 +1,22 @@
 package es.pedropareja.database.generic.querygen.update;
 
-import es.pedropareja.database.generic.DBFieldInfo;
+import es.pedropareja.database.generic.DBTable;
 import es.pedropareja.database.generic.querygen.base.QGQueryInit;
 
-public class QGUpdatePrv<T extends Enum<?> & DBFieldInfo> extends QGQueryInit implements QGUpdate
+public class QGUpdatePrv extends QGQueryInit implements QGUpdate
 {
-    private final Class<T> tableType;
+    private final DBTable table;
 
-    public QGUpdatePrv(Class<T> tableType)
+    public QGUpdatePrv(DBTable table)
     {
-        this.tableType = tableType;
+        this.table = table;
     }
 
     @Override
     public <U> void genOutput(StringBuilder stringBuilder, U context)
     {
         stringBuilder.append("UPDATE ");
-        printTablePath(stringBuilder, tableType, context);
+        printTablePath(stringBuilder, table, context);
 
         genOutputNext(stringBuilder, context);
     }

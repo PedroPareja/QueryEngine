@@ -3,14 +3,15 @@ package es.pedropareja.database.generic.querygen.expression.as;
 import es.pedropareja.database.generic.DBFieldInfo;
 import es.pedropareja.database.generic.querygen.expression.base.QGExpressionBase;
 import es.pedropareja.database.generic.querygen.expression.base.QGExpressionPrv;
+import es.pedropareja.database.generic.querygen.expression.id.QGId;
 
 import java.util.List;
 
 public class QGAsPrv extends QGExpressionBase implements QGAs
 {
-    private final String id;
+    private final QGId id;
 
-    public QGAsPrv(QGExpressionPrv init, String id)
+    public QGAsPrv(QGExpressionPrv init, QGId id)
     {
         super(init);
         this.id = id;
@@ -19,7 +20,8 @@ public class QGAsPrv extends QGExpressionBase implements QGAs
     @Override
     public <T> void genOutput(StringBuilder stringBuilder, boolean fullNamespaces, T context)
     {
-        stringBuilder.append(" AS ").append(id);
+        stringBuilder.append(" AS ");
+        id.genExpressionOutput(stringBuilder, fullNamespaces, context);
     }
 
     @Override

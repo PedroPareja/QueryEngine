@@ -5,6 +5,7 @@ import es.pedropareja.database.generic.querygen.expression.base.QGExpression;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public interface DBFieldInfo extends QGExpression
 {
@@ -18,7 +19,10 @@ public interface DBFieldInfo extends QGExpression
         if (!this.getClass().equals(other.getClass()))
             return false;
 
-        return this == other;
+        DBFieldInfo field = (DBFieldInfo) other;
+
+        return Objects.equals(getParentTable(), field.getParentTable())
+                && Objects.equals(getName(), field.getName());
     }
 
     @Override
@@ -31,5 +35,13 @@ public interface DBFieldInfo extends QGExpression
     default List<DBFieldInfo> getAutoFields()
     {
         return Arrays.asList(this);
+    }
+
+    DBTable getParentTable();
+
+    @Override
+    default boolean isComplex()
+    {
+        return false;
     }
 }

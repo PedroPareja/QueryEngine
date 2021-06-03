@@ -1,12 +1,18 @@
 package es.pedropareja.database.generic.querygen.condition;
 
 import es.pedropareja.database.generic.DBFieldInfo;
+import es.pedropareja.database.generic.DBFilterContextProcessor;
 import es.pedropareja.database.generic.DBFilterProcessor;
 import es.pedropareja.database.generic.querygen.base.QGInitReferenced;
 import es.pedropareja.database.generic.querygen.base.QGOptionalityEnabled;
 import es.pedropareja.database.generic.querygen.base.QGQuery;
 import es.pedropareja.database.generic.querygen.condition.QGConditionComparation.ComparationType;
-import es.pedropareja.database.generic.querygen.condition.group.*;
+import es.pedropareja.database.generic.querygen.condition.group.QGConditionAll;
+import es.pedropareja.database.generic.querygen.condition.group.QGConditionAllPrv;
+import es.pedropareja.database.generic.querygen.condition.group.QGConditionAny;
+import es.pedropareja.database.generic.querygen.condition.group.QGConditionAnyPrv;
+import es.pedropareja.database.generic.querygen.condition.group.QGConditionNot;
+import es.pedropareja.database.generic.querygen.condition.group.QGConditionNotPrv;
 import es.pedropareja.database.generic.querygen.expression.base.QGExpression;
 import es.pedropareja.database.generic.querygen.optional.QGLinkOptionalPrv;
 
@@ -41,13 +47,13 @@ public interface QGLinkConditionsPrv<T extends QGOptionalityEnabled & QGLinkCond
     }
 
     @Override
-    default <U extends DBFieldInfo> T equalsAny(U field)
+    default T equalsAny(DBFieldInfo field)
     {
         return addCondition(new QGConditionEqualsAny<>(field));
     }
 
     @Override
-    default <U extends DBFieldInfo> T exists(QGQuery query)
+    default T exists(QGQuery query)
     {
         if(getThis().getNextOptionalAppearanceValueAndReset())
         {
@@ -61,11 +67,11 @@ public interface QGLinkConditionsPrv<T extends QGOptionalityEnabled & QGLinkCond
     }
 
     @Override
-    default <U extends DBFieldInfo> T in(U field, QGQuery query)
+    default T in(DBFieldInfo field, QGQuery query)
     {
         if(getThis().getNextOptionalAppearanceValueAndReset())
         {
-            getConditionList().add(new QGConditionInQuery<>(field, query));
+            getConditionList().add(new QGConditionInQuery(field, query));
 
             if(getThis().getInit() != null)
                 getThis().getInit().setFullNamespaces();
@@ -75,15 +81,35 @@ public interface QGLinkConditionsPrv<T extends QGOptionalityEnabled & QGLinkCond
     }
 
     @Override
-    default <U extends DBFieldInfo> T in(U field, int numberOfParameters)
+    default T in(DBFieldInfo[] fields, QGQuery query)
     {
-        return addCondition(new QGConditionIn<>(field, numberOfParameters));
+        if(getThis().getNextOptionalAppearanceValueAndReset())
+        {
+            getConditionList().add(new QGConditionInQuery(fields, query));
+
+            if(getThis().getInit() != null)
+                getThis().getInit().setFullNamespaces();
+        }
+
+        return getThis();
     }
 
     @Override
-    default <U extends DBFieldInfo> T in(U field, Collection<?> collection)
+    default T in(DBFieldInfo field, int numberOfParameters)
     {
-        return addCondition(new QGConditionIn<>(field, collection != null ? collection.size() : 0));
+        return addCondition(new QGConditionIn(field, numberOfParameters));
+    }
+
+    @Override
+    default T in(QGExpression field, Collection<QGExpression> values)
+    {
+        return addCondition(new QGConditionInArray(field, values.toArray(new QGExpression[0])));
+    }
+
+    @Override
+    default T in(QGExpression field, QGExpression ... values)
+    {
+        return addCondition(new QGConditionInArray(field, values));
     }
 
     @Override
@@ -102,6 +128,26 @@ public interface QGLinkConditionsPrv<T extends QGOptionalityEnabled & QGLinkCond
         if(filters != null)
             for(U filter: filters)
                 applyFilter(filterProcessorType, filter);
+
+        return getThis();
+    }
+
+    @Override
+    default <U, C, F extends Enum<?> & DBFilterContextProcessor<U,C>> T applyFilter(Class<F> filterProcessorType, U filter, C context)
+    {
+        if(filter != null)
+            for(F filterRule: filterProcessorType.getEnumConstants())
+                filterRule.getQueryCondition().doAction(getThis(), filter, context);
+
+        return getThis();
+    }
+
+    @Override
+    default <U, C, F extends Enum<?> & DBFilterContextProcessor<U,C>> T applyFilters(Class<F> filterProcessorType, Collection<U> filters, C context)
+    {
+        if(filters != null)
+            for(U filter: filters)
+                applyFilter(filterProcessorType, filter, context);
 
         return getThis();
     }

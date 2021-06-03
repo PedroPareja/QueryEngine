@@ -8,47 +8,69 @@ import java.util.Collection;
 
 public class QueryParamsHelper
 {
-    private static final ParamSetter<Long> longSetter =  (s,i,v) -> s.setLong(i, v);
-    private static final ParamSetter<Integer> intSetter = (s,i,v) -> s.setInt(i, v);
-    private static final ParamSetter<Short> shortSetter = (s,i,v) -> s.setShort(i, v);
-    private static final ParamSetter<String> stringSetter =  (s,i,v) -> s.setString(i, v);
-    private static final ParamSetter<BigDecimal> bigDecimalSetter = (s,i,v) -> s.setBigDecimal(i, v);
-    private static final ParamSetter<Boolean> booleanSetter = (s,i,v) -> s.setBoolean(i, v);
-    private static final ParamSetter<Timestamp> timestampSetter = (s,i,v) -> s.setTimestamp(i, v);
+    protected static final ParamSetter<Long> longSetter =  (s,i,v) -> s.setLong(i, v);
+    protected static final ParamSetter<Integer> intSetter = (s,i,v) -> s.setInt(i, v);
+    protected static final ParamSetter<Short> shortSetter = (s,i,v) -> s.setShort(i, v);
+    protected static final ParamSetter<String> stringSetter =  (s,i,v) -> s.setString(i, v);
+    protected static final ParamSetter<BigDecimal> bigDecimalSetter = (s,i,v) -> s.setBigDecimal(i, v);
+    protected static final ParamSetter<Boolean> booleanSetter = (s,i,v) -> s.setBoolean(i, v);
+    protected static final ParamSetter<Timestamp> timestampSetter = (s,i,v) -> s.setTimestamp(i, v);
 
-    private final PreparedStatement statement;
-    private int paramIndex = 1;
+    protected final PreparedStatement statement;
+    protected int paramIndex = 1;
 
     public QueryParamsHelper(PreparedStatement statement)
     {
         this.statement = statement;
     }
 
-    private <T> void setParam(ParamSetter<T> paramSetter, T value) throws SQLException
+    protected <T> void setParam(ParamSetter<T> paramSetter, T value) throws SQLException
     {
         if(value != null)
             paramSetter.setParam(statement, paramIndex++, value);
     }
 
-    private <T> void setParam(ParamSetter<T> paramSetter, T value, boolean condition) throws SQLException
+    protected <T> void setParam(ParamSetter<T> paramSetter, T value, boolean condition) throws SQLException
     {
         if(condition)
             setParam(paramSetter, value);
     }
 
-    private <T> void setAllParam(ParamSetter<T> paramSetter, Collection<T> collection) throws SQLException
+    protected <T> void setAllParam(ParamSetter<T> paramSetter, Collection<T> collection) throws SQLException
     {
         if(collection != null)
             for(T element: collection)
                 setParam(paramSetter, element);
     }
 
-    private <T> void setAllParam(ParamSetter<T> paramSetter, Collection<T> collection, boolean condition) throws SQLException
+    protected <T> void setAllParam(ParamSetter<T> paramSetter, Collection<T> collection, boolean condition) throws SQLException
     {
         if(condition)
             setAllParam(paramSetter, collection);
     }
 
+    public void setNull(int sqlType) throws SQLException
+    {
+        statement.setNull(paramIndex++, sqlType);
+    }
+
+    public void setNull(int sqlType, boolean condition) throws SQLException
+    {
+        if(condition)
+            setNull(sqlType);
+    }
+
+    public void setAllNull(int count, int sqlType) throws SQLException
+    {
+        for(int i=0; i < count; i++)
+            setNull(sqlType);
+    }
+
+    public void setAllNull(int count, int sqlType, boolean condition) throws SQLException
+    {
+        if(condition)
+            setAllNull(count, sqlType);
+    }
 
     public void setLong(Long value) throws SQLException
     {
@@ -206,8 +228,30 @@ public class QueryParamsHelper
                 applyFilter(filterProcessorType, filter);
     }
 
+    public <U, C,  F extends Enum<?> & DBFilterContextProcessor<U,C>> void applyFilter(Class<F> filterProcessorType, U filter, C context)
+            throws SQLException
+    {
+        if(filter != null)
+            for(F filterRule: filterProcessorType.getEnumConstants())
+                filterRule.getParamSetter().doAction(this, filter, context);
+    }
+
+    public <U, C, F extends Enum<?> & DBFilterContextProcessor<U,C>> void applyFilters(Class<F> filterProcessorType, Collection<U> filters, C context)
+            throws SQLException
+    {
+        if(filters != null)
+            for(U filter: filters)
+                applyFilter(filterProcessorType, filter, context);
+    }
+
+    public void addBatch() throws SQLException
+    {
+        statement.addBatch();
+        paramIndex = 1;
+    }
+    
     @FunctionalInterface
-    private interface ParamSetter<T>
+    protected interface ParamSetter<T>
     {
         void setParam(PreparedStatement statement, int paramIndex, T value) throws SQLException;
     }

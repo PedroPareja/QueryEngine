@@ -68,7 +68,12 @@ public abstract class QGConditionGroupPrv<U extends QGConditionGroup<U,T>, T ext
         List<DBFieldInfo> result = new ArrayList<>();
 
         for(QGConditionBase condition: conditionList)
-            result.addAll(condition.getAutoFields());
+        {
+            List<DBFieldInfo> conditionAutofields = condition.getAutoFields();
+
+            if(conditionAutofields != null)
+                result.addAll(condition.getAutoFields());
+        }
 
         return result;
     }
@@ -99,7 +104,7 @@ public abstract class QGConditionGroupPrv<U extends QGConditionGroup<U,T>, T ext
                 if(conditionWritten)
                     stringBuilder.append(" ").append(nexusOperator);
 
-                condition.genOutput(stringBuilder, fullNamespaces, context);
+                condition.genExpressionOutput(stringBuilder, fullNamespaces, context);
                 conditionWritten = true;
             }
         }

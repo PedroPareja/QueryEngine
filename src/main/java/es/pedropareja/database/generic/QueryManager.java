@@ -19,14 +19,26 @@ public class QueryManager
         if(connectionManager == null)
             throw new SQLException("Connection Manager was not provided (null found)");
 
+        Connection connection = null;
+
         try
-        (
-            Connection connection = connectionManager.getConnection();
-            PreparedStatement statement = statementGenerator.createStatement(connection);
-            ResultSet resultSet = statement.executeQuery()
-        )
         {
-            return resultSetExecutor.execute(resultSet);
+            connection = connectionManager.getConnection();
+
+            try
+            (
+
+                PreparedStatement statement = statementGenerator.createStatement(connection);
+                ResultSet resultSet = statement.executeQuery()
+            )
+            {
+                return resultSetExecutor.execute(resultSet);
+            }
+        }
+        finally
+        {
+            if(connection != null && !connectionManager.isConnectionToKeptAlive())
+                connection.close();
         }
     }
 
@@ -82,6 +94,8 @@ public class QueryManager
     public interface ConnectionManager
     {
         Connection getConnection() throws SQLException;
+
+        default boolean isConnectionToKeptAlive() { return false; }
     }
 
     @FunctionalInterface

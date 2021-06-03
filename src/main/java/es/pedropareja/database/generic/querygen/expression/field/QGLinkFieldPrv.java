@@ -6,8 +6,8 @@ import es.pedropareja.database.generic.querygen.expression.base.QGExpressionPrv;
 public interface QGLinkFieldPrv extends QGLinkField, QGExpressionPrv
 {
     @Override
-    default <T extends Enum<?> & DBFieldInfo> QGField field(T fieldInfo)
+    default QGField field(DBFieldInfo fieldInfo)
     {
-        return assignNext(new QGFieldPrv<>(getInit(), fieldInfo));
+        return assignNext(new QGFieldPrv(getInit(), fieldInfo));
     }
 }

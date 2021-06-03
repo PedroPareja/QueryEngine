@@ -11,5 +11,5 @@ public interface QGOrderBy
 {
     QGOrderBy and(QGExpression exp, Order order);
     QGOrderBy and(QGExpression exp);
-    QGOrderBy and(QGOrderElement ... orderElements);
+    QGOrderBy and(QGOrderElement... orderElements);
 }

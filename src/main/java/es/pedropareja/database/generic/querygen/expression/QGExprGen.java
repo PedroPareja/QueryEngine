@@ -1,6 +1,7 @@
 package es.pedropareja.database.generic.querygen.expression;
 
 import es.pedropareja.database.generic.DBFieldInfo;
+import es.pedropareja.database.generic.DBTable;
 import es.pedropareja.database.generic.querygen.Order;
 import es.pedropareja.database.generic.querygen.expression.aggregate.QGAggregate;
 import es.pedropareja.database.generic.querygen.expression.aggregate.QGAggregate.Type;
@@ -10,8 +11,12 @@ import es.pedropareja.database.generic.querygen.expression.casecmd.QGCase;
 import es.pedropareja.database.generic.querygen.expression.casecmd.QGCasePrv;
 import es.pedropareja.database.generic.querygen.expression.coalesce.QGCoalesce;
 import es.pedropareja.database.generic.querygen.expression.coalesce.QGCoalescePrv;
+import es.pedropareja.database.generic.querygen.expression.count.QGCount;
+import es.pedropareja.database.generic.querygen.expression.count.QGCountPrv;
 import es.pedropareja.database.generic.querygen.expression.field.QGField;
 import es.pedropareja.database.generic.querygen.expression.field.QGFieldPrv;
+import es.pedropareja.database.generic.querygen.expression.function.QGFunction;
+import es.pedropareja.database.generic.querygen.expression.function.QGFunctionPrv;
 import es.pedropareja.database.generic.querygen.expression.id.QGId;
 import es.pedropareja.database.generic.querygen.expression.id.QGIdPrv;
 import es.pedropareja.database.generic.querygen.expression.number.QGNumber;
@@ -20,6 +25,8 @@ import es.pedropareja.database.generic.querygen.expression.operator.QGOperator;
 import es.pedropareja.database.generic.querygen.expression.operator.QGOperatorPrv;
 import es.pedropareja.database.generic.querygen.expression.param.QGParam;
 import es.pedropareja.database.generic.querygen.expression.param.QGParamPrv;
+import es.pedropareja.database.generic.querygen.expression.table.QGTable;
+import es.pedropareja.database.generic.querygen.expression.table.QGTablePrv;
 import es.pedropareja.database.generic.querygen.orderby.QGOrderElement;
 import es.pedropareja.database.generic.querygen.orderby.QGOrderElementPrv;
 
@@ -31,34 +38,34 @@ public class QGExprGen
 
     public static QGAggregate avg(QGExpression exp)
     {
-        return new QGAggregatePrv<>(Type.AVG, exp);
+        return new QGAggregatePrv(Type.AVG, exp);
     }
 
-    public static QGAggregate count(QGExpression exp)
+    public static QGCount count(QGExpression ... parameters)
     {
-        return new QGAggregatePrv<>(QGAggregate.Type.COUNT, exp);
+        return new QGCountPrv(parameters);
     }
 
-    public static QGAggregate count() { return new QGAggregatePrv<>(Type.COUNT); }
+    public static QGCount count() { return new QGCountPrv(); }
 
     public static QGAggregate min(QGExpression exp)
     {
-        return new QGAggregatePrv<>(QGAggregate.Type.MIN, exp);
+        return new QGAggregatePrv(QGAggregate.Type.MIN, exp);
     }
 
     public static QGAggregate max(QGExpression exp)
     {
-        return new QGAggregatePrv<>(QGAggregate.Type.MAX, exp);
+        return new QGAggregatePrv(QGAggregate.Type.MAX, exp);
     }
 
     public static QGAggregate sum(QGExpression exp)
     {
-        return new QGAggregatePrv<>(QGAggregate.Type.SUM, exp);
+        return new QGAggregatePrv(QGAggregate.Type.SUM, exp);
     }
 
-    public static <T extends Enum<?> & DBFieldInfo> QGField field(T fieldValue)
+    public static QGField field(DBFieldInfo fieldValue)
     {
-        return new QGFieldPrv<>(fieldValue);
+        return new QGFieldPrv(fieldValue);
     }
 
     public static QGId id(String idValue)
@@ -100,5 +107,10 @@ public class QGExprGen
     public static QGParam param() { return new QGParamPrv(); }
 
     public static QGParam params(int repetitions) { return new QGParamPrv(repetitions); }
+
+    @SafeVarargs
+    public static QGFunction function(String functionName, QGExpression... parameters) { return new QGFunctionPrv(functionName, parameters); }
+
+    public static QGTable table(DBTable table) { return new QGTablePrv(table); }
 }
 
