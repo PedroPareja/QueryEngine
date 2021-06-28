@@ -1,33 +1,33 @@
 package com.github.pedropareja.database.generic.querygen.expression;
 
-import com.github.pedropareja.database.generic.querygen.Order;
-import com.github.pedropareja.database.generic.querygen.expression.casecmd.QGCasePrv;
-import com.github.pedropareja.database.generic.querygen.expression.count.QGCount;
-import com.github.pedropareja.database.generic.querygen.expression.count.QGCountPrv;
-import com.github.pedropareja.database.generic.querygen.expression.field.QGFieldPrv;
-import com.github.pedropareja.database.generic.querygen.expression.number.QGNumber;
-import com.github.pedropareja.database.generic.querygen.expression.operator.QGOperator;
-import com.github.pedropareja.database.generic.querygen.orderby.QGOrderElement;
 import com.github.pedropareja.database.generic.DBFieldInfo;
 import com.github.pedropareja.database.generic.DBTable;
+import com.github.pedropareja.database.generic.querygen.Order;
 import com.github.pedropareja.database.generic.querygen.expression.aggregate.QGAggregate;
 import com.github.pedropareja.database.generic.querygen.expression.aggregate.QGAggregate.Type;
 import com.github.pedropareja.database.generic.querygen.expression.aggregate.QGAggregatePrv;
 import com.github.pedropareja.database.generic.querygen.expression.base.QGExpression;
 import com.github.pedropareja.database.generic.querygen.expression.casecmd.QGCase;
+import com.github.pedropareja.database.generic.querygen.expression.casecmd.QGCasePrv;
 import com.github.pedropareja.database.generic.querygen.expression.coalesce.QGCoalesce;
 import com.github.pedropareja.database.generic.querygen.expression.coalesce.QGCoalescePrv;
+import com.github.pedropareja.database.generic.querygen.expression.count.QGCount;
+import com.github.pedropareja.database.generic.querygen.expression.count.QGCountPrv;
 import com.github.pedropareja.database.generic.querygen.expression.field.QGField;
+import com.github.pedropareja.database.generic.querygen.expression.field.QGFieldPrv;
 import com.github.pedropareja.database.generic.querygen.expression.function.QGFunction;
 import com.github.pedropareja.database.generic.querygen.expression.function.QGFunctionPrv;
 import com.github.pedropareja.database.generic.querygen.expression.id.QGId;
 import com.github.pedropareja.database.generic.querygen.expression.id.QGIdPrv;
+import com.github.pedropareja.database.generic.querygen.expression.number.QGNumber;
 import com.github.pedropareja.database.generic.querygen.expression.number.QGNumberPrv;
-import com.github.pedropareja.database.generic.querygen.expression.operator.QGOperatorPrv;
 import com.github.pedropareja.database.generic.querygen.expression.param.QGParam;
 import com.github.pedropareja.database.generic.querygen.expression.param.QGParamPrv;
+import com.github.pedropareja.database.generic.querygen.expression.parenthesis.QGParenthesis;
+import com.github.pedropareja.database.generic.querygen.expression.parenthesis.QGParenthesisPrv;
 import com.github.pedropareja.database.generic.querygen.expression.table.QGTable;
 import com.github.pedropareja.database.generic.querygen.expression.table.QGTablePrv;
+import com.github.pedropareja.database.generic.querygen.orderby.QGOrderElement;
 import com.github.pedropareja.database.generic.querygen.orderby.QGOrderElementPrv;
 
 import java.math.BigDecimal;
@@ -94,9 +94,7 @@ public class QGExprGen
         return new QGNumberPrv(value);
     }
 
-    public static QGOperator openParenthesis() { return new QGOperatorPrv(QGOperator.Type.PARENTHESIS_OPEN); }
-
-    public static QGOperator closeParenthesis() { return new QGOperatorPrv(QGOperator.Type.PARENTHESIS_CLOSE); }
+    public static QGParenthesis parenthesis(QGExpression content) { return new QGParenthesisPrv(content); }
 
     public static QGCase caseSelection() { return new QGCasePrv(); }
 

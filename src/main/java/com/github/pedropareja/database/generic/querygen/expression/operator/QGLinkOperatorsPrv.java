@@ -28,16 +28,4 @@ public interface QGLinkOperatorsPrv extends QGLinkOperators, QGExpressionPrv
     {
         return assignNext(new QGOperatorPrv(getInit(), QGOperator.Type.DIVIDE));
     }
-
-    @Override
-    default QGOperator openParenthesis()
-    {
-        return assignNext(new QGOperatorPrv(getInit(), Type.PARENTHESIS_OPEN));
-    }
-
-    @Override
-    default QGOperator closeParenthesis()
-    {
-        return assignNext(new QGOperatorPrv(getInit(), Type.PARENTHESIS_CLOSE));
-    }
 }

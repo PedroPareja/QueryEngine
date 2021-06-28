@@ -6,6 +6,4 @@ public interface QGLinkOperators
     QGOperator minus();
     QGOperator multiply();
     QGOperator divide();
-    QGOperator openParenthesis();
-    QGOperator closeParenthesis();
 }
