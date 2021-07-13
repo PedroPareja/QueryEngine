@@ -3,6 +3,7 @@ package com.github.pedropareja.database.generic.querygen.expression;
 import com.github.pedropareja.database.generic.DBFieldInfo;
 import com.github.pedropareja.database.generic.DBTable;
 import com.github.pedropareja.database.generic.querygen.Order;
+import com.github.pedropareja.database.generic.querygen.base.QGQuery;
 import com.github.pedropareja.database.generic.querygen.expression.aggregate.QGAggregate;
 import com.github.pedropareja.database.generic.querygen.expression.aggregate.QGAggregate.Type;
 import com.github.pedropareja.database.generic.querygen.expression.aggregate.QGAggregatePrv;
@@ -31,7 +32,6 @@ import com.github.pedropareja.database.generic.querygen.expression.table.QGTable
 import com.github.pedropareja.database.generic.querygen.expression.table.QGTablePrv;
 import com.github.pedropareja.database.generic.querygen.orderby.QGOrderElement;
 import com.github.pedropareja.database.generic.querygen.orderby.QGOrderElementPrv;
-import com.github.pedropareja.database.generic.querygen.select.QGSelect;
 
 import java.math.BigDecimal;
 
@@ -112,7 +112,7 @@ public class QGExprGen
     @SafeVarargs
     public static QGFunction function(String functionName, QGExpression... parameters) { return new QGFunctionPrv(functionName, parameters); }
 
-    public static QGSubQuery subQuery(QGSelect query) { return new QGSubQueryPrv(query); }
+    public static QGSubQuery subQuery(QGQuery query) { return new QGSubQueryPrv(query); }
 
     public static QGTable table(DBTable table) { return new QGTablePrv(table); }
 }
