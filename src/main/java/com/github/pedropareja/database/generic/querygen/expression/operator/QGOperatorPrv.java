@@ -13,13 +13,14 @@ import com.github.pedropareja.database.generic.querygen.expression.field.QGLinkF
 import com.github.pedropareja.database.generic.querygen.expression.function.QGLinkFunctionPrv;
 import com.github.pedropareja.database.generic.querygen.expression.number.QGLinkNumberPrv;
 import com.github.pedropareja.database.generic.querygen.expression.parenthesis.QGLinkParenthesisPrv;
+import com.github.pedropareja.database.generic.querygen.expression.subquery.QGLinkSubQueryPrv;
 
 import java.util.List;
 
 public class QGOperatorPrv extends QGExpressionBase
         implements QGOperator, QGLinkFieldPrv, QGLinkIdPrv, QGLinkCoalescePrv,
             QGLinkNumberPrv, QGLinkAggregatePrv, QGLinkCountPrv, QGLinkFunctionPrv,
-            QGLinkParenthesisPrv, QGLinkCasePrv, QGLinkAsPrv
+            QGLinkParenthesisPrv, QGLinkCasePrv, QGLinkSubQueryPrv, QGLinkAsPrv
 {
     private final Type type;
 

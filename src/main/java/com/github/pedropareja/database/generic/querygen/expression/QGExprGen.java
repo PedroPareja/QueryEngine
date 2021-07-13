@@ -25,10 +25,13 @@ import com.github.pedropareja.database.generic.querygen.expression.param.QGParam
 import com.github.pedropareja.database.generic.querygen.expression.param.QGParamPrv;
 import com.github.pedropareja.database.generic.querygen.expression.parenthesis.QGParenthesis;
 import com.github.pedropareja.database.generic.querygen.expression.parenthesis.QGParenthesisPrv;
+import com.github.pedropareja.database.generic.querygen.expression.subquery.QGSubQuery;
+import com.github.pedropareja.database.generic.querygen.expression.subquery.QGSubQueryPrv;
 import com.github.pedropareja.database.generic.querygen.expression.table.QGTable;
 import com.github.pedropareja.database.generic.querygen.expression.table.QGTablePrv;
 import com.github.pedropareja.database.generic.querygen.orderby.QGOrderElement;
 import com.github.pedropareja.database.generic.querygen.orderby.QGOrderElementPrv;
+import com.github.pedropareja.database.generic.querygen.select.QGSelect;
 
 import java.math.BigDecimal;
 
@@ -108,6 +111,8 @@ public class QGExprGen
 
     @SafeVarargs
     public static QGFunction function(String functionName, QGExpression... parameters) { return new QGFunctionPrv(functionName, parameters); }
+
+    public static QGSubQuery subQuery(QGSelect query) { return new QGSubQueryPrv(query); }
 
     public static QGTable table(DBTable table) { return new QGTablePrv(table); }
 }

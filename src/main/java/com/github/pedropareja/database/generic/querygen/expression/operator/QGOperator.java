@@ -11,10 +11,12 @@ import com.github.pedropareja.database.generic.querygen.expression.function.QGLi
 import com.github.pedropareja.database.generic.querygen.expression.id.QGLinkId;
 import com.github.pedropareja.database.generic.querygen.expression.number.QGLinkNumber;
 import com.github.pedropareja.database.generic.querygen.expression.parenthesis.QGLinkParenthesis;
+import com.github.pedropareja.database.generic.querygen.expression.subquery.QGLinkSubQuery;
 
 public interface QGOperator
         extends QGExpression, QGLinkField, QGLinkId, QGLinkCoalesce, QGLinkNumber,
-            QGLinkAggregate, QGLinkCount, QGLinkFunction, QGLinkParenthesis, QGLinkCase, QGLinkAs
+            QGLinkAggregate, QGLinkCount, QGLinkFunction, QGLinkParenthesis, QGLinkCase,
+            QGLinkSubQuery, QGLinkAs
 {
     enum Type
     {
