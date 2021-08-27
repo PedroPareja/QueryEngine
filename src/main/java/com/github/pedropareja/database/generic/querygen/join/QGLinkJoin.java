@@ -16,7 +16,7 @@ public interface QGLinkJoin extends QGLinkBase
 
     default QGJoin join(DBTable table)
     {
-        String alias = getInit().getTableAliasIndex().getAlias(table);
+        String alias = getInit().getTableAliasIndex() != null ? getInit().getTableAliasIndex().getAlias(table) : null;
 
         return alias != null
                ? join(QGExprGen.table(table, alias))
@@ -30,7 +30,7 @@ public interface QGLinkJoin extends QGLinkBase
 
     default QGJoin join(DBTable table, JoinType joinType)
     {
-        String alias = getInit().getTableAliasIndex().getAlias(table);
+        String alias = getInit().getTableAliasIndex() != null ? getInit().getTableAliasIndex().getAlias(table) : null;
 
         return alias != null
                ? join(QGExprGen.table(table, alias), joinType)

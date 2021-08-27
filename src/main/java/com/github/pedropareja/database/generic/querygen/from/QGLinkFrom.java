@@ -15,7 +15,7 @@ public interface QGLinkFrom extends QGLinkBase
 
     default QGFrom from(DBTable table)
     {
-        String alias = getInit().getTableAliasIndex().getAlias(table);
+        String alias = getInit().getTableAliasIndex() != null ? getInit().getTableAliasIndex().getAlias(table) : null;
 
         return alias != null
             ? from(QGExprGen.table(table, alias))
