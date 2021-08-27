@@ -1,5 +1,7 @@
 package com.github.pedropareja.database.generic.querygen.base;
 
+import com.github.pedropareja.database.generic.DBTableAliasIndex;
+
 public abstract class QGQueryMiddleEnd extends QGQueryBase
 {
     private final QGQueryInit init;
@@ -18,6 +20,18 @@ public abstract class QGQueryMiddleEnd extends QGQueryBase
     public void setOptionalAppearanceValue(boolean optionalAppearanceValue)
     {
         this.optionalAppearanceValue = optionalAppearanceValue;
+    }
+
+    @Override
+    public DBTableAliasIndex getTableAliasIndex()
+    {
+        return getInit().getTableAliasIndex();
+    }
+
+    @Override
+    protected void setTableAliasIndex(DBTableAliasIndex tableAliasIndex)
+    {
+        getInit().setTableAliasIndex(tableAliasIndex);
     }
 
     @Override

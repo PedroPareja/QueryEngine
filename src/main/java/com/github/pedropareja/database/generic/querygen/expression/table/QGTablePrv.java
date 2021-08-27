@@ -14,22 +14,38 @@ public class QGTablePrv extends QGExpressionBase
     implements QGTable, QGLinkAsPrv
 {
     private final DBTable table;
+    private final String alias;
 
-    public QGTablePrv(QGExpressionPrv init, DBTable table)
+    public QGTablePrv(QGExpressionPrv init, DBTable table, String alias)
     {
         super(init);
         this.table = table;
+        this.alias = alias;
+    }
+
+    public QGTablePrv(QGExpressionPrv init, DBTable table)
+    {
+        this(init, table, null);
+    }
+
+    public QGTablePrv(DBTable table, String alias)
+    {
+        this.table = table;
+        this.alias = alias;
     }
 
     public QGTablePrv(DBTable table)
     {
-        this.table = table;
+        this(table, null);
     }
 
     @Override
     public <T> void genOutput(StringBuilder stringBuilder, boolean fullNamespaces, T context)
     {
         QGQueryBase.printTablePath(stringBuilder, table, context);
+
+        if(alias != null && !alias.isEmpty())
+            stringBuilder.append(" ").append(alias);
     }
 
     @Override

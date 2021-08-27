@@ -2,6 +2,7 @@ package com.github.pedropareja.database.generic.querygen.base;
 
 import com.github.pedropareja.database.generic.DBFieldInfo;
 import com.github.pedropareja.database.generic.DBTable;
+import com.github.pedropareja.database.generic.DBTableAliasIndex;
 import com.github.pedropareja.database.generic.querygen.auto.QGAutoFields;
 
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.TreeSet;
 public abstract class QGQueryInit extends QGQueryBase
 {
     protected boolean fullNamespaces = false;
+    protected DBTableAliasIndex tableAliasIndex;
 
     public void setFullNamespaces()
     {
@@ -68,5 +70,17 @@ public abstract class QGQueryInit extends QGQueryBase
         }
 
         return result;
+    }
+
+    @Override
+    public DBTableAliasIndex getTableAliasIndex()
+    {
+        return tableAliasIndex;
+    }
+
+    @Override
+    protected void setTableAliasIndex(DBTableAliasIndex tableAliasIndex)
+    {
+        this.tableAliasIndex = tableAliasIndex;
     }
 }

@@ -1,5 +1,6 @@
 package com.github.pedropareja.database.generic.querygen.from;
 
+import com.github.pedropareja.database.generic.DBTableAliasIndex;
 import com.github.pedropareja.database.generic.querygen.expression.base.QGExpression;
 import com.github.pedropareja.database.generic.querygen.base.QGQueryInit;
 import com.github.pedropareja.database.generic.querygen.base.QGQueryMiddleEnd;

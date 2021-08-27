@@ -5,6 +5,4 @@ import com.github.pedropareja.database.generic.querygen.expression.base.QGExpres
 
 public interface QGTable
     extends QGExpression, QGLinkAs
-{
-
-}
+{}

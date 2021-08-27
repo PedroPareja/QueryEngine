@@ -1,6 +1,7 @@
 package com.github.pedropareja.database.generic.querygen.select;
 
 import com.github.pedropareja.database.generic.DBFieldInfo;
+import com.github.pedropareja.database.generic.DBTableAliasIndex;
 import com.github.pedropareja.database.generic.querygen.auto.QGAutoFields;
 import com.github.pedropareja.database.generic.querygen.expression.base.QGExpression;
 import com.github.pedropareja.database.generic.querygen.base.QGQueryInit;
@@ -37,6 +38,13 @@ public class QGSelectPrv extends QGQueryInit implements QGSelect, QGAutoFields
         else
             expressionList = new ArrayList<>(Arrays.asList(expressions));
 
+        return this;
+    }
+
+    @Override
+    public QGSelect using(DBTableAliasIndex tableAliasIndex)
+    {
+        setTableAliasIndex(tableAliasIndex);
         return this;
     }
 

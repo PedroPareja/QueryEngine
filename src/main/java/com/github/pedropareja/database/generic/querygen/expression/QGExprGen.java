@@ -115,5 +115,7 @@ public class QGExprGen
     public static QGSubQuery subQuery(QGQuery query) { return new QGSubQueryPrv(query); }
 
     public static QGTable table(DBTable table) { return new QGTablePrv(table); }
+
+    public static QGTable table(DBTable table, String alias) {return new QGTablePrv(table, alias); }
 }
 

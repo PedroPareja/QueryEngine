@@ -1,5 +1,6 @@
 package com.github.pedropareja.database.generic.querygen.base;
 
+import com.github.pedropareja.database.generic.DBTableAliasIndex;
 import com.github.pedropareja.database.generic.querygen.QueryGenConfig;
 import com.github.pedropareja.database.generic.querygen.condition.QGConditionBase;
 import com.github.pedropareja.database.generic.DBFieldInfo;
@@ -179,4 +180,7 @@ public abstract class QGQueryBase implements QGLinkBase, QGQuery
     {
         return true;
     }
+
+    public abstract DBTableAliasIndex getTableAliasIndex();
+    protected abstract void setTableAliasIndex(DBTableAliasIndex tableAliasIndex);
 }
