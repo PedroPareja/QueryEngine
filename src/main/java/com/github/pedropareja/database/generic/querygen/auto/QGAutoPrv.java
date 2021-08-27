@@ -1,5 +1,6 @@
 package com.github.pedropareja.database.generic.querygen.auto;
 
+import com.github.pedropareja.database.generic.DBTableAliasIndex;
 import com.github.pedropareja.database.generic.querygen.base.QGQueryBase;
 import com.github.pedropareja.database.generic.querygen.from.QGLinkFrom;
 import com.github.pedropareja.database.generic.querygen.join.QGLinkJoin;
@@ -123,6 +124,7 @@ public class QGAutoPrv
         QGLinkJoin linkJoin = new NullInit().from(fromTable);
 
         linkJoin.getInit().setFullNamespaces();
+        ((NullInit)linkJoin.getInit()).setTableAliasIndex(getInit().getTableAliasIndex());
 
         Solution joinsSolution = tableMapper.solve(fromTable, autoTables.stream().map(DBTableWrapper::getTable).collect(Collectors.toList()));
 
@@ -153,6 +155,11 @@ public class QGAutoPrv
         public <T> void genOutput(StringBuilder stringBuilder, T context)
         {
             genOutputNext(stringBuilder, context);
+        }
+
+        public void setTableAliasIndex(DBTableAliasIndex tableAliasIndex)
+        {
+            super.setTableAliasIndex(tableAliasIndex);
         }
     }
 }
