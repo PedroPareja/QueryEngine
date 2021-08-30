@@ -1,6 +1,7 @@
 package com.github.pedropareja.database.generic.querygen.condition;
 
 import com.github.pedropareja.database.generic.DBFieldInfo;
+import com.github.pedropareja.database.generic.querygen.base.QGQuery;
 import com.github.pedropareja.database.generic.querygen.base.QGQueryBase;
 import com.github.pedropareja.database.generic.querygen.expression.base.QGExpression;
 
@@ -26,14 +27,14 @@ public class QGConditionComparation implements QGConditionBase
     }
 
     @Override
-    public <T> void genExpressionOutput(StringBuilder stringBuilder, boolean fullNamespaces, T context)
+    public <T> void genExpressionOutput(StringBuilder stringBuilder, boolean fullNamespaces, QGQuery query, T context)
     {
         stringBuilder.append(" ");
 
         if(exp1.isComplex())
             stringBuilder.append("(");
 
-        exp1.genExpressionOutput(stringBuilder, fullNamespaces, context);
+        exp1.genExpressionOutput(stringBuilder, fullNamespaces, query, context);
 
         if(exp1.isComplex())
             stringBuilder.append(")");
@@ -45,7 +46,7 @@ public class QGConditionComparation implements QGConditionBase
             if(exp2.isComplex())
                 stringBuilder.append("(");
 
-            exp2.genExpressionOutput(stringBuilder, fullNamespaces, context);
+            exp2.genExpressionOutput(stringBuilder, fullNamespaces, query, context);
 
             if(exp2.isComplex())
                 stringBuilder.append(")");

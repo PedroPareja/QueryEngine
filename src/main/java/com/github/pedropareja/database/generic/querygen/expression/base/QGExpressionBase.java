@@ -1,5 +1,7 @@
 package com.github.pedropareja.database.generic.querygen.expression.base;
 
+import com.github.pedropareja.database.generic.querygen.base.QGQuery;
+
 public abstract class QGExpressionBase implements QGExpressionPrv
 {
     private final QGExpressionPrv init;
@@ -40,13 +42,13 @@ public abstract class QGExpressionBase implements QGExpressionPrv
     @Override
     public String toString()
     {
-        return toString(null);
+        return toString(null, null);
     }
 
-    public <T> String toString(T context)
+    public <T> String toString(QGQuery query, T context)
     {
         StringBuilder stringBuilder = new StringBuilder();
-        genExpressionOutput(stringBuilder, true, context);
+        genExpressionOutput(stringBuilder, true, query, context);
         return stringBuilder.toString();
     }
 

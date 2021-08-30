@@ -42,15 +42,25 @@ public abstract class QGQueryBase implements QGLinkBase, QGQuery
     }
 
     @SuppressWarnings("unchecked")
-    public static <U> void printField(StringBuilder stringBuilder, DBFieldInfo field, boolean fullNamespaces, U context)
+    public <U> void printField(StringBuilder stringBuilder, DBFieldInfo field, boolean fullNamespaces, U context)
     {
         if(fullNamespaces)
         {
-            printTablePath(stringBuilder, field.getParentTable(), context);
+            printAliasedTablePath(stringBuilder, field.getParentTable(), context);
             stringBuilder.append(".");
         }
 
         printOptionalQuoted(stringBuilder, field.getName());
+    }
+
+    public <U> void printAliasedTablePath(StringBuilder stringBuilder, DBTable table, U context)
+    {
+        if(getTableAliasIndex() != null && getTableAliasIndex().contains(table))
+        {
+            printOptionalQuoted(stringBuilder, getTableAliasIndex().getAlias(table));
+        }
+        else
+            printTablePath(stringBuilder, table, context);
     }
 
     public static <U> void printTablePath(StringBuilder stringBuilder, DBTable table, U context)
@@ -161,7 +171,7 @@ public abstract class QGQueryBase implements QGLinkBase, QGQuery
     }
 
     @Override
-    public <T> void genExpressionOutput(StringBuilder stringBuilder, boolean fullNamespaces, T context)
+    public <T> void genExpressionOutput(StringBuilder stringBuilder, boolean fullNamespaces, QGQuery query, T context)
     {
         if(fullNamespaces)
             getInit().setFullNamespaces();

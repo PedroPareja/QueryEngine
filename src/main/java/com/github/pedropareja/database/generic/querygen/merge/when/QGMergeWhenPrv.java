@@ -27,7 +27,7 @@ public class QGMergeWhenPrv extends QGQueryMiddleEnd implements QGMergeWhen
         for (int i = 0; i < conditionList.size(); i++)
         {
             stringBuilder.append(" AND");
-            conditionList.get(i).genExpressionOutput(stringBuilder, getInit().isFullNamespaces(), context);
+            conditionList.get(i).genExpressionOutput(stringBuilder, getInit().isFullNamespaces(), this, context);
         }
 
         stringBuilder.append(" THEN ");

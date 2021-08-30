@@ -1,6 +1,7 @@
 package com.github.pedropareja.database.generic.querygen.expression.coalesce;
 
 import com.github.pedropareja.database.generic.DBFieldInfo;
+import com.github.pedropareja.database.generic.querygen.base.QGQuery;
 import com.github.pedropareja.database.generic.querygen.base.QGQueryBase;
 import com.github.pedropareja.database.generic.querygen.expression.base.QGExpression;
 import com.github.pedropareja.database.generic.querygen.expression.base.QGExpressionBase;
@@ -39,14 +40,14 @@ public class QGCoalescePrv extends QGExpressionBase
     }
 
     @Override
-    public <T> void genOutput(StringBuilder stringBuilder, boolean fullNamespaces, T context)
+    public <T> void genOutput(StringBuilder stringBuilder, boolean fullNamespaces, QGQuery query, T context)
     {
         stringBuilder.append("COALESCE(");
 
         for(int i=0; i < parameters.length; i++)
         {
             stringBuilder.append(i != 0 ? ", " : "");
-            parameters[i].genExpressionOutput(stringBuilder, fullNamespaces, context);
+            parameters[i].genExpressionOutput(stringBuilder, fullNamespaces, query, context);
         }
 
         stringBuilder.append(")");

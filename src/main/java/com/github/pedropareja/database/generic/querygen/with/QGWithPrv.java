@@ -40,7 +40,7 @@ public class QGWithPrv extends QGQueryInit
         for(int i=0; i < fields.length; i++)
         {
             stringBuilder.append(i != 0 ? ", " : "");
-            fields[i].genExpressionOutput(stringBuilder, true, context);
+            fields[i].genExpressionOutput(stringBuilder, true, this, context);
         }
 
         stringBuilder.append(")");

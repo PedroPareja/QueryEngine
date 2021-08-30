@@ -1,6 +1,7 @@
 package com.github.pedropareja.database.generic.querygen.expression.count;
 
 import com.github.pedropareja.database.generic.DBFieldInfo;
+import com.github.pedropareja.database.generic.querygen.base.QGQuery;
 import com.github.pedropareja.database.generic.querygen.base.QGQueryBase;
 import com.github.pedropareja.database.generic.querygen.expression.as.QGLinkAsPrv;
 import com.github.pedropareja.database.generic.querygen.expression.base.QGExpression;
@@ -70,7 +71,7 @@ public class QGCountPrv extends QGExpressionBase implements QGCount, QGLinkAsPrv
     }
 
     @Override
-    public <T> void genOutput(StringBuilder stringBuilder, boolean fullNamespaces, T context)
+    public <T> void genOutput(StringBuilder stringBuilder, boolean fullNamespaces, QGQuery query, T context)
     {
         printSpaceIfNotFirst(stringBuilder);
         stringBuilder.append("COUNT(");
@@ -86,7 +87,7 @@ public class QGCountPrv extends QGExpressionBase implements QGCount, QGLinkAsPrv
                 if(i!=0)
                     stringBuilder.append(", ");
 
-                parameters.get(i).genExpressionOutput(stringBuilder, fullNamespaces, context);
+                parameters.get(i).genExpressionOutput(stringBuilder, fullNamespaces, query, context);
             }
 
         stringBuilder.append(")");

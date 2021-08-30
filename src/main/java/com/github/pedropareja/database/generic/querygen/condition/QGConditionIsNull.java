@@ -1,5 +1,6 @@
 package com.github.pedropareja.database.generic.querygen.condition;
 
+import com.github.pedropareja.database.generic.querygen.base.QGQuery;
 import com.github.pedropareja.database.generic.querygen.expression.base.QGExpression;
 import com.github.pedropareja.database.generic.DBFieldInfo;
 
@@ -15,14 +16,14 @@ public class QGConditionIsNull implements QGConditionBase
     }
 
     @Override
-    public <T> void genExpressionOutput(StringBuilder stringBuilder, boolean fullNamespaces, T context)
+    public <T> void genExpressionOutput(StringBuilder stringBuilder, boolean fullNamespaces, QGQuery query, T context)
     {
         stringBuilder.append(" ");
 
         if(exp.isComplex())
             stringBuilder.append("(");
 
-        exp.genExpressionOutput(stringBuilder, fullNamespaces, context);
+        exp.genExpressionOutput(stringBuilder, fullNamespaces, query, context);
 
         if(exp.isComplex())
             stringBuilder.append(")");

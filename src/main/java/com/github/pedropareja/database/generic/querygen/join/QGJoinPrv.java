@@ -43,7 +43,7 @@ public class QGJoinPrv extends QGQueryMiddleEnd implements QGJoin, QGLinkOptiona
 
         stringBuilder.append(" JOIN ");
 
-        tableExp.genExpressionOutput(stringBuilder, true, context);
+        tableExp.genExpressionOutput(stringBuilder, true, this, context);
 
         genOutputNext(stringBuilder, context);
     }

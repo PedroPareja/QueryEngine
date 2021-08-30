@@ -52,7 +52,7 @@ public class QGValuesPrv extends QGQueryMiddleEnd implements QGValues
                 if (i != 0)
                     stringBuilder.append(", ");
 
-                values.get(i).genExpressionOutput(stringBuilder, true, context);
+                values.get(i).genExpressionOutput(stringBuilder, true, this, context);
             }
 
             stringBuilder.append(")");

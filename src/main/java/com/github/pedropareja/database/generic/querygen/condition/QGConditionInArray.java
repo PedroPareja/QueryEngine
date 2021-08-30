@@ -1,6 +1,7 @@
 package com.github.pedropareja.database.generic.querygen.condition;
 
 import com.github.pedropareja.database.generic.DBFieldInfo;
+import com.github.pedropareja.database.generic.querygen.base.QGQuery;
 import com.github.pedropareja.database.generic.querygen.base.QGQueryBase;
 import com.github.pedropareja.database.generic.querygen.expression.base.QGExpression;
 
@@ -21,18 +22,18 @@ public class QGConditionInArray implements QGConditionBase
     }
 
     @Override
-    public <T> void genExpressionOutput(StringBuilder stringBuilder, boolean fullNamespaces, T context)
+    public <T> void genExpressionOutput(StringBuilder stringBuilder, boolean fullNamespaces, QGQuery query, T context)
     {
         if(!isNull())
         {
             stringBuilder.append(" ");
-            field.genExpressionOutput(stringBuilder, fullNamespaces, context);
+            field.genExpressionOutput(stringBuilder, fullNamespaces, query, context);
             stringBuilder.append(" IN(");
 
             for (int i = 0; i < values.length; i++)
             {
                 stringBuilder.append(i != 0 ? ", " : "");
-                values[i].genExpressionOutput(stringBuilder, fullNamespaces, context);
+                values[i].genExpressionOutput(stringBuilder, fullNamespaces, query, context);
             }
 
             stringBuilder.append(")");

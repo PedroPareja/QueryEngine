@@ -19,6 +19,6 @@ public class QGWithThenPrv extends QGQueryMiddleEnd
     public <T> void genOutput(StringBuilder stringBuilder, T context)
     {
         stringBuilder.append(" ");
-        mainQuery.genExpressionOutput(stringBuilder, true, context);
+        mainQuery.genExpressionOutput(stringBuilder, true, this, context);
     }
 }

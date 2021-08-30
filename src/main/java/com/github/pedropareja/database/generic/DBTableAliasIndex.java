@@ -24,6 +24,16 @@ public class DBTableAliasIndex
         return aliasToTable.get(alias);
     }
 
+    public boolean contains(DBTable table)
+    {
+        return tableToAlias.containsKey(new DBTableWrapper(table));
+    }
+
+    public boolean contains(String alias)
+    {
+        return aliasToTable.containsKey(alias);
+    }
+
     public int size()
     {
         return tableToAlias.size();

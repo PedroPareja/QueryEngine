@@ -68,7 +68,7 @@ public class QGOrderByPrv extends QGQueryMiddleEnd
             if(i!=0)
                 stringBuilder.append(", ");
 
-            orderElements.get(i).getExp().genExpressionOutput(stringBuilder, getInit().isFullNamespaces(), context);
+            orderElements.get(i).getExp().genExpressionOutput(stringBuilder, getInit().isFullNamespaces(), this, context);
             stringBuilder.append(" ").append(orderElements.get(i).getOrder().name());
         }
 

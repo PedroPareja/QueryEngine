@@ -25,7 +25,7 @@ public class QGMergeInsertValuesPrv extends QGQueryMiddleEnd implements QGMergeI
             if(i != 0)
                 stringBuilder.append(", ");
 
-            expressions[i].genExpressionOutput(stringBuilder, true, context);
+            expressions[i].genExpressionOutput(stringBuilder, true, this, context);
         }
 
         stringBuilder.append(")");

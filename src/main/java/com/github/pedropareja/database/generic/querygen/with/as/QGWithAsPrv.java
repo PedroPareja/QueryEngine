@@ -28,12 +28,12 @@ public class QGWithAsPrv extends QGQueryMiddleEnd
     public <T> void genOutput(StringBuilder stringBuilder, T context)
     {
         stringBuilder.append(" AS (");
-        anchorClause.genExpressionOutput(stringBuilder, true, context);
+        anchorClause.genExpressionOutput(stringBuilder, true, this, context);
 
         if(recursiveClause != null)
         {
             stringBuilder.append(" UNION ALL ");
-            recursiveClause.genExpressionOutput(stringBuilder, true, context);
+            recursiveClause.genExpressionOutput(stringBuilder, true, this, context);
         }
 
         stringBuilder.append(")");

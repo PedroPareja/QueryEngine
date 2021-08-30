@@ -2,6 +2,7 @@ package com.github.pedropareja.database.generic.querygen.condition.group;
 
 import com.github.pedropareja.database.generic.querygen.base.QGInitReferenced;
 import com.github.pedropareja.database.generic.querygen.base.QGOptionalityEnabled;
+import com.github.pedropareja.database.generic.querygen.base.QGQuery;
 import com.github.pedropareja.database.generic.querygen.base.QGQueryInit;
 
 public class QGConditionAllPrv<T extends QGOptionalityEnabled & QGInitReferenced>
@@ -14,9 +15,9 @@ public class QGConditionAllPrv<T extends QGOptionalityEnabled & QGInitReferenced
     }
 
     @Override
-    public <T> void genExpressionOutput(StringBuilder stringBuilder, boolean fullNamespaces, T context)
+    public <T> void genExpressionOutput(StringBuilder stringBuilder, boolean fullNamespaces, QGQuery query, T context)
     {
         if(!isNull())
-            genOutput(stringBuilder, fullNamespaces, context, conditionList, "AND");
+            genOutput(stringBuilder, fullNamespaces, query, context, conditionList, "AND");
     }
 }

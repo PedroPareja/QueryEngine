@@ -1,5 +1,6 @@
 package com.github.pedropareja.database.generic;
 
+import com.github.pedropareja.database.generic.querygen.base.QGQuery;
 import com.github.pedropareja.database.generic.querygen.base.QGQueryBase;
 import com.github.pedropareja.database.generic.querygen.expression.base.QGExpression;
 
@@ -26,9 +27,9 @@ public interface DBFieldInfo extends QGExpression
     }
 
     @Override
-    default <T> void genExpressionOutput(StringBuilder stringBuilder, boolean fullNamespaces, T context)
+    default <T> void genExpressionOutput(StringBuilder stringBuilder, boolean fullNamespaces, QGQuery query, T context)
     {
-        QGQueryBase.printField(stringBuilder, this,  fullNamespaces, context);
+        query.getInit().printField(stringBuilder, this,  fullNamespaces, context);
     }
 
     @Override

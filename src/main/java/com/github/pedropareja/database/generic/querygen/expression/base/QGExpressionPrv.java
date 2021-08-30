@@ -1,6 +1,7 @@
 package com.github.pedropareja.database.generic.querygen.expression.base;
 
 import com.github.pedropareja.database.generic.DBFieldInfo;
+import com.github.pedropareja.database.generic.querygen.base.QGQuery;
 import com.github.pedropareja.database.generic.querygen.base.QGQueryBase;
 
 import java.util.List;
@@ -10,20 +11,20 @@ public interface QGExpressionPrv extends QGExpression
     QGExpressionPrv getInit();
     QGExpressionPrv getNext();
 
-    <T> void genOutput(StringBuilder stringBuilder, boolean fullNamespaces, T context);
+    <T> void genOutput(StringBuilder stringBuilder, boolean fullNamespaces, QGQuery query, T context);
 
-    default <T> void genSequenceOutput(StringBuilder stringBuilder, boolean fullNamespaces, T context)
+    default <T> void genSequenceOutput(StringBuilder stringBuilder, boolean fullNamespaces, QGQuery query, T context)
     {
-        genOutput(stringBuilder, fullNamespaces, context);
+        genOutput(stringBuilder, fullNamespaces, query, context);
 
         if(getNext() != null)
-            getNext().genSequenceOutput(stringBuilder, fullNamespaces, context);
+            getNext().genSequenceOutput(stringBuilder, fullNamespaces, query, context);
     }
 
     @Override
-    default <T> void genExpressionOutput(StringBuilder stringBuilder, boolean fullNamespaces, T context)
+    default <T> void genExpressionOutput(StringBuilder stringBuilder, boolean fullNamespaces, QGQuery query, T context)
     {
-        getInit().genSequenceOutput(stringBuilder, fullNamespaces, context);
+        getInit().genSequenceOutput(stringBuilder, fullNamespaces, query, context);
     }
 
     <T extends QGExpressionPrv> T assignNext(T next);

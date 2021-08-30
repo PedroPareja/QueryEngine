@@ -17,7 +17,7 @@ public class QGConditionExists implements QGConditionBase
     }
 
     @Override
-    public <T> void genExpressionOutput(StringBuilder stringBuilder, boolean fullNamespaces, T context)
+    public <T> void genExpressionOutput(StringBuilder stringBuilder, boolean fullNamespaces, QGQuery query, T context)
     {
         stringBuilder.append(" EXISTS(");
         query.getInit().genOutput(stringBuilder, context);

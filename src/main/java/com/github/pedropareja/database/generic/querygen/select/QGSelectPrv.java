@@ -78,7 +78,7 @@ public class QGSelectPrv extends QGQueryInit implements QGSelect, QGAutoFields
             {
                 stringBuilder.append(i != 0 ? ", " : "");
                 //printField(stringBuilder, fieldList[i], fullNamespaces, context);
-                expressionList.get(i).genExpressionOutput(stringBuilder, fullNamespaces, context);
+                expressionList.get(i).genExpressionOutput(stringBuilder, fullNamespaces, this, context);
             }
         }
 

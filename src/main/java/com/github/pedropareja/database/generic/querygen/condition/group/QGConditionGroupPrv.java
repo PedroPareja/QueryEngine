@@ -3,6 +3,7 @@ package com.github.pedropareja.database.generic.querygen.condition.group;
 import com.github.pedropareja.database.generic.DBFieldInfo;
 import com.github.pedropareja.database.generic.querygen.base.QGInitReferenced;
 import com.github.pedropareja.database.generic.querygen.base.QGOptionalityEnabled;
+import com.github.pedropareja.database.generic.querygen.base.QGQuery;
 import com.github.pedropareja.database.generic.querygen.base.QGQueryInit;
 import com.github.pedropareja.database.generic.querygen.condition.QGConditionBase;
 import com.github.pedropareja.database.generic.querygen.condition.QGLinkConditionsPrv;
@@ -91,7 +92,7 @@ public abstract class QGConditionGroupPrv<U extends QGConditionGroup<U,T>, T ext
         return true;
     }
 
-    protected static <T> void genOutput(StringBuilder stringBuilder, boolean fullNamespaces, T context, List<QGConditionBase> conditionList, String nexusOperator)
+    protected static <T> void genOutput(StringBuilder stringBuilder, boolean fullNamespaces, QGQuery query, T context, List<QGConditionBase> conditionList, String nexusOperator)
     {
         boolean conditionWritten = false;
 
@@ -104,7 +105,7 @@ public abstract class QGConditionGroupPrv<U extends QGConditionGroup<U,T>, T ext
                 if(conditionWritten)
                     stringBuilder.append(" ").append(nexusOperator);
 
-                condition.genExpressionOutput(stringBuilder, fullNamespaces, context);
+                condition.genExpressionOutput(stringBuilder, fullNamespaces, query, context);
                 conditionWritten = true;
             }
         }

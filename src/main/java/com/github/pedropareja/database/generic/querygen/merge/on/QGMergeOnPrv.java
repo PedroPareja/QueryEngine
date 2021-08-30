@@ -34,7 +34,7 @@ public class QGMergeOnPrv extends QGQueryMiddleEnd implements QGMergeOn, QGLinkC
             if(i != 0)
                 stringBuilder.append(" AND");
 
-            conditionList.get(i).genExpressionOutput(stringBuilder, true, context);
+            conditionList.get(i).genExpressionOutput(stringBuilder, true, this, context);
         }
 
         genOutputNext(stringBuilder, context);

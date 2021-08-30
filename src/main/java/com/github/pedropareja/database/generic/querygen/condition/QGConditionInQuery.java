@@ -29,7 +29,7 @@ public class QGConditionInQuery implements QGConditionBase
     }
 
     @Override
-    public <T> void genExpressionOutput(StringBuilder stringBuilder, boolean fullNamespaces, T context)
+    public <T> void genExpressionOutput(StringBuilder stringBuilder, boolean fullNamespaces, QGQuery query, T context)
     {
         stringBuilder.append(" ");
 
@@ -41,7 +41,7 @@ public class QGConditionInQuery implements QGConditionBase
             if(i!=0)
                 stringBuilder.append(", ");
 
-            QGQueryBase.printField(stringBuilder, fields[i], true, context);
+            fields[i].genExpressionOutput(stringBuilder, fullNamespaces, query, context);
         }
 
         if(fields.length > 1)

@@ -1,6 +1,7 @@
 package com.github.pedropareja.database.generic.querygen.expression.casecmd.when;
 
 import com.github.pedropareja.database.generic.DBFieldInfo;
+import com.github.pedropareja.database.generic.querygen.base.QGQuery;
 import com.github.pedropareja.database.generic.querygen.base.QGQueryBase;
 import com.github.pedropareja.database.generic.querygen.base.QGQueryInit;
 import com.github.pedropareja.database.generic.querygen.condition.QGConditionBase;
@@ -78,7 +79,7 @@ public class QGWhenPrv implements QGWhen, QGLinkConditionsPrv<QGWhen>
     }
 
     @Override
-    public <T> void genExpressionOutput(StringBuilder stringBuilder, boolean fullNamespaces, T context)
+    public <T> void genExpressionOutput(StringBuilder stringBuilder, boolean fullNamespaces, QGQuery query, T context)
     {
         if(!conditionList.isEmpty())
         {
@@ -86,13 +87,13 @@ public class QGWhenPrv implements QGWhen, QGLinkConditionsPrv<QGWhen>
 
             for(int i=0; i < conditionList.size(); i++)
             {
-                conditionList.get(i).genExpressionOutput(stringBuilder, fullNamespaces, context);
+                conditionList.get(i).genExpressionOutput(stringBuilder, fullNamespaces, query, context);
                 if (i < conditionList.size() - 1)
                     stringBuilder.append(" AND");
             }
 
             stringBuilder.append(" THEN ");
-            thenExp.genExpressionOutput(stringBuilder, fullNamespaces, context);
+            thenExp.genExpressionOutput(stringBuilder, fullNamespaces, query, context);
         }
     }
 

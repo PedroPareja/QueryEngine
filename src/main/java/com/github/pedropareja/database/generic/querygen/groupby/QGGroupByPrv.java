@@ -39,7 +39,7 @@ public class QGGroupByPrv extends QGQueryMiddleEnd
         for(int i=0; i < expList.length; i++)
         {
             stringBuilder.append(i == 0 ? " " : ", ");
-            expList[i].genExpressionOutput(stringBuilder, getInit().isFullNamespaces(), context);
+            expList[i].genExpressionOutput(stringBuilder, getInit().isFullNamespaces(), this, context);
         }
 
         genOutputNext(stringBuilder, context);

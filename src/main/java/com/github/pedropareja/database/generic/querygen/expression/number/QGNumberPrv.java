@@ -1,5 +1,6 @@
 package com.github.pedropareja.database.generic.querygen.expression.number;
 
+import com.github.pedropareja.database.generic.querygen.base.QGQuery;
 import com.github.pedropareja.database.generic.querygen.expression.base.QGExpressionBase;
 import com.github.pedropareja.database.generic.querygen.expression.base.QGExpressionPrv;
 import com.github.pedropareja.database.generic.DBFieldInfo;
@@ -52,7 +53,7 @@ public class QGNumberPrv extends QGExpressionBase implements QGNumber, QGLinkOpe
     }
 
     @Override
-    public <T> void genOutput(StringBuilder stringBuilder, boolean fullNamespaces, T context)
+    public <T> void genOutput(StringBuilder stringBuilder, boolean fullNamespaces, QGQuery query, T context)
     {
         printSpaceIfNotFirst(stringBuilder);
         stringBuilder.append(value);

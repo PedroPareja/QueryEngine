@@ -39,7 +39,7 @@ public class QGHavingPrv extends QGQueryMiddleEnd
 
             for (int i = 0; i < conditionList.size(); i++)
             {
-                conditionList.get(i).genExpressionOutput(stringBuilder, getInit().isFullNamespaces(), context);
+                conditionList.get(i).genExpressionOutput(stringBuilder, getInit().isFullNamespaces(), this, context);
                 if (i < conditionList.size() - 1)
                     stringBuilder.append(" AND");
             }

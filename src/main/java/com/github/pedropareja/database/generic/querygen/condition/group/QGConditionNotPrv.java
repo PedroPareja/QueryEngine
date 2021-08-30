@@ -3,6 +3,7 @@ package com.github.pedropareja.database.generic.querygen.condition.group;
 import com.github.pedropareja.database.generic.DBFieldInfo;
 import com.github.pedropareja.database.generic.querygen.base.QGInitReferenced;
 import com.github.pedropareja.database.generic.querygen.base.QGOptionalityEnabled;
+import com.github.pedropareja.database.generic.querygen.base.QGQuery;
 import com.github.pedropareja.database.generic.querygen.condition.QGConditionBase;
 import com.github.pedropareja.database.generic.querygen.condition.QGLinkConditions;
 import com.github.pedropareja.database.generic.querygen.condition.QGLinkConditionsPrv;
@@ -25,12 +26,12 @@ public class QGConditionNotPrv<T extends QGOptionalityEnabled & QGInitReferenced
     }
 
     @Override
-    public <T> void genExpressionOutput(StringBuilder stringBuilder, boolean fullNamespaces, T context)
+    public <T> void genExpressionOutput(StringBuilder stringBuilder, boolean fullNamespaces, QGQuery query, T context)
     {
         if(!isNull())
         {
             stringBuilder.append(" NOT(");
-            conditionList.get(0).genExpressionOutput(stringBuilder, fullNamespaces, context);
+            conditionList.get(0).genExpressionOutput(stringBuilder, fullNamespaces, query, context);
             stringBuilder.append(")");
         }
     }

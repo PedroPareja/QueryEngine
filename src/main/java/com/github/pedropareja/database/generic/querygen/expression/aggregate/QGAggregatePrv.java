@@ -1,5 +1,6 @@
 package com.github.pedropareja.database.generic.querygen.expression.aggregate;
 
+import com.github.pedropareja.database.generic.querygen.base.QGQuery;
 import com.github.pedropareja.database.generic.querygen.expression.base.QGExpression;
 import com.github.pedropareja.database.generic.querygen.expression.base.QGExpressionPrv;
 import com.github.pedropareja.database.generic.DBFieldInfo;
@@ -30,12 +31,12 @@ public class QGAggregatePrv
     }
 
     @Override
-    public  <U> void genOutput(StringBuilder stringBuilder, boolean fullNamespaces, U context)
+    public  <U> void genOutput(StringBuilder stringBuilder, boolean fullNamespaces, QGQuery query, U context)
     {
         printSpaceIfNotFirst(stringBuilder);
         stringBuilder.append(type.name()).append("(");
 
-        exp.genExpressionOutput(stringBuilder, fullNamespaces, context);
+        exp.genExpressionOutput(stringBuilder, fullNamespaces, query, context);
 
         stringBuilder.append(")");
     }

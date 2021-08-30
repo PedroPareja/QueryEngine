@@ -40,7 +40,7 @@ public class QGOnPrv extends QGQueryMiddleEnd implements QGOn, QGLinkConditionsP
             if(i != 0)
                 stringBuilder.append(" AND");
 
-            conditionList.get(i).genExpressionOutput(stringBuilder, true, context);
+            conditionList.get(i).genExpressionOutput(stringBuilder, true, this, context);
         }
 
         genOutputNext(stringBuilder, context);

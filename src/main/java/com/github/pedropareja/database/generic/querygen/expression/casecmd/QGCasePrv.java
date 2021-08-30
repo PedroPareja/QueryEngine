@@ -1,5 +1,6 @@
 package com.github.pedropareja.database.generic.querygen.expression.casecmd;
 
+import com.github.pedropareja.database.generic.querygen.base.QGQuery;
 import com.github.pedropareja.database.generic.querygen.expression.base.QGExpressionPrv;
 import com.github.pedropareja.database.generic.querygen.expression.casecmd.when.QGWhenPrv;
 import com.github.pedropareja.database.generic.DBFieldInfo;
@@ -41,19 +42,19 @@ public class QGCasePrv extends QGExpressionBase
     }
 
     @Override
-    public <T> void genOutput(StringBuilder stringBuilder, boolean fullNamespaces, T context)
+    public <T> void genOutput(StringBuilder stringBuilder, boolean fullNamespaces, QGQuery query, T context)
     {
         printSpaceIfNotFirst(stringBuilder);
 
         stringBuilder.append("CASE");
 
         for(QGWhen when: whenList)
-            when.genExpressionOutput(stringBuilder, fullNamespaces, context);
+            when.genExpressionOutput(stringBuilder, fullNamespaces, query, context);
 
         if(elseExp != null)
         {
             stringBuilder.append(" ELSE ");
-            elseExp.genExpressionOutput(stringBuilder, fullNamespaces, context);
+            elseExp.genExpressionOutput(stringBuilder, fullNamespaces, query, context);
         }
 
         stringBuilder.append(" END");

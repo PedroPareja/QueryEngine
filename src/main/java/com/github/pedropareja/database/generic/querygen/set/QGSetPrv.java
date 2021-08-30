@@ -56,11 +56,11 @@ public class QGSetPrv extends QGQueryMiddleEnd implements QGSet, QGLinkOptionalP
             if(i != 0)
                 stringBuilder.append(", ");
 
-            setAssignments.get(i).getField().genExpressionOutput(stringBuilder, getInit().isFullNamespaces(), context);
+            setAssignments.get(i).getField().genExpressionOutput(stringBuilder, getInit().isFullNamespaces(), this, context);
             stringBuilder.append(" = ");
 
             if(setAssignments.get(i).getValue() != null)
-                setAssignments.get(i).getValue().genExpressionOutput(stringBuilder, getInit().isFullNamespaces(), context);
+                setAssignments.get(i).getValue().genExpressionOutput(stringBuilder, getInit().isFullNamespaces(), this, context);
             else
                 stringBuilder.append("?");
         }

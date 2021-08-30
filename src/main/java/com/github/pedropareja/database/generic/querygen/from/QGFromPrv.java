@@ -21,7 +21,7 @@ public class QGFromPrv extends QGQueryMiddleEnd implements QGFrom, QGLinkOptiona
     {
         stringBuilder.append(" FROM ");
 
-        tableExp.genExpressionOutput(stringBuilder, true, context);
+        tableExp.genExpressionOutput(stringBuilder, true, this, context);
 
         genOutputNext(stringBuilder, context);
     }

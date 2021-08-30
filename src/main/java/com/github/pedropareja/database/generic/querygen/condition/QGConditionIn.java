@@ -1,6 +1,7 @@
 package com.github.pedropareja.database.generic.querygen.condition;
 
 import com.github.pedropareja.database.generic.DBFieldInfo;
+import com.github.pedropareja.database.generic.querygen.base.QGQuery;
 import com.github.pedropareja.database.generic.querygen.base.QGQueryBase;
 
 import java.util.Arrays;
@@ -18,12 +19,12 @@ public class QGConditionIn implements QGConditionBase
     }
 
     @Override
-    public <T> void genExpressionOutput(StringBuilder stringBuilder, boolean fullNamespaces, T context)
+    public <T> void genExpressionOutput(StringBuilder stringBuilder, boolean fullNamespaces, QGQuery query, T context)
     {
         if(!isNull())
         {
             stringBuilder.append(" ");
-            QGQueryBase.printField(stringBuilder, field, fullNamespaces, context);
+            field.genExpressionOutput(stringBuilder, fullNamespaces, query, context);
             stringBuilder.append(" IN(");
 
             for (int i = 0; i < numberOfParameters; i++)

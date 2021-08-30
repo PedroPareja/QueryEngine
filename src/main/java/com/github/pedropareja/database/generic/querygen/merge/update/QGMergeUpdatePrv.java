@@ -39,11 +39,11 @@ public class QGMergeUpdatePrv extends QGQueryMiddleEnd implements QGMergeUpdate,
             if(i != 0)
                 stringBuilder.append(", ");
 
-            setAssignments.get(i).getField().genExpressionOutput(stringBuilder, false, context);
+            setAssignments.get(i).getField().genExpressionOutput(stringBuilder, false, this, context);
             stringBuilder.append(" = ");
 
             if(setAssignments.get(i).getValue() != null)
-                setAssignments.get(i).getValue().genExpressionOutput(stringBuilder, true, context);
+                setAssignments.get(i).getValue().genExpressionOutput(stringBuilder, true, this, context);
             else
                 stringBuilder.append("?");
         }

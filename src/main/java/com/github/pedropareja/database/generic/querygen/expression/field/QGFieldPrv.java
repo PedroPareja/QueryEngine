@@ -1,5 +1,6 @@
 package com.github.pedropareja.database.generic.querygen.expression.field;
 
+import com.github.pedropareja.database.generic.querygen.base.QGQuery;
 import com.github.pedropareja.database.generic.querygen.expression.base.QGExpressionPrv;
 import com.github.pedropareja.database.generic.DBFieldInfo;
 import com.github.pedropareja.database.generic.querygen.base.QGQueryBase;
@@ -27,11 +28,11 @@ public class QGFieldPrv extends QGExpressionBase
     }
 
     @Override
-    public <U> void genOutput(StringBuilder stringBuilder, boolean fullNamespaces, U context)
+    public <U> void genOutput(StringBuilder stringBuilder, boolean fullNamespaces, QGQuery query, U context)
     {
         printSpaceIfNotFirst(stringBuilder);
 
-        QGQueryBase.printField(stringBuilder, field, fullNamespaces, context);
+        query.getInit().printField(stringBuilder, field, fullNamespaces, context);
     }
 
     @Override
