@@ -121,10 +121,11 @@ public class QGAutoPrv
             for(DBTable table: ignoreTables)
                 autoTables.remove(new DBTableWrapper(table));
 
-        QGLinkJoin linkJoin = new NullInit().from(fromTable);
+        NullInit nullInit = new NullInit();
+        nullInit.setTableAliasIndex(getInit().getTableAliasIndex());
+        nullInit.setFullNamespaces();
 
-        linkJoin.getInit().setFullNamespaces();
-        ((NullInit)linkJoin.getInit()).setTableAliasIndex(getInit().getTableAliasIndex());
+        QGLinkJoin linkJoin = nullInit.from(fromTable);
 
         Solution joinsSolution = tableMapper.solve(fromTable, autoTables.stream().map(DBTableWrapper::getTable).collect(Collectors.toList()));
 
