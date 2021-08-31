@@ -37,7 +37,7 @@ public class QGSubQueryPrv extends QGExpressionBase
     {
         printSpaceIfNotFirst(stringBuilder);
         stringBuilder.append("(");
-        query.genExpressionOutput(stringBuilder, fullNamespaces, query, context);
+        this.query.genExpressionOutput(stringBuilder, fullNamespaces, query, context);
         stringBuilder.append(")");
     }
 }
