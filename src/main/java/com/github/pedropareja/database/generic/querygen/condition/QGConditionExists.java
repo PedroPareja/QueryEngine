@@ -20,7 +20,7 @@ public class QGConditionExists implements QGConditionBase
     public <T> void genExpressionOutput(StringBuilder stringBuilder, boolean fullNamespaces, QGQuery query, T context)
     {
         stringBuilder.append(" EXISTS(");
-        query.getInit().genOutput(stringBuilder, context);
+        this.query.getInit().genOutput(stringBuilder, context);
         stringBuilder.append(")");
     }
 

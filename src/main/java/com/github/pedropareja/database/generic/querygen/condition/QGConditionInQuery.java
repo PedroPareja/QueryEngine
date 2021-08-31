@@ -48,7 +48,7 @@ public class QGConditionInQuery implements QGConditionBase
             stringBuilder.append(")");
 
         stringBuilder.append(" IN(");
-        query.getInit().genOutput(stringBuilder, context);
+        this.query.getInit().genOutput(stringBuilder, context);
         stringBuilder.append(")");
     }
 
