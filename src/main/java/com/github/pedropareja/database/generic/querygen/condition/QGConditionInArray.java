@@ -66,7 +66,8 @@ public class QGConditionInArray implements QGConditionBase
     @Override
     public List<DBFieldInfo> getAutoFields()
     {
-        List<DBFieldInfo> result = new ArrayList<>(field.getAutoFields());
+        List<DBFieldInfo> result = new ArrayList<>();
+        result = QGQueryBase.joinLists(result, field.getAutoFields());
 
         for(QGExpression expression: values)
             result = QGQueryBase.joinLists(result, expression.getAutoFields());
