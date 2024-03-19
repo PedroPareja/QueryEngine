@@ -4,7 +4,7 @@ public class QueryGenConfig
 {
     public static final boolean QUOTED_FIELDS = getEnvVar("QG_QUOTED_FIELDS", false, v -> Boolean.parseBoolean(v));
 
-    private static final <T> T getEnvVar(String name, T defaultValue, TypeConverter<T> typeConverter)
+    private static <T> T getEnvVar(String name, T defaultValue, TypeConverter<T> typeConverter)
     {
         String valueStr = System.getenv(name);
 
