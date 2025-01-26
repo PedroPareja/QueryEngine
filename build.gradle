@@ -6,7 +6,7 @@ plugins
 group 'es.pedropareja'
 version '1.0-SNAPSHOT'
 
-sourceCompatibility = 1.8
+sourceCompatibility = 17
 
 repositories
 {
